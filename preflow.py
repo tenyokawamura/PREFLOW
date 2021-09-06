@@ -467,11 +467,6 @@ def preflow(engs, params, fluxes):
             print('--------------------------------------------------')
             print('PSD of the flux was successfully calculated.')
 
-        #self.flux.psd_coi_set(f=flupro.fs, psds=psds_fl)
-        #self.flux.weight_coi_psd_set(wss=wss, ws_tot=ws_tot)
-        #self.flux.norm_rep_coi_psd_set(norms_rep=norms_rep)
-        #self.flux.mu_coi_psd_set(mus=mus_fl)
-
         for i_f_data, f_data in enumerate(fs_data):
             i_f=np.abs(flupro.fs-f_data).argmin()
             psd=psds_fl[i_f]
