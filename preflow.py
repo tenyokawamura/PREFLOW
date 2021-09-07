@@ -1,4 +1,5 @@
 from preflow_h import *
+from scipy import integrate
 
 def preflow(engs, params, fluxes):
     # ------------------------------------- #
@@ -467,6 +468,10 @@ def preflow(engs, params, fluxes):
             print('--------------------------------------------------')
             print('PSD of the flux was successfully calculated.')
 
+        '''
+        ###########################################
+        ########## Simplest integratinon ##########
+        ###########################################
         for i_f_data, f_data in enumerate(fs_data):
             i_f=np.abs(flupro.fs-f_data).argmin()
             psd=psds_fl[i_f]
@@ -479,6 +484,31 @@ def preflow(engs, params, fluxes):
         for i_f_data in range(n_f_data-1):
             # the most simple integration (area of trapezoid)
             flux=(psds[i_f_data]+psds[i_f_data+1])*(fs_data[i_f_data+1]-fs_data[i_f_data])/2.
+            fluxes[i_f_data]=flux
+
+        '''
+
+        ################################################
+        ########## More accurate integratinon ##########
+        ################################################
+        n_f_data=len(fs_data)
+        for i_f_data in range(n_f_data-1):
+            f_data_min=fs_data[i_f_data]
+            f_data_max=fs_data[i_f_data+1]
+            i_f_min=np.abs(flupro.fs-f_data_min).argmin()
+            i_f_max=np.abs(flupro.fs-f_data_max).argmin()
+            # In case that frequency bin is too narrow to perform numerical integration
+            if i_f_min==i_f_max:
+                psd_int=psds_fl[i_f_min]
+                flux=psd_int*(f_data_max-f_data_min)
+            # In case that frequency bin is wide enough to perform numerical integration
+            else:
+                fs_int=flupro.fs[i_f_min:i_f_max+1]
+                f_int_min=fs_int[0]
+                f_int_max=fs_int[-1]
+                psds_int=psds_fl[i_f_min:i_f_max+1]
+                # Correction of the difference between the actual integration range and given frequency range
+                flux=integrate.simps(psds_int, fs_int)*(f_data_max-f_data_min)/(f_int_max-f_int_min)
             fluxes[i_f_data]=flux
 
         #return flupro.fs, psds_fl
@@ -578,6 +608,10 @@ def preflow(engs, params, fluxes):
             print('--------------------------------------------------')
             print('CSD of the flux was successfully calculated.')
 
+        '''
+        ###########################################
+        ########## Simplest integratinon ##########
+        ###########################################
         for i_f_data, f_data in enumerate(fs_data):
             i_f=np.abs(flupro.fs-f_data).argmin()
             csd=csds_fl[i_f]
@@ -590,6 +624,30 @@ def preflow(engs, params, fluxes):
         for i_f_data in range(n_f_data-1):
             # the most simple integration (area of trapezoid)
             flux=(csds[i_f_data]+csds[i_f_data+1])*(fs_data[i_f_data+1]-fs_data[i_f_data])/2.
+            fluxes[i_f_data]=flux
+        '''
+
+        ################################################
+        ########## More accurate integratinon ##########
+        ################################################
+        n_f_data=len(fs_data)
+        for i_f_data in range(n_f_data-1):
+            f_data_min=fs_data[i_f_data]
+            f_data_max=fs_data[i_f_data+1]
+            i_f_min=np.abs(flupro.fs-f_data_min).argmin()
+            i_f_max=np.abs(flupro.fs-f_data_max).argmin()
+            # In case that frequency bin is too narrow to perform numerical integration
+            if i_f_min==i_f_max:
+                csd_int=csds_fl[i_f_min]
+                flux=csd_int*(f_data_max-f_data_min)
+            # In case that frequency bin is wide enough to perform numerical integration
+            else:
+                fs_int=flupro.fs[i_f_min:i_f_max+1]
+                f_int_min=fs_int[0]
+                f_int_max=fs_int[-1]
+                csds_int=csds_fl[i_f_min:i_f_max+1]
+                # Correction of the difference between the actual integration range and given frequency range
+                flux=integrate.simps(csds_int, fs_int)*(f_data_max-f_data_min)/(f_int_max-f_int_min)
             fluxes[i_f_data]=flux
 
         #return flupro.fs, csds_fl

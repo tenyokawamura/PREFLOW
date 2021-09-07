@@ -5,6 +5,7 @@ def main():
     # ---------- Setting ---------- #
     # ----------------------------- #
     engs=np.arange(1.e-2, 1.e1, 1.e-2)
+    #engs=np.arange(1.e-2, 1.e1, 1.e-3)
     # 0.  mass
     # 1.  r_in
     # 2.  r_sh

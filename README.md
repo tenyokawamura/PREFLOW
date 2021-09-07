@@ -21,7 +21,8 @@ not only to derive the accretion flow geometry and viscous time-scales
 but also to measure energy spectra for various components.
 Note that the **PREFLOW** does not model QPOs.
 Here, the information which should help users to try the model is briefly summarized.
-See Kawamura et al. (submitted) for the details of modelling the variability.
+See [Kawamura et al. 2021](https://arxiv.org/abs/2107.12517) (submitted to MNRAS) 
+for the details of modelling the variability.
 
 The **PREFLOW** model makes following assumptions:
 - The truncated disk / hot inner flow geometry.
@@ -52,8 +53,9 @@ This model installation instructions assumes PyXSPEC is already installed in use
 (see [Build and Install PyXspec](https://heasarc.gsfc.nasa.gov/xanadu/xspec/python/html/buildinstall.html) 
 for the installation of PyXSPEC).
 
-1. Download the zip file.
-	 The zip file consists of following files:
+1. Download all the files in [the **PREFLOW** repository](https://github.com/tenyokawamura/PREFLOW) 
+	 by clicking the `Code` button and following instructions.
+	 The following files should be contained:
 	- preflow.py
 	- preflow_h.py
 	- fourier_h.py
@@ -61,16 +63,25 @@ for the installation of PyXSPEC).
 	- test_preflow.py
 	- quick_plot.py
 	- README.py
-2. Save all these files to a clean directory on users' computer.
+
+2. Put all these files in a clean directory on users' computer.
+
 3. Go to the directory.
+
 		>>> cd /path/to/the/directory/
+
 4. Launch an interactive PyXSPEC session:
+
 		>>> python
 		>>> import xspec
+
 5. Import the source codes of the **PREFLOW** model:
+
 		>>> from preflow import *
 		>>> from lmodel_preflow import *
+
 6. Add the **PREFLOW** model to PyXSPEC models:
+
 		>>> xspec.AllModels.addPyMod(preflow, lmodel_preflow_info, 'add')
 
 Then users can use the model **PREFLOW** in the same way as other additive models.
