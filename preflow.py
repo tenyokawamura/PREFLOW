@@ -511,7 +511,7 @@ def preflow(engs, params, fluxes):
                 flux=integrate.simps(psds_int, fs_int)*(f_data_max-f_data_min)/(f_int_max-f_int_min)
             fluxes[i_f_data]=flux
 
-        #return flupro.fs, psds_fl
+        return flupro.fs, psds_fl
 
     ##############################################
     ########## Calculate cross spectrum ##########
