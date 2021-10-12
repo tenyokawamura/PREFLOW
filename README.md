@@ -3,7 +3,7 @@
 <!-- #### Tenyo Kawamura (Kavli IPMU, University of Tokyo) -->
 
 ## Introduction
-**PREFLOW** is a X-ray timing model for black hole binaries (BHBs), which calculates both power spectrum and cross spectrum.
+**PREFLOW** is an X-ray timing model for black hole binaries (BHBs), which calculates both power spectrum and cross spectrum.
 It takes into account the two key processes expected to happen in the accretion flow, i.e., 
 propagation of mass accretion rate fluctuations and X-ray reflection.
 
