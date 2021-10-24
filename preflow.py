@@ -9,42 +9,43 @@ def preflow(engs, params, fluxes):
     r_in        =params[1]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
     r_sh        =params[2]  # Transition radius between hard and soft Compton [Rg]
     r_ds        =params[3]  # Transition radius between soft Compton and variable disk [Rg]
-    r_out       =params[4]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
-    n_ring      =params[5]  # Outer radius of variable disk [Rg]
-    tref        =params[6]  # Start time of reflection impulse response [sec]
-    dtref       =params[7]  # Time width of reflection impulse response [sec]
-    lf_var      =params[8]  # Fractional variability of mass accretion rate in radial decade [-]
-    lb_disk     =params[9]  # B_{disk} [-]
-    m_disk      =params[10] # m_{disk} [-]
-    lb_flow     =params[11] # B_{flow} [-]
-    m_flow      =params[12] # m_{flow} [-]
-    stress      =params[13] # 1: stressed, 2: stress-free in emissivity
-    gamma       =params[14] # Radial index of emissivity [-]
-    e_min       =params[15] # Lower bound of energy band [keV] (unused)
-    e_max       =params[16] # Upper bound of energy band [keV] (unused)
-    frac_disk   =params[17] # Fraction of variable disk in the energy band [counts keV^-1 s^-1]
-    frac_scomp  =params[18] # Fraction of soft Compton in the energy band [counts keV^-1 s^-1]
-    frac_hcomp  =params[19] # Fraction of hard Compton in the energy band [counts keV^-1 s^-1]
-    frac_sref   =params[20] # Fraction of soft reflection in the energy band [counts keV^-1 s^-1]
-    frac_href   =params[21] # Fraction of hard reflection in the energy band [counts keV^-1 s^-1]
-    e_minr      =params[22] # Lower bound of reference band [keV] (unused)
-    e_maxr      =params[23] # Upper bound of reference band [keV] (unused)
-    frac_diskr  =params[24] # Fraction of variable disk in the reference band [counts keV^-1 s^-1]
-    frac_scompr =params[25] # Fraction of soft Compton in the reference band [counts keV^-1 s^-1]
-    frac_hcompr =params[26] # Fraction of hard Compton in the reference band [counts keV^-1 s^-1]
-    frac_srefr  =params[27] # Fraction of soft reflection in the reference band [counts keV^-1 s^-1]
-    frac_hrefr  =params[28] # Fraction of hard reflection in the reference band [counts keV^-1 s^-1]
-    e_minrr     =params[29] # Lower bound of reference band 'for reflection' [keV] (unused)
-    e_maxrr     =params[30] # Upper bound of reference band 'for reflection' [keV] (unused)
-    frac_scomprr=params[31] # Soft Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
-    quant       =params[32]
+    r_tr        =params[4]  # Radius at which viscous frequency prescriptions changes [Rg]
+    r_out       =params[5]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
+    n_ring      =params[6]  # Outer radius of variable disk [Rg]
+    tref        =params[7]  # Start time of reflection impulse response [sec]
+    dtref       =params[8]  # Time width of reflection impulse response [sec]
+    lf_var      =params[9]  # Fractional variability of mass accretion rate in radial decade [-]
+    lb_disk     =params[10] # B_{disk} [-]
+    m_disk      =params[11] # m_{disk} [-]
+    lb_flow     =params[12] # B_{flow} [-]
+    m_flow      =params[13] # m_{flow} [-]
+    stress      =params[14] # 1: stressed, 2: stress-free in emissivity
+    gamma       =params[15] # Radial index of emissivity [-]
+    e_min       =params[16] # Lower bound of energy band [keV] (unused)
+    e_max       =params[17] # Upper bound of energy band [keV] (unused)
+    frac_disk   =params[18] # Fraction of variable disk in the energy band [counts keV^-1 s^-1]
+    frac_scomp  =params[19] # Fraction of soft Compton in the energy band [counts keV^-1 s^-1]
+    frac_hcomp  =params[20] # Fraction of hard Compton in the energy band [counts keV^-1 s^-1]
+    frac_sref   =params[21] # Fraction of soft reflection in the energy band [counts keV^-1 s^-1]
+    frac_href   =params[22] # Fraction of hard reflection in the energy band [counts keV^-1 s^-1]
+    e_minr      =params[23] # Lower bound of reference band [keV] (unused)
+    e_maxr      =params[24] # Upper bound of reference band [keV] (unused)
+    frac_diskr  =params[25] # Fraction of variable disk in the reference band [counts keV^-1 s^-1]
+    frac_scompr =params[26] # Fraction of soft Compton in the reference band [counts keV^-1 s^-1]
+    frac_hcompr =params[27] # Fraction of hard Compton in the reference band [counts keV^-1 s^-1]
+    frac_srefr  =params[28] # Fraction of soft reflection in the reference band [counts keV^-1 s^-1]
+    frac_hrefr  =params[29] # Fraction of hard reflection in the reference band [counts keV^-1 s^-1]
+    e_minrr     =params[30] # Lower bound of reference band 'for reflection' [keV] (unused)
+    e_maxrr     =params[31] # Upper bound of reference band 'for reflection' [keV] (unused)
+    frac_scomprr=params[32] # Soft Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
+    quant       =params[33]
         # 1: power spectrum 
         # 2: real part of cross spectrum
         # 3: imaginary part of cross spectrum
         # 4: absolute value of cross spectrum
         # 5: phase lag (Positive lag means reference band logging behind energy band.)
         # 6: time lag  (Positive lag means reference band logging behind energy band.)
-    display     =params[33] # 1: display, 2: not display
+    display     =params[34] # 1: display, 2: not display
     
     # Parameters, which are no longer free.
     frac_tot =1. # Total fraction in the energy band [counts keV^-1 s^-1], i.e., 1.
@@ -69,29 +70,29 @@ def preflow(engs, params, fluxes):
     if frac_disk+frac_scomp+frac_hcomp+frac_sref+frac_href<=frac_tot:
         pass
     elif frac_disk>frac_tot:
-        print('Error: frac_disk>1 --> frac_disk=1, frac_scomp=frac_hcomp=frac_sref=frac_href=0')
+        print('Warning: frac_disk>1 --> frac_disk=1, frac_scomp=frac_hcomp=frac_sref=frac_href=0')
         frac_disk=frac_tot
         frac_scomp=0
         frac_hcomp=0
         frac_sref=0
         frac_href=0
     elif frac_disk+frac_scomp>frac_tot:
-        print('Error: frac_disk+frac_scomp>1 --> frac_scomp=1-frac_disk, frac_hcomp=frac_sref=frac_href=0')
+        print('Warning: frac_disk+frac_scomp>1 --> frac_scomp=1-frac_disk, frac_hcomp=frac_sref=frac_href=0')
         frac_scomp=frac_tot-frac_disk
         frac_hcomp=0
         frac_sref=0
         frac_href=0
     elif frac_disk+frac_scomp+frac_hcomp>frac_tot:
-        print('Error: frac_disk+frac_scomp+frac_hcomp>1 --> frac_hcomp=1-(frac_disk+frac_scomp), frac_sref=frac_href=0')
+        print('Warning: frac_disk+frac_scomp+frac_hcomp>1 --> frac_hcomp=1-(frac_disk+frac_scomp), frac_sref=frac_href=0')
         frac_hcomp=frac_tot-(frac_disk+frac_scomp)
         frac_sref=0
         frac_href=0
     elif frac_disk+frac_scomp+frac_hcomp+frac_sref>frac_tot:
-        print('Error: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_sref=1-(frac_disk+frac_scomp+frac_hcomp), frac_href=0')
+        print('Warning: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_sref=1-(frac_disk+frac_scomp+frac_hcomp), frac_href=0')
         frac_sref=frac_tot-(frac_disk+frac_scomp+frac_hcomp)
         frac_href=0
     elif frac_disk+frac_scomp+frac_hcomp+frac_sref+frac_href>frac_tot:
-        print('Error: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_href=1-(frac_disk+frac_scomp+frac_hcomp+frac_sref)')
+        print('Warning: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_href=1-(frac_disk+frac_scomp+frac_hcomp+frac_sref)')
         frac_href=frac_tot-(frac_disk+frac_scomp+frac_hcomp+frac_sref)
     else:
         print('Error')
@@ -100,29 +101,29 @@ def preflow(engs, params, fluxes):
     if frac_diskr+frac_scompr+frac_hcompr+frac_srefr+frac_hrefr<=frac_tot:
         pass
     elif frac_diskr>frac_tot:
-        print('Error: frac_diskr>1 --> frac_diskr=1, frac_scompr=frac_hcompr=frac_srefr=frac_hrefr=0')
+        print('Warning: frac_diskr>1 --> frac_diskr=1, frac_scompr=frac_hcompr=frac_srefr=frac_hrefr=0')
         frac_diskr=frac_tot
         frac_scompr=0.
         frac_hcompr=0.
         frac_srefr=0.
         frac_hrefr=0.
     elif frac_diskr+frac_scompr>frac_tot:
-        print('Error: frac_diskr+frac_scompr>1 --> frac_scompr=1-frac_diskr, frac_hcompr=frac_srefr=frac_hrefr=0')
+        print('Warning: frac_diskr+frac_scompr>1 --> frac_scompr=1-frac_diskr, frac_hcompr=frac_srefr=frac_hrefr=0')
         frac_scompr=frac_tot-frac_diskr
         frac_hcompr=0.
         frac_srefr=0.
         frac_hrefr=0.
     elif frac_diskr+frac_scompr+frac_hcompr>frac_tot:
-        print('Error: frac_diskr+frac_scompr+frac_hcompr>1 --> frac_hcompr=1-(frac_diskr+frac_scompr), frac_srefr=frac_hrefr=0')
+        print('Warning: frac_diskr+frac_scompr+frac_hcompr>1 --> frac_hcompr=1-(frac_diskr+frac_scompr), frac_srefr=frac_hrefr=0')
         frac_hcompr=frac_tot-(frac_diskr+frac_scompr)
         frac_srefr=0.
         frac_hrefr=0.
     elif frac_diskr+frac_scompr+frac_hcompr+frac_srefr>frac_tot:
-        print('Error: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_srefr=1-(frac_diskr+frac_scompr+frac_hcompr), frac_hrefr=0')
+        print('Warning: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_srefr=1-(frac_diskr+frac_scompr+frac_hcompr), frac_hrefr=0')
         frac_srefr=frac_tot-(frac_diskr+frac_scompr+frac_hcompr)
         frac_hrefr=0.
     elif frac_diskr+frac_scompr+frac_hcompr+frac_srefr+frac_hrefr>frac_tot:
-        print('Error: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_hrefr=1-(frac_diskr+frac_scompr+frac_hcompr+frac_srefr)')
+        print('Warning: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_hrefr=1-(frac_diskr+frac_scompr+frac_hcompr+frac_srefr)')
         frac_hrefr=frac_tot-(frac_diskr+frac_scompr+frac_hcompr+frac_srefr)
     else:
         print('Error')
@@ -131,7 +132,7 @@ def preflow(engs, params, fluxes):
     if frac_scomprr<=1.:
         pass
     else:
-        print('Error: frac_scomprr>1 --> frac_scomprr=1, frac_hcomprr=0')
+        print('Warning: frac_scomprr>1 --> frac_scomprr=1, frac_hcomprr=0')
         frac_scomprr=1.
         frac_hcomprr=0.
 
@@ -139,14 +140,17 @@ def preflow(engs, params, fluxes):
     ### Geometry ###
     ################
     if r_in>r_sh:
-        print('Error: rin>rsh --> rsh=rin')
+        print('Warning: rin>rsh --> rsh=rin')
         r_sh=r_in
     if r_sh>r_ds:
-        print('Error: rsh>rds --> rds=rsh')
-        r_ds=sh
-    if r_ds>r_out:
-        print('Error: rds>rout --> rout=rds')
-        r_ds=r_out
+        print('Warning: rsh>rds --> rds=rsh')
+        r_ds=r_sh
+    if r_ds>r_tr:
+        print('Warning: rds>rtr --> rtr=rds')
+        r_tr=r_ds
+    if r_ds>r_tr:
+        print('Warning: rtr>rout --> rout=rtr')
+        r_out=r_tr
 
     # ------------------------------------ #
     # ---------- Set basic unit ---------- #
@@ -158,8 +162,6 @@ def preflow(engs, params, fluxes):
         print('--------------------------------------------------')
         print('M   : {0:.1f} solar mass'.format(bunit.m))
         print('Rg  : {0:.1f} km'.format(bunit.rg))
-        #print('Rg/c: {0:.1e} sec'.format(bunit.rg_c))
-        #print('c/Rg: {0:.1e} Hz'.format(bunit.c_rg))
 
     # ---------------------------------------- #
     # ---------- Set time/frequency ---------- #
@@ -298,7 +300,42 @@ def preflow(engs, params, fluxes):
                      rs_min=rings.rs_min,\
                      wids=rings.wids,\
                      drs=rings.drs)
-    disk.f_vis_set()
+
+    # -------------------------------------- #
+    # ---------- Original (begin) ---------- #
+    # -------------------------------------- #
+    #disk.f_vis_set()
+    # -------------------------------------- #
+    # ---------- Original (end)   ---------- #
+    # -------------------------------------- #
+    # --------------------------------------------------- #
+    # ---------- 2021/10/11 T.Kawamura (begin) ---------- #
+    # --------------------------------------------------- #
+    rs_disk_out=disk.rs_min[disk.rs> r_tr]
+    rs_disk_in =disk.rs_min[disk.rs<=r_tr]
+    fs_vis_out=f_vis_calc(r=rs_disk_out, lb=disk.lb, m=disk.m) #[c/Rg]
+    r_0=rs_disk_out[0]
+    r_1=scomp.rs[-1]
+    f_vis_0=fs_vis_out[0]
+    f_vis_1=scomp.fs_vis[-1]
+    #print(r_0, f_vis_0)
+    #print(r_1, f_vis_1)
+    m_tr=-np.log10((f_kep_calc(r=r_1)/f_kep_calc(r=r_0))*(f_vis_0/f_vis_1))/np.log10(r_0/r_1)
+    lb_tr=(r_0**m_tr)*f_vis_0/f_kep_calc(r=r_0)
+    #print(lb_tr, m_tr)
+    fs_vis_in=f_vis_calc(r=rs_disk_in, lb=lb_tr, m=m_tr) #[c/Rg]
+    # --- #
+    #alpha=np.log10(f_vis_0/f_vis_1)/np.log10(r_0/r_1)
+    #ca=f_vis_0/(r_0**alpha)
+    #print(alpha, ca)
+    #fs_vis_in=ca*rs_disk_in**(alpha) #[c/Rg]
+    # --- #
+    fs_vis_disk=np.append(fs_vis_in, fs_vis_out) #[c/Rg]
+    disk.fs_vis=fs_vis_disk #[c/Rg]
+    disk.f_vis_set_done=True
+    # --------------------------------------------------- #
+    # ---------- 2021/10/11 T.Kawamura (end)   ---------- #
+    # --------------------------------------------------- #
     disk.v_rad_set()
     disk.epsilon_set()
 
@@ -377,6 +414,8 @@ def preflow(engs, params, fluxes):
             else:
                 print('{:.3f}, '.format(v_rad), end='')
         # ----- Print (End)   ----- #
+
+    #return rings.rs, rings.fs_vis*bunit.c_rg #[Rg], [Hz]
 
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #
