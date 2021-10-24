@@ -3,15 +3,15 @@
 <!-- #### Tenyo Kawamura (Kavli IPMU, University of Tokyo) -->
 
 ## Introduction
-**PREFLOW** is a X-ray timing model for black hole binaries (BHBs), which calculates both power spectrum and cross spectrum.
+**PREFLOW** is an X-ray timing model for black hole binaries (BHBs), which calculates both power spectrum and cross spectrum.
 It takes into account the two key processes expected to happen in the accretion flow, i.e., 
 propagation of mass accretion rate fluctuations and X-ray reflection.
 
 Despite being a timing model, **PREFLOW** can work on the spectral fitting package XSPEC.
-Since the model is written in Python, users can use the **PREFLOW** model on PyXSPEC not on standard XSPEC.
+Since the model is currently written in Python, users can use the **PREFLOW** model on PyXSPEC, not on standard XSPEC.
 This manual describes the installation of **PREFLOW** to PyXSPEC, its use in PyXSPEC, and model parameters.
 To perform fitting, timing data also need to be read by PyXSPEC.
-Thus, the manual contains the explanation of how to make PyXSPEC read timing data.
+Thus, the manual contains an explanation of how to make PyXSPEC read timing data.
 
 ## About PREFLOW
 The propagation of mass accretion rate fluctuations and the X-ray reflection to the accretion flow 
@@ -22,9 +22,9 @@ but also to measure energy spectra for various components.
 Note that the **PREFLOW** does not model QPOs.
 Here, the information which should help users to try the model is briefly summarized.
 See [Kawamura et al. 2021](https://arxiv.org/abs/2107.12517) (submitted to MNRAS) 
-for the details of modelling the variability.
+for the details of modeling the variability.
 
-The **PREFLOW** model makes following assumptions:
+The **PREFLOW** model makes the following assumptions:
 - The truncated disk / hot inner flow geometry.
 - Mass accretion rate fluctuations propagates inwards 
 	between the inner region of the truncated disk, **rout**--**rds**, 
@@ -44,12 +44,12 @@ In summary, the variable accretion flow consists of three spectral components.
 The **PREFLOW** model also assumes 
 the soft Comptonization and hard Comptonization illuminate the accretion flow, 
 resulting in the reflection.
-The reflection spectra are refered to as the soft reflection and hard reflection, respectively.
+The reflection spectra are referred to as the soft reflection and hard reflection, respectively.
 The impulse response is simply assumed to be a top-hat function with two parameters, 
 **tref** and **dtref**.
 
 ## Installation to PyXSPEC
-This model installation instructions assumes PyXSPEC is already installed in users' computer
+This model installation instruction assumes PyXSPEC is already installed in users' computer
 (see [Build and Install PyXspec](https://heasarc.gsfc.nasa.gov/xanadu/xspec/python/html/buildinstall.html) 
 for the installation of PyXSPEC).
 
@@ -85,10 +85,10 @@ for the installation of PyXSPEC).
 		>>> xspec.AllModels.addPyMod(preflow, lmodel_preflow_info, 'add')
 
 Then users can use the model **PREFLOW** in the same way as other additive models.
-But keep in mind that **PREFLOW** is a *timing* model not a spectral model, 
+But keep in mind that **PREFLOW** is a *timing* model, not a spectral model, 
 so using **PREFLOW** together with spectral models to define a single model should be meaningless.
 
-## How to use on PyXSPEC
+## How to use the model on PyXSPEC
 In the use of **PREFLOW** on PyXSPEC, 
 users need to regard energy (keV) as frequency (Hz) for X-axis and 
 regard flux (photons/cm^2/s/keV) as power spectrum ((rms/mean)^2/Hz), 
@@ -107,7 +107,7 @@ or equivalently,
 
 		>>> python -i quick_plot.py`
 
-The power spectrum multiplied by the frequency in units of (rms/mean)^2 is plotted with 'emo' keyward.
+The power spectrum multiplied by the frequency in units of (rms/mean)^2 is plotted with the 'emo' keyword.
 
 The timing quantity calculated is switched with the parameter **quant** (see 'Parameters' for further details ).
 For example, the following commands plot a time lag spectrum.
@@ -115,7 +115,7 @@ For example, the following commands plot a time lag spectrum.
 		>>> xspec.Model('preflow', setPars={33:6})
 		>>> xspec.Plot('mo')
 
-Since the time lag spectrum can be negative, it may be more useful to plot the time lag spectrum in a linear scale.
+Since the time lag spectrum can be negative, it may be more useful to plot the time lag spectrum on a linear scale.
 
 		>>> xspec.Plot.iplot('mo')
 		>>> log y off
@@ -163,7 +163,7 @@ Since the time lag spectrum can be negative, it may be more useful to plot the t
 ### Additional comments
 - Truncated disk model is employed as the accretion flow geometry.
 	The geometric parameters must satisfy **rin**<=**rsh**<=**rds**<=**rout**.
-- For both the energy band and reference band, the sum of fraction of count rate for each spectral component 
+- For both the energy band and reference band, the sum of the fraction of count rate for each spectral component 
 	must not be larger than 1 (**Fdisk(r)**+**Fscp(r)**+**Fhcp(r)**+**Fsref(r)**+**Fhref(r)**<=1). 
 	The rest of the fraction is assumed to come from the constant, invariable component 
 	(**Fconst(r)**=1-(**Fdisk(r)**+**Fscp(r)**+**Fhcp(r)**+**Fsref(r)**+**Fhref(r)**)).
@@ -173,7 +173,7 @@ Since the time lag spectrum can be negative, it may be more useful to plot the t
 	which is taken into account to calculate the variability of X-ray flux illuminating the disk.
 	All the illuminating X-rays are assumed to come from the soft and hard Comptonization.
 	For the reference band of reflection, 
-	the sum of fraction of count rate for the soft and hard Comptonization corresponds to 1, 
+	the sum of fraction of the count rate for the soft and hard Comptonization corresponds to 1, 
 	which means **F_scprr**<=1.
 - Impulse response of the reflection is simply described with a top-hat function.
 	**tref** is the time at the rising edge, **dtref** is the duration of the hat.
@@ -199,9 +199,9 @@ Since the time lag spectrum can be negative, it may be more useful to plot the t
 - The PREFLOW model has a number of parameters, which makes fitting difficult.
 	Users are recommended to freeze the fractions of count rate for the reference band and the reference band for the reflection 
 	by using reliable spectral decomposition or simply assuming spectra.
-- Depending on the energy bands used, a fraction of count rate may be not independent of another fraction of count rate.
+- Depending on the energy bands used, a fraction of the count rate may not be independent of another fraction of the count rate.
 	Users should keep this caution in mind in performing fit.
-- If the timing quantity to be calculated is a power spectra (**quant**=1), 
+- If the timing quantity to be calculated is a power spectrum (**quant**=1), 
 	the parameters on the reference band are not used.
 
 ## Timing data
@@ -226,12 +226,12 @@ the frequency range of timing quantities.
 
 **Nring** determines the resolution of the model calculation.
 If **Nring** is too small, oscillation is seen at high frequencies in timing quantities.
-Users are recommended to set **Nring** to ~20 to make a rough estimate and to ~50 to perform fitting.
+Users are recommended to set **Nring** to ~20 to make a rough estimate and to ~50 to perform the fitting.
 
-When PyXSPEC have timing data, 
+When PyXSPEC has timing data, 
 the frequency range, over which timing quantities are calculated, 
-is determined by the frequency range of the timing data .
-Unfortunately, ignoring the some frequencies by using the `ignore` method 
-does *not* change the frequency range of the model calclation.
+is determined by the frequency range of the timing data.
+Unfortunately, ignoring some frequencies by using the `ignore` method 
+does *not* change the frequency range of the model calculation.
 Thus, it may make fitting faster to remove unnecessary data from the timing data file.
 

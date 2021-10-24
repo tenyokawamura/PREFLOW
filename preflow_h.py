@@ -665,13 +665,15 @@ def h_rep_calc(t, norm, t0, dt0):
 # Transfer function for reprocessing
 def lh_rep_calc(f, norm, t0, dt0):
     omega=2.*np.pi*f
-    lh=norm*dt0*np.sinc(omega*dt0/2.)*np.exp(-1j*omega*t0)
+    #lh=norm*dt0*np.sinc(omega*dt0/2.)*np.exp(-1j*omega*t0) # Wrong!
+    lh=norm*dt0*np.sinc(omega*dt0/(2.*np.pi))*np.exp(-1j*omega*t0) # Correct!
     return lh
 
 # Modulus square of transfer function for reprocessing
 def lh2_rep_calc(f, norm, dt0):
     omega=2.*np.pi*f
-    lh2=(norm*dt0*np.sinc(omega*dt0/2.))**2
+    #lh2=(norm*dt0*np.sinc(omega*dt0/2.))**2 # Wrong !
+    lh2=(norm*dt0*np.sinc(omega*dt0/(2.*np.pi)))**2 # Correct !
     return lh2
 
 # ------------------------------------------------ #
