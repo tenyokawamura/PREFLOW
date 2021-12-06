@@ -3,6 +3,180 @@ import cmath
 from fourier_h import *
 
 # -------------------------- #
+# ----- Read parameter ----- #
+# -------------------------- #
+class SetParameter:
+    def __init__(self):
+        self.set_inpar_done=False
+        self.check_validity_done=False
+
+    def set_inpar(self, pars, es):
+        self.mass        =pars[0]  # BH mass [solar mass]
+        self.r_in        =pars[1]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
+        self.r_mh        =pars[2]  # Radius at which viscous frequency prescriptions changes [Rg]
+        self.r_sm        =pars[3]  # Transition radius between hard and soft Compton [Rg]
+        self.r_ds        =pars[4]  # Transition radius between soft Compton and variable disk [Rg]
+        self.r_out       =pars[5]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
+        self.n_ring      =pars[6]  # Outer radius of variable disk [Rg]
+        self.tref        =pars[7]  # Start time of reflection impulse response [sec]
+        self.dtref       =pars[8]  # Time width of reflection impulse response [sec]
+        self.lf_var      =pars[9]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.lb_disk     =pars[10] # B_{disk} [-]
+        self.m_disk      =pars[11] # m_{disk} [-]
+        self.lb_flow     =pars[12] # B_{flow} [-]
+        self.m_flow      =pars[13] # m_{flow} [-]
+        self.stress      =pars[14] # 1: stressed, 2: stress-free in emissivity
+        self.gamma       =pars[15] # Radial index of emissivity [-]
+        self.e_min       =pars[16] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[17] # Upper bound of energy band [keV] (unused)
+        self.frac_disk   =pars[18] # Fraction of variable disk in the energy band [counts keV^-1 s^-1]
+        self.frac_scomp  =pars[19] # Fraction of soft Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_mcomp  =pars[20] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_hcomp  =pars[21] # Fraction of hard Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_sref   =pars[22] # Fraction of soft reflection in the energy band [counts keV^-1 s^-1]
+        self.frac_mref   =pars[23] # Fraction of mid reflection in the energy band [counts keV^-1 s^-1]
+        self.frac_href   =pars[24] # Fraction of hard reflection in the energy band [counts keV^-1 s^-1]
+        self.e_minr      =pars[25] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[26] # Upper bound of reference band [keV] (unused)
+        self.frac_diskr  =pars[27] # Fraction of variable disk in the reference band [counts keV^-1 s^-1]
+        self.frac_scompr =pars[28] # Fraction of soft Compton in the reference band [counts keV^-1 s^-1]
+        self.frac_mcompr =pars[29] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_hcompr =pars[30] # Fraction of hard Compton in the reference band [counts keV^-1 s^-1]
+        self.frac_srefr  =pars[31] # Fraction of soft reflection in the reference band [counts keV^-1 s^-1]
+        self.frac_mrefr  =pars[32] # Fraction of mid reflection in the reference band [counts keV^-1 s^-1]
+        self.frac_hrefr  =pars[33] # Fraction of hard reflection in the reference band [counts keV^-1 s^-1]
+        self.e_minrr     =pars[34] # Lower bound of reference band 'for reflection' [keV] (unused)
+        self.e_maxrr     =pars[35] # Upper bound of reference band 'for reflection' [keV] (unused)
+        self.frac_scomprr=pars[36] # Soft Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
+        self.frac_mcomprr=pars[37] # Mid Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
+        self.quant       =pars[38]
+            # 1: power spectrum 
+            # 2: real part of cross spectrum
+            # 3: imaginary part of cross spectrum
+            # 4: absolute value of cross spectrum
+            # 5: phase lag (Positive lag means reference band lagging behind energy band.)
+            # 6: time lag  (Positive lag means reference band lagging behind energy band.)
+        self.display     =pars[39] # 1: display, 2: not display
+
+        # PREFLOW model is a timing model!
+        # Energy in XSPEC corresponds to Fourier frequency in preflow.
+        self.fs_data=es
+
+        ### Parameters, which are no longer free. ###
+        # Total fraction in the energy band [counts keV^-1 s^-1], i.e., 1.
+        self.frac_tot =1. 
+        # Total fraction in the reference band [counts keV^-1 s^-1], 1.e., 1.
+        self.frac_totr=1. 
+        # Fraction of hard Compton in the hot flow in the reference band 
+        #'for reflection' [counts kev^-1 s^-1]
+        self.frac_hcomprr=1.-(self.frac_scomprr+self.frac_mcomprr) 
+
+        # Impulse response of reflection
+        self.t0=self.tref+(self.dtref/2.)
+        self.dt0=self.dtref
+
+        self.set_inpar_done=True
+
+    def check_validity(self):
+        '''
+        #######################################
+        ### Need to be updated (2021/12/06) ###
+        #######################################
+        ### Flux ###
+        # Energy band
+        if frac_disk+frac_scomp+frac_mcomp+frac_hcomp+frac_sref+frac_href<=frac_tot:
+            pass
+        elif frac_disk>frac_tot:
+            print('Warning: frac_disk>1 --> frac_disk=1, frac_scomp=frac_hcomp=frac_sref=frac_href=0')
+            frac_disk=frac_tot
+            frac_scomp=0
+            frac_hcomp=0
+            frac_sref=0
+            frac_href=0
+        elif frac_disk+frac_scomp>frac_tot:
+            print('Warning: frac_disk+frac_scomp>1 --> frac_scomp=1-frac_disk, frac_hcomp=frac_sref=frac_href=0')
+            frac_scomp=frac_tot-frac_disk
+            frac_hcomp=0
+            frac_sref=0
+            frac_href=0
+        elif frac_disk+frac_scomp+frac_hcomp>frac_tot:
+            print('Warning: frac_disk+frac_scomp+frac_hcomp>1 --> frac_hcomp=1-(frac_disk+frac_scomp), frac_sref=frac_href=0')
+            frac_hcomp=frac_tot-(frac_disk+frac_scomp)
+            frac_sref=0
+            frac_href=0
+        elif frac_disk+frac_scomp+frac_hcomp+frac_sref>frac_tot:
+            print('Warning: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_sref=1-(frac_disk+frac_scomp+frac_hcomp), frac_href=0')
+            frac_sref=frac_tot-(frac_disk+frac_scomp+frac_hcomp)
+            frac_href=0
+        elif frac_disk+frac_scomp+frac_hcomp+frac_sref+frac_href>frac_tot:
+            print('Warning: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_href=1-(frac_disk+frac_scomp+frac_hcomp+frac_sref)')
+            frac_href=frac_tot-(frac_disk+frac_scomp+frac_hcomp+frac_sref)
+        else:
+            print('Error')
+
+        # Reference band
+        if frac_diskr+frac_scompr+frac_hcompr+frac_srefr+frac_hrefr<=frac_tot:
+            pass
+        elif frac_diskr>frac_tot:
+            print('Warning: frac_diskr>1 --> frac_diskr=1, frac_scompr=frac_hcompr=frac_srefr=frac_hrefr=0')
+            frac_diskr=frac_tot
+            frac_scompr=0.
+            frac_hcompr=0.
+            frac_srefr=0.
+            frac_hrefr=0.
+        elif frac_diskr+frac_scompr>frac_tot:
+            print('Warning: frac_diskr+frac_scompr>1 --> frac_scompr=1-frac_diskr, frac_hcompr=frac_srefr=frac_hrefr=0')
+            frac_scompr=frac_tot-frac_diskr
+            frac_hcompr=0.
+            frac_srefr=0.
+            frac_hrefr=0.
+        elif frac_diskr+frac_scompr+frac_hcompr>frac_tot:
+            print('Warning: frac_diskr+frac_scompr+frac_hcompr>1 --> frac_hcompr=1-(frac_diskr+frac_scompr), frac_srefr=frac_hrefr=0')
+            frac_hcompr=frac_tot-(frac_diskr+frac_scompr)
+            frac_srefr=0.
+            frac_hrefr=0.
+        elif frac_diskr+frac_scompr+frac_hcompr+frac_srefr>frac_tot:
+            print('Warning: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_srefr=1-(frac_diskr+frac_scompr+frac_hcompr), frac_hrefr=0')
+            frac_srefr=frac_tot-(frac_diskr+frac_scompr+frac_hcompr)
+            frac_hrefr=0.
+        elif frac_diskr+frac_scompr+frac_hcompr+frac_srefr+frac_hrefr>frac_tot:
+            print('Warning: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_hrefr=1-(frac_diskr+frac_scompr+frac_hcompr+frac_srefr)')
+            frac_hrefr=frac_tot-(frac_diskr+frac_scompr+frac_hcompr+frac_srefr)
+        else:
+            print('Error')
+
+        # Reference band 'for reflection'
+        if frac_scomprr<=1.:
+            pass
+        else:
+            print('Warning: frac_scomprr>1 --> frac_scomprr=1, frac_hcomprr=0')
+            frac_scomprr=1.
+            frac_hcomprr=0.
+        '''
+
+        ### Geometry ###
+        self.r_in, self.r_mh =check_validity_geo(\
+            r_in=self.r_in, r_out=self.r_mh,\
+            name_r_in='rin', name_r_out='rmh')
+        self.r_mh, self.r_sm =check_validity_geo(\
+            r_in=self.r_mh, r_out=self.r_sm,\
+            name_r_in='rmh', name_r_out='rsm')
+        self.r_sm, self.r_ds =check_validity_geo(\
+            r_in=self.r_sm, r_out=self.r_ds,\
+            name_r_in='rsm', name_r_out='rds')
+        self.r_ds, self.r_out=check_validity_geo(\
+            r_in=self.r_ds, r_out=self.r_out,\
+            name_r_in='rds', name_r_out='rout')
+
+        self.check_validity_done=True
+
+def check_validity_geo(r_in, r_out, name_r_in, name_r_out):
+    if r_in>r_out:
+        print('Warning: {0}>{1} --> {0}={1}'.format(name_r_in, name_r_out))
+        r_out=r_in
+    return r_in, r_out
+
+# -------------------------- #
 # ----- Set basic unit ----- #
 # -------------------------- #
 class BasicUnit:
@@ -26,6 +200,37 @@ class TimeFrequency:
         self.n_data=0
         self.dt=0
 
+    def set_par(self, f_data_min, f_data_max):
+        # ----- Decide dt ----- #
+        # dt = coeff x 10^{index}
+        coeff=2
+        index=1
+        while True:
+            if coeff==1:
+                coeff=5
+                index-=1
+            elif coeff==2:
+                coeff=1
+            elif coeff==5:
+                coeff=2
+            else:
+                print('Error')
+                sys.exit()
+            dt=coeff*10**(index)
+            f_max=1./(2.*dt)
+            if f_data_max<f_max:
+                break
+        self.dt=dt
+
+        # ----- Decide n_data ----- #
+        n_data=1
+        while True:
+            n_data*=2
+            f_min=1./(n_data*dt)
+            if f_min<f_data_min:
+                break
+        self.n_data=n_data
+
     def t_set(self):
         self.lt=self.n_data*self.dt #[s]
         self.ts=np.arange(0, self.lt, self.dt)
@@ -42,6 +247,55 @@ class TimeFrequency:
             print('Error')
             print(2*len(self.fs)+1, self.n_data)
             sys.exit()
+
+# ------------------------- #
+# ----- Spectral data ----- #
+# ------------------------- #
+class FluxData:
+    def __init__(self):
+        self.set_flux_done=False
+
+    def set_flux(self,\
+                 e_min,   e_max,   disk,    scomp,   mcomp,   hcomp,   sref,  mref,  href,  tot,\
+                 e_minr,  e_maxr,  diskr,   scompr,  mcompr,  hcompr,  srefr, mrefr, hrefr, totr,\
+                 e_minrr, e_maxrr, scomprr, mcomprr, hcomprr):
+        #################################################################################
+        ##### Unit: [counts keV^-1 s^-1]                                            #####
+        ##### But this unit is not intuitive and it is hard to give initial values. #####
+        ##### This will be modified for easy use.                                   #####
+        #################################################################################
+        # ----- Energy band ----- #
+        self.e_min=e_min
+        self.e_max=e_max
+        self.disk=disk
+        self.scomp=scomp
+        self.mcomp=mcomp
+        self.hcomp=hcomp
+        self.sref=sref
+        self.mref=mref
+        self.href=href
+        self.tot=tot
+
+        # ----- Reference band ----- #
+        self.e_minr=e_minr
+        self.e_maxr=e_maxr
+        self.diskr=diskr
+        self.scompr=scompr
+        self.mcompr=mcompr
+        self.hcompr=hcompr
+        self.srefr=srefr
+        self.mrefr=mrefr
+        self.hrefr=hrefr
+        self.totr=totr
+
+        # ----- Reference band 'for refection' ----- #
+        self.e_minrr=e_minrr
+        self.e_maxrr=e_maxrr
+        self.scomprr=scomprr
+        self.mcomprr=mcomprr
+        self.hcomprr=hcomprr
+
+        self.set_flux_done=True
 
 # ------------------------------------ #
 # ----- Separate flow into rings ----- #
@@ -152,50 +406,6 @@ class Flow2Ring:
         self.fs_vis=self.fs_vis[::-1]
         self.vs_rad=self.vs_rad[::-1]
         self.eps=self.eps[::-1]
-
-# ------------------------- #
-# ----- Spectral data ----- #
-# ------------------------- #
-class FluxData:
-    def __init__(self):
-        self.set_flux_done=False
-
-    def set_flux(self,\
-                 e_min,   e_max,   disk,    scomp,   hcomp,   sref,  href,  tot,\
-                 e_minr,  e_maxr,  diskr,   scompr,  hcompr,  srefr, hrefr, totr,\
-                 e_minrr, e_maxrr, scomprr, hcomprr):
-        #################################################################################
-        ##### Unit: [counts keV^-1 s^-1]                                            #####
-        ##### But this unit is not intuitive and it is hard to give initial values. #####
-        ##### This will be modified for easy use.                                   #####
-        #################################################################################
-        # ----- Energy band ----- #
-        self.e_min=e_min
-        self.e_max=e_max
-        self.disk=disk
-        self.scomp=scomp
-        self.hcomp=hcomp
-        self.sref=sref
-        self.href=href
-        self.tot=tot
-
-        # ----- Reference band ----- #
-        self.e_minr=e_minr
-        self.e_maxr=e_maxr
-        self.diskr=diskr
-        self.scompr=scompr
-        self.hcompr=hcompr
-        self.srefr=srefr
-        self.hrefr=hrefr
-        self.totr=totr
-
-        # ----- Reference band 'for refection' ----- #
-        self.e_minrr=e_minrr
-        self.e_maxrr=e_maxrr
-        self.scomprr=scomprr
-        self.hcomprr=hcomprr
-
-        self.set_flux_done=True
 
 # ----------------------------------- #
 # ----- Assign spectrum to ring ----- #
@@ -506,13 +716,23 @@ class Mdot2Flux:
         # CSD [(sigma/mean)^2/Hz]
         self.norm_csd=2.*dt/((self.mu_fl_ref*self.mu_fl)*n_data) 
 
-    def norm_rep_set(self, f_rep, dt0, w_flow_tot):
-        #C(E) in the impulse response
-        self.norm_rep=(f_rep*self.speceff_disk+self.speceff_sref+self.speceff_href)/(w_flow_tot*dt0) 
+    #def norm_rep_set(self, f_rep, dt0, w_flow_tot):
+    #    #C(E) in the impulse response
+    #    self.norm_rep=(f_rep*self.speceff_disk+self.speceff_sref+self.speceff_href)/(w_flow_tot*dt0) 
 
-    def norm_rep_ref_set(self, f_rep, dt0, w_flow_tot):
+    def norm_rep_set(self, dt0, w_flow_tot):
         #C(E) in the impulse response
-        self.norm_rep_ref=(f_rep*self.speceff_disk_ref+self.speceff_sref_ref+self.speceff_href_ref)/(w_flow_tot*dt0) 
+        ref=self.speceff_sref+self.speceff_mref+self.speceff_href
+        self.norm_rep=ref/(w_flow_tot*dt0) 
+
+    #def norm_rep_ref_set(self, f_rep, dt0, w_flow_tot):
+    #    #C(E) in the impulse response
+    #    self.norm_rep_ref=(f_rep*self.speceff_disk_ref+self.speceff_sref_ref+self.speceff_href_ref)/(w_flow_tot*dt0) 
+
+    def norm_rep_ref_set(self, dt0, w_flow_tot):
+        #C(E) in the impulse response
+        ref=self.speceff_sref_ref+self.speceff_mref_ref+self.speceff_href_ref
+        self.norm_rep=ref/(w_flow_tot*dt0) 
 
     # Reprocessing is included.
     def psd_flux_rep_calc(self,\
@@ -672,8 +892,8 @@ def lh_rep_calc(f, norm, t0, dt0):
 # Modulus square of transfer function for reprocessing
 def lh2_rep_calc(f, norm, dt0):
     omega=2.*np.pi*f
-    #lh2=(norm*dt0*np.sinc(omega*dt0/2.))**2 # Wrong !
-    lh2=(norm*dt0*np.sinc(omega*dt0/(2.*np.pi)))**2 # Correct !
+    #lh2=(norm*dt0*np.sinc(omega*dt0/2.))**2 # Wrong!
+    lh2=(norm*dt0*np.sinc(omega*dt0/(2.*np.pi)))**2 # Correct!
     return lh2
 
 # ------------------------------------------------ #
@@ -748,4 +968,41 @@ def lflf_calc(fs,\
         tot=tot+tot_c
 
     return tot
+
+def print_ring_info(name, xs, digit):
+    print('--------------------------------------------------')
+    print('{0}: '.format(name), end='')
+    n_x=len(xs)
+    for i_x, x in enumerate(xs):
+        if i_x==n_x-1:
+            print_digit_end(x=x, digit=digit, end=True)
+        else:
+            print_digit_end(x=x, digit=digit, end=False)
+
+def print_digit_end(x, digit, end):
+    if digit==1:
+        if end==False:
+            print('{:.1f}, '.format(x), end='')
+        else:
+            print('{:.1f}'.format(x))
+    if digit==2:
+        if end==False:
+            print('{:.2f}, '.format(x), end='')
+        else:
+            print('{:.2f}'.format(x))
+    if digit==3:
+        if end==False:
+            print('{:.3f}, '.format(x), end='')
+        else:
+            print('{:.3f}'.format(x))
+    if digit==4:
+        if end==False:
+            print('{:.4f}, '.format(x), end='')
+        else:
+            print('{:.4f}'.format(x))
+    if digit==5:
+        if end==False:
+            print('{:.5f}, '.format(x), end='')
+        else:
+            print('{:.5f}'.format(x))
 
