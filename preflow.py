@@ -98,9 +98,11 @@ def preflow(engs, params, fluxes):
                       rs_min=rings.rs_min,\
                       wids=rings.wids,\
                       drs=rings.drs)
+    hcomp.cd=inpar.cd_mh # D_{mh}
     hcomp.f_vis_set()
     hcomp.v_rad_set()
     hcomp.epsilon_set()
+    hcomp.damp_set()
 
     ##########################
     ### Mid Comptonization ###
@@ -115,9 +117,11 @@ def preflow(engs, params, fluxes):
                       rs_min=rings.rs_min,\
                       wids=rings.wids,\
                       drs=rings.drs)
+    mcomp.cd=inpar.cd_sm # D_{sm}
     mcomp.f_vis_set()
     mcomp.v_rad_set()
     mcomp.epsilon_set()
+    mcomp.damp_set()
 
     ###########################
     ### Soft Comptonization ###
@@ -132,9 +136,11 @@ def preflow(engs, params, fluxes):
                       rs_min=rings.rs_min,\
                       wids=rings.wids,\
                       drs=rings.drs)
+    scomp.cd=inpar.cd_ds # D_{ds}
     scomp.f_vis_set()
     scomp.v_rad_set()
     scomp.epsilon_set()
+    scomp.damp_set()
 
     ######################
     ### Disk blackbody ###
@@ -149,16 +155,11 @@ def preflow(engs, params, fluxes):
                      rs_min=rings.rs_min,\
                      wids=rings.wids,\
                      drs=rings.drs)
-
-    # -------------------------------------- #
-    # ---------- Original (begin) ---------- #
-    # -------------------------------------- #
+    disk.cd=1. # No damping due to the outermost spectral region
     disk.f_vis_set()
-    # -------------------------------------- #
-    # ---------- Original (end)   ---------- #
-    # -------------------------------------- #
     disk.v_rad_set()
     disk.epsilon_set()
+    disk.damp_set()
 
     # --- Give info on viscous frequency and radial velocity to Flow2Ring class instance --- #
     fs_vis=hcomp.fs_vis
@@ -179,6 +180,11 @@ def preflow(engs, params, fluxes):
     eps=np.append(eps, disk.eps)
     rings.eps=eps
 
+    cds=hcomp.cds
+    cds=np.append(cds, mcomp.cds)
+    cds=np.append(cds, scomp.cds)
+    cds=np.append(cds, disk.cds)
+    rings.cds=cds
     # --- Rearrange list from outer rings to inner rings --- #
     rings.out2in()
     hcomp.out2in()
@@ -210,10 +216,12 @@ def preflow(engs, params, fluxes):
     # ------------------------------------------------------------------------------- #
     flupro.dt=tifr.dt
     flupro.n_data=tifr.n_data
-    flupro.psd_w_prop()
+    flupro.psd_w_prop(cds=rings.cds)
     if inpar.display==1:
         print('--------------------------------------------------')
         print('PSD of the mass accretion rate with propagation was successfully calculated.')
+
+    #return flupro.fs, flupro.psds_prop[-1]
 
     # ------------------------------------------------------------------------------------------------------------- #
     # ---------- Calculation of w_flow=\int dE w(r_n, E), w_tot_flow := \sum _{r<r_ds} \int dE w(r_n, E) ---------- #
@@ -278,6 +286,7 @@ def preflow(engs, params, fluxes):
                                 ws_flow=ws_flow,\
                                 lm2s=lm2s_prop,\
                                 fs_vis=rings.fs_vis,\
+                                cds=rings.cds,\
                                 dr_r=rings.dr_r,\
                                 t0=inpar.t0,\
                                 dt0=inpar.dt0,\
@@ -293,6 +302,7 @@ def preflow(engs, params, fluxes):
             print('--------------------------------------------------')
             print('PSD of the flux was successfully calculated.')
 
+        #print(psds_fl)
         '''
         ###########################################
         ########## Simplest integratinon ##########
@@ -310,7 +320,6 @@ def preflow(engs, params, fluxes):
             # the most simple integration (area of trapezoid)
             flux=(psds[i_f_data]+psds[i_f_data+1])*(fs_data[i_f_data+1]-fs_data[i_f_data])/2.
             fluxes[i_f_data]=flux
-
         '''
 
         ################################################
@@ -336,7 +345,7 @@ def preflow(engs, params, fluxes):
                 flux=integrate.simps(psds_int, fs_int)*(f_data_max-f_data_min)/(f_int_max-f_int_min)
             fluxes[i_f_data]=flux
 
-        return flupro.fs, psds_fl
+        #return flupro.fs, psds_fl
 
     ##############################################
     ########## Calculate cross spectrum ##########
@@ -416,6 +425,7 @@ def preflow(engs, params, fluxes):
                                 ws_rep=ws_flow,\
                                 lm2s=lm2s_prop,\
                                 fs_vis=rings.fs_vis,\
+                                cds=rings.cds,\
                                 dr_r=rings.dr_r,\
                                 t0=inpar.t0,\
                                 dt0=inpar.dt0,\

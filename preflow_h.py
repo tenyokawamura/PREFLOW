@@ -25,38 +25,41 @@ class SetParameter:
         self.m_disk      =pars[11] # m_{disk} [-]
         self.lb_flow     =pars[12] # B_{flow} [-]
         self.m_flow      =pars[13] # m_{flow} [-]
-        self.stress      =pars[14] # 1: stressed, 2: stress-free in emissivity
-        self.gamma       =pars[15] # Radial index of emissivity [-]
-        self.e_min       =pars[16] # Lower bound of energy band [keV] (unused)
-        self.e_max       =pars[17] # Upper bound of energy band [keV] (unused)
-        self.frac_disk   =pars[18] # Fraction of variable disk in the energy band [counts keV^-1 s^-1]
-        self.frac_scomp  =pars[19] # Fraction of soft Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_mcomp  =pars[20] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_hcomp  =pars[21] # Fraction of hard Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_sref   =pars[22] # Fraction of soft reflection in the energy band [counts keV^-1 s^-1]
-        self.frac_mref   =pars[23] # Fraction of mid reflection in the energy band [counts keV^-1 s^-1]
-        self.frac_href   =pars[24] # Fraction of hard reflection in the energy band [counts keV^-1 s^-1]
-        self.e_minr      =pars[25] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[26] # Upper bound of reference band [keV] (unused)
-        self.frac_diskr  =pars[27] # Fraction of variable disk in the reference band [counts keV^-1 s^-1]
-        self.frac_scompr =pars[28] # Fraction of soft Compton in the reference band [counts keV^-1 s^-1]
-        self.frac_mcompr =pars[29] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_hcompr =pars[30] # Fraction of hard Compton in the reference band [counts keV^-1 s^-1]
-        self.frac_srefr  =pars[31] # Fraction of soft reflection in the reference band [counts keV^-1 s^-1]
-        self.frac_mrefr  =pars[32] # Fraction of mid reflection in the reference band [counts keV^-1 s^-1]
-        self.frac_hrefr  =pars[33] # Fraction of hard reflection in the reference band [counts keV^-1 s^-1]
-        self.e_minrr     =pars[34] # Lower bound of reference band 'for reflection' [keV] (unused)
-        self.e_maxrr     =pars[35] # Upper bound of reference band 'for reflection' [keV] (unused)
-        self.frac_scomprr=pars[36] # Soft Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
-        self.frac_mcomprr=pars[37] # Mid Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
-        self.quant       =pars[38]
+        self.cd_ds       =pars[14] # D_{ds} [-]
+        self.cd_sm       =pars[15] # D_{sm} [-]
+        self.cd_mh       =pars[16] # D_{mh} [-]
+        self.stress      =pars[17] # 1: stressed, 2: stress-free in emissivity
+        self.gamma       =pars[18] # Radial index of emissivity [-]
+        self.e_min       =pars[19] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[20] # Upper bound of energy band [keV] (unused)
+        self.frac_disk   =pars[21] # Fraction of variable disk in the energy band [counts keV^-1 s^-1]
+        self.frac_scomp  =pars[22] # Fraction of soft Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_mcomp  =pars[23] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_hcomp  =pars[24] # Fraction of hard Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_sref   =pars[25] # Fraction of soft reflection in the energy band [counts keV^-1 s^-1]
+        self.frac_mref   =pars[26] # Fraction of mid reflection in the energy band [counts keV^-1 s^-1]
+        self.frac_href   =pars[27] # Fraction of hard reflection in the energy band [counts keV^-1 s^-1]
+        self.e_minr      =pars[28] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[29] # Upper bound of reference band [keV] (unused)
+        self.frac_diskr  =pars[30] # Fraction of variable disk in the reference band [counts keV^-1 s^-1]
+        self.frac_scompr =pars[31] # Fraction of soft Compton in the reference band [counts keV^-1 s^-1]
+        self.frac_mcompr =pars[32] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
+        self.frac_hcompr =pars[33] # Fraction of hard Compton in the reference band [counts keV^-1 s^-1]
+        self.frac_srefr  =pars[34] # Fraction of soft reflection in the reference band [counts keV^-1 s^-1]
+        self.frac_mrefr  =pars[35] # Fraction of mid reflection in the reference band [counts keV^-1 s^-1]
+        self.frac_hrefr  =pars[36] # Fraction of hard reflection in the reference band [counts keV^-1 s^-1]
+        self.e_minrr     =pars[37] # Lower bound of reference band 'for reflection' [keV] (unused)
+        self.e_maxrr     =pars[38] # Upper bound of reference band 'for reflection' [keV] (unused)
+        self.frac_scomprr=pars[39] # Soft Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
+        self.frac_mcomprr=pars[40] # Mid Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
+        self.quant       =pars[41]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.display     =pars[39] # 1: display, 2: not display
+        self.display     =pars[42] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -406,6 +409,7 @@ class Flow2Ring:
         self.fs_vis=self.fs_vis[::-1]
         self.vs_rad=self.vs_rad[::-1]
         self.eps=self.eps[::-1]
+        self.cds=self.cds[::-1]
 
 # ----------------------------------- #
 # ----- Assign spectrum to ring ----- #
@@ -481,6 +485,14 @@ class Ring2Spec:
         self.eps*=2.*np.pi*self.rs*self.wids
         self.eps_tot=np.sum(self.eps)
 
+    def damp_set(self):
+        if self.ring_assign_done==False:
+            print('Error: Ring is not set.')
+            sys.exit()
+        # Damping factor from the outer neighboring ring to the own ring D_{n-1, n}
+        self.cds=np.ones(len(self.rs))
+        self.cds[-1]=self.cd # D may not be unity only at an outer boundary radius
+
     # Final operation!
     def out2in(self):
         self.rs=self.rs[::-1]
@@ -490,6 +502,7 @@ class Ring2Spec:
         self.fs_vis=self.fs_vis[::-1]
         self.vs_rad=self.vs_rad[::-1]
         self.eps=self.eps[::-1]
+        self.cds=self.cds[::-1]
 
 # Kepler frequency
 def f_kep_calc(r):
@@ -525,12 +538,12 @@ class FluPro:
     def __init__(self):
         self.mu=1. # fixed without the loss of generarity
         self.sigma=0
-        self.psd_wo_prop_done=False
         self.norm_psd=0.
         self.n_data=0
         self.dt=0
         self.f_set_done=False
         self.f_vis_set_done=False
+        self.psd_wo_prop_done=False
 
     def f_set(self, fs):
         self.fs=fs #[Hz]
@@ -563,7 +576,7 @@ class FluPro:
         self.psd_wo_prop_done=True
 
     # Calculate PSD with propagation
-    def psd_w_prop(self):
+    def psd_w_prop(self, cds):
         if self.psd_wo_prop_done==False:
             print('Error: PSD without propagation is not calculated.')
             sys.exit()
@@ -571,13 +584,24 @@ class FluPro:
         self.norm_psd=2.*self.dt/((self.mu**2)*self.n_data)
         for i in range(len(self.fs_vis)):
             b2s=(1./self.norm_psd)*self.psds_intr[i] # Modulus square of the Fourier transform 
+            # ---------------------- #
+            # --- Outermost ring --- #
+            # ---------------------- #
             if i==0:
                 #lm2s=self.mdot0*b2s
                 lm2s=b2s # Modulus square of the Fourier transform
-                psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+
+                # Without damping
+                #psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+                # With damping
+                psd_prop=self.norm_psd*lm2s/(cds[i]**2) # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+
                 self.psds_prop=psd_prop
                 psd_prop_pre=psd_prop
 
+            # ------------------- #
+            # --- Inner rings --- #
+            # ------------------- #
             else:
                 c2s=(1./self.norm_psd)*psd_prop_pre # Modulus square of the Fourier transform
                 fs_exte, b2s_exte=ft_mod2_unfold(fs=self.fs, b2s=b2s, mu=self.mu)
@@ -588,7 +612,11 @@ class FluPro:
                 # Modulus square of the Fourier transform
                 # |X_{j}|^2=( (|A_{j}|^2) \odot (|B_{j}|^2) ) / N^2 in our definition of Fourier transform
                 lm2s/=self.n_data**2 
-                psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+
+                # Without damping
+                #psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+                # With damping
+                psd_prop=self.norm_psd*lm2s/(cds[i]**2) # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
 
                 self.psds_prop=np.vstack((self.psds_prop, psd_prop))
                 psd_prop_pre=psd_prop
@@ -741,6 +769,7 @@ class Mdot2Flux:
                           ws_flow,\
                           lm2s,\
                           fs_vis,\
+                          cds,\
                           dr_r,\
                           t0,\
                           dt0,\
@@ -755,6 +784,7 @@ class Mdot2Flux:
                           ws=self.ws,\
                           lm2s=lm2s,\
                           fs_vis=fs_vis,\
+                          cds=cds,\
                           dr_r=dr_r,\
                           rg_c=rg_c) 
 
@@ -764,6 +794,7 @@ class Mdot2Flux:
                           ws=ws_flow,\
                           lm2s=lm2s,\
                           fs_vis=fs_vis,\
+                          cds=cds,\
                           dr_r=dr_r,\
                           rg_c=rg_c)*\
                  lh2_rep_calc(f=fs, norm=self.norm_rep, dt0=dt0)
@@ -775,6 +806,7 @@ class Mdot2Flux:
                         ws_coi=ws_flow,\
                         lm2s=lm2s,\
                         fs_vis=fs_vis,\
+                        cds=cds,\
                         dr_r=dr_r,\
                         rg_c=rg_c)*\
               lh_rep_calc(f=fs, norm=self.norm_rep, t0=t0, dt0=dt0)
@@ -792,6 +824,7 @@ class Mdot2Flux:
                           ws_rep,\
                           lm2s,\
                           fs_vis,\
+                          cds,\
                           dr_r,\
                           t0,\
                           dt0,\
@@ -808,6 +841,7 @@ class Mdot2Flux:
                              ws_coi=self.ws,\
                              lm2s=lm2s,\
                              fs_vis=fs_vis,\
+                             cds=cds,\
                              dr_r=dr_r,\
                              rg_c=rg_c)
 
@@ -817,6 +851,7 @@ class Mdot2Flux:
                             ws=ws_rep,\
                             lm2s=lm2s,\
                             fs_vis=fs_vis,\
+                            cds=cds,\
                             dr_r=dr_r,\
                             rg_c=rg_c)*\
                    (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())*\
@@ -829,6 +864,7 @@ class Mdot2Flux:
                              ws_coi=ws_rep,\
                              lm2s=lm2s,\
                              fs_vis=fs_vis,\
+                             cds=cds,\
                              dr_r=dr_r,\
                              rg_c=rg_c)*\
                    lh_rep_calc(f=self.fs, norm=self.norm_rep, t0=t0, dt0=dt0)
@@ -840,6 +876,7 @@ class Mdot2Flux:
                              ws_coi=self.ws,\
                              lm2s=lm2s,\
                              fs_vis=fs_vis,\
+                             cds=cds,\
                              dr_r=dr_r,\
                              rg_c=rg_c)*\
                    (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())
@@ -911,6 +948,7 @@ def lf2_calc(fs,\
              ws,\
              lm2s,\
              fs_vis,\
+             cds,\
              dr_r,\
              rg_c):
     ts_vis=1./fs_vis #[Rg/c]
@@ -924,11 +962,17 @@ def lf2_calc(fs,\
         # Cross term
         tot_c=0
         for i_ro in range(i_r):
-            # Propagation time
+            ### Propagation time ###
             t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r) #[Rg/c]
             t_prop*=rg_c #[s]
-            # Cross term
-            tot_c+=ws[i_ro]*ws[i_r]*np.cos(2.*np.pi*fs*t_prop)*lm2s[i_ro]
+
+            ### Cross term ###
+            # without damping
+            #tot_c+=ws[i_ro]*ws[i_r]*np.cos(2.*np.pi*fs*t_prop)*lm2s[i_ro]
+            # with damping
+            # Damping factor from i_ro ring to i_r ring
+            cd=np.prod(cds[i_ro+1:i_r+1])
+            tot_c+=ws[i_ro]*ws[i_r]*np.cos(2.*np.pi*fs*t_prop)*lm2s[i_ro]/cd
 
         tot+=2.*tot_c
 
@@ -940,6 +984,7 @@ def lflf_calc(fs,\
               ws_coi,\
               lm2s,\
               fs_vis,\
+              cds,\
               dr_r,\
               rg_c):
     ts_vis=1./fs_vis #[Rg/c]
@@ -953,17 +998,22 @@ def lflf_calc(fs,\
         # Cross term
         tot_c=0
         for i_ro in range(i_r):
-            # Propagation time
+            ### Propagation time ###
             t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r) #[Rg/c]
             t_prop*=rg_c #[s]
-            # Cross term
+            ### Cross term ###
             # Ingram & van der Klis
             #tot_c+=(ws_ref[i_ro]*ws_coi[i_r]*np.exp(1j*2.*np.pi*fs*t_prop) + \
             #        ws_ref[i_r]*ws_coi[i_ro]*np.exp(-1j*2.*np.pi*fs*t_prop))*lm2s[i_ro]
 
             # Mofification due to the difference of the Fourier transform
+            # without damping
+            #tot_c+=(ws_ref[i_ro]*ws_coi[i_r]*np.exp(-1j*2.*np.pi*fs*t_prop) + \
+            #        ws_ref[i_r]*ws_coi[i_ro]*np.exp(1j*2.*np.pi*fs*t_prop))*lm2s[i_ro]
+            # with damping
+            cd=np.prod(cds[i_ro+1:i_r+1])
             tot_c+=(ws_ref[i_ro]*ws_coi[i_r]*np.exp(-1j*2.*np.pi*fs*t_prop) + \
-                    ws_ref[i_r]*ws_coi[i_ro]*np.exp(1j*2.*np.pi*fs*t_prop))*lm2s[i_ro]
+                    ws_ref[i_r]*ws_coi[i_ro]*np.exp(1j*2.*np.pi*fs*t_prop))*lm2s[i_ro]/cd
 
         tot=tot+tot_c
 
