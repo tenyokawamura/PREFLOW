@@ -36,36 +36,6 @@ def preflow(engs, params, fluxes):
         print('Timing interval: {0:.0e} sec'.format(tifr.dt))
         print('Number of data: {0:.0f}'.format(tifr.n_data))
 
-    # ------------------------------- #
-    # ---------- Set flux  ---------- #
-    # ------------------------------- #
-    spec=FluxData()
-    spec.set_flux(e_min  =inpar.e_min,\
-                  e_max  =inpar.e_max,\
-                  disk   =inpar.frac_disk,\
-                  scomp  =inpar.frac_scomp,\
-                  mcomp  =inpar.frac_mcomp,\
-                  hcomp  =inpar.frac_hcomp,\
-                  sref   =inpar.frac_sref,\
-                  mref   =inpar.frac_mref,\
-                  href   =inpar.frac_href,\
-                  tot    =inpar.frac_tot,\
-                  e_minr =inpar.e_minr,\
-                  e_maxr =inpar.e_maxr,\
-                  diskr  =inpar.frac_diskr,\
-                  scompr =inpar.frac_scompr,\
-                  mcompr =inpar.frac_mcompr,\
-                  hcompr =inpar.frac_hcompr,\
-                  srefr  =inpar.frac_srefr,\
-                  mrefr  =inpar.frac_mrefr,\
-                  hrefr  =inpar.frac_hrefr,\
-                  totr   =inpar.frac_totr,\
-                  e_minrr=inpar.e_minrr,\
-                  e_maxrr=inpar.e_maxrr,\
-                  scomprr=inpar.frac_scomprr,\
-                  mcomprr=inpar.frac_mcomprr,\
-                  hcomprr=inpar.frac_hcomprr)
-
     # ----------------------------------------------- #
     # ---------- Accretion flow separation ---------- #
     # ----------------------------------------------- #
@@ -81,132 +51,95 @@ def preflow(engs, params, fluxes):
     rings.interval_calc()
     rings.n_ring_dec_calc()
 
-    # ------------------------------------------ #
-    # ---------- Assign flux to ring  ---------- #
-    # ------------------------------------------ #
+    # ----------------------------------------------------- #
+    # ---------- Assign properties to each ring  ---------- #
+    # ----------------------------------------------------- #
     r_min_eps=inpar.r_in
-    ###########################
-    ### Hard Comptonization ###
-    ###########################
-    hcomp=Ring2Spec()
-    hcomp.r_min=inpar.r_in
-    hcomp.r_max=inpar.r_mh
-    hcomp.lb=inpar.lb_flow
-    hcomp.m=inpar.m_flow
-    hcomp.epsilon_par_set(stress=inpar.stress, gamma=inpar.gamma, r_min=r_min_eps)
-    hcomp.ring_assign(rs=rings.rs,\
-                      rs_min=rings.rs_min,\
-                      wids=rings.wids,\
-                      drs=rings.drs)
-    hcomp.cd=inpar.cd_mh # D_{mh}
-    hcomp.f_vis_set()
-    hcomp.v_rad_set()
-    hcomp.epsilon_set()
-    hcomp.damp_set()
+    # --- Viscous frequency --- #
+    is_flow =np.where(rings.rs_min<=inpar.r_ds)[0]
+    is_hcomp=np.where(rings.rs_min<=inpar.r_sh)[0]
+    is_scomp=np.where((inpar.r_sh<rings.rs_min) & (rings.rs_min<=inpar.r_ds))[0]
+    is_disk =np.where(inpar.r_ds<rings.rs_min)[0]
+    rs_flow =rings.rs[is_flow]
+    rs_hcomp=rings.rs[is_hcomp]
+    rs_scomp=rings.rs[is_scomp]
+    rs_disk =rings.rs[is_disk]
 
-    ##########################
-    ### Mid Comptonization ###
-    ##########################
-    mcomp=Ring2Spec()
-    mcomp.r_min=inpar.r_mh
-    mcomp.r_max=inpar.r_sm
-    mcomp.lb=inpar.lb_flow
-    mcomp.m=inpar.m_flow
-    mcomp.epsilon_par_set(stress=inpar.stress, gamma=inpar.gamma, r_min=r_min_eps)
-    mcomp.ring_assign(rs=rings.rs,\
-                      rs_min=rings.rs_min,\
-                      wids=rings.wids,\
-                      drs=rings.drs)
-    mcomp.cd=inpar.cd_sm # D_{sm}
-    mcomp.f_vis_set()
-    mcomp.v_rad_set()
-    mcomp.epsilon_set()
-    mcomp.damp_set()
+    fs_vis_flow=f_vis_calc(r=rs_flow, lb=inpar.lb_flow, m=inpar.m_flow) #[c/Rg]
+    fs_vis_disk=f_vis_calc(r=rs_disk, lb=inpar.lb_disk, m=inpar.m_disk) #[c/Rg]
+    rings.fs_vis=np.append(fs_vis_flow, fs_vis_disk)
+    rings.vs_rad=rings.rs*rings.fs_vis #[c]
 
-    ###########################
-    ### Soft Comptonization ###
-    ###########################
-    scomp=Ring2Spec()
-    scomp.r_min=inpar.r_sm
-    scomp.r_max=inpar.r_ds
-    scomp.lb=inpar.lb_flow
-    scomp.m=inpar.m_flow
-    scomp.epsilon_par_set(stress=inpar.stress, gamma=inpar.gamma, r_min=r_min_eps)
-    scomp.ring_assign(rs=rings.rs,\
-                      rs_min=rings.rs_min,\
-                      wids=rings.wids,\
-                      drs=rings.drs)
-    scomp.cd=inpar.cd_ds # D_{ds}
-    scomp.f_vis_set()
-    scomp.v_rad_set()
-    scomp.epsilon_set()
-    scomp.damp_set()
+    # --- Damping factor --- #
+    cds_flow=(inpar.cd_flow**(1./rings.n_dec))*np.ones(len(rs_flow))
+    cds_flow[-1]=inpar.cd_tran
+    cds_disk=(inpar.cd_disk**(1./rings.n_dec))*np.ones(len(rs_disk))
+    cds_disk[-1]=1.
+    rings.cds=np.append(cds_flow, cds_disk)
 
-    ######################
-    ### Disk blackbody ###
-    ######################
-    disk=Ring2Spec()
-    disk.r_min=inpar.r_ds
-    disk.r_max=inpar.r_out
-    disk.lb=inpar.lb_disk
-    disk.m=inpar.m_disk
-    disk.epsilon_par_set(stress=inpar.stress, gamma=inpar.gamma, r_min=r_min_eps)
-    disk.ring_assign(rs=rings.rs,\
-                     rs_min=rings.rs_min,\
-                     wids=rings.wids,\
-                     drs=rings.drs)
-    disk.cd=1. # No damping due to the outermost spectral region
-    disk.f_vis_set()
-    disk.v_rad_set()
-    disk.epsilon_set()
-    disk.damp_set()
+    # --- Variability amplitude --- #
+    lfs_var_flow=gauss(x=rs_flow, norm=inpar.lf_var_flow, mu=inpar.r_ds, sigma=inpar.r_sig_flow)
+    lfs_var_disk=gauss(x=rs_disk, norm=inpar.lf_var_disk, mu=inpar.r_ds, sigma=inpar.r_sig_disk)
+    rings.lfs_var=np.append(lfs_var_flow, lfs_var_disk)
 
-    # --- Give info on viscous frequency and radial velocity to Flow2Ring class instance --- #
-    fs_vis=hcomp.fs_vis
-    fs_vis=np.append(fs_vis, mcomp.fs_vis)
-    fs_vis=np.append(fs_vis, scomp.fs_vis)
-    fs_vis=np.append(fs_vis, disk.fs_vis)
-    rings.fs_vis=fs_vis
-
-    vs_rad=hcomp.vs_rad
-    vs_rad=np.append(vs_rad, mcomp.vs_rad)
-    vs_rad=np.append(vs_rad, scomp.vs_rad)
-    vs_rad=np.append(vs_rad, disk.vs_rad)
-    rings.vs_rad=vs_rad
-
-    eps=hcomp.eps
-    eps=np.append(eps, mcomp.eps)
-    eps=np.append(eps, scomp.eps)
-    eps=np.append(eps, disk.eps)
-    rings.eps=eps
-
-    cds=hcomp.cds
-    cds=np.append(cds, mcomp.cds)
-    cds=np.append(cds, scomp.cds)
-    cds=np.append(cds, disk.cds)
-    rings.cds=cds
-    # --- Rearrange list from outer rings to inner rings --- #
+    # --- Final operation --- #
     rings.out2in()
-    hcomp.out2in()
-    scomp.out2in()
-    disk.out2in()
+    rs_flow =rs_flow[::-1]
+    rs_hcomp=rs_hcomp[::-1]
+    rs_scomp=rs_scomp[::-1]
+    rs_disk =rs_disk[::-1]
+
+    # --- Weight --- #
+    # Energy band
+    ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomp,\
+        gamma=inpar.gamma,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.eps*np.abs(inpar.cc_hcomp),\
+        gamma=inpar.gamma,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_disk =np.zeros(len(rs_disk)) # Need to be corrected (2021/01/12)
+    ws=ws_disk
+    ws=np.append(ws, ws_scomp)
+    ws=np.append(ws, ws_hcomp)
+    # Reference band
+    ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcompr,\
+        gamma=inpar.gammar,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.epsr*np.abs(inpar.cc_hcompr),\
+        gamma=inpar.gammar,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_disk =np.zeros(len(rs_disk)) # Need to be corrected (2021/01/12)
+    ws_r=ws_disk
+    ws_r=np.append(ws_r, ws_scomp)
+    ws_r=np.append(ws_r, ws_hcomp)
+    # Reference band for reflection
+    ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomprr,\
+        gamma=inpar.gammarr,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.epsrr*np.abs(inpar.cc_hcomprr),\
+        gamma=inpar.gammarr,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_disk =np.zeros(len(rs_disk)) # Need to be corrected (2021/01/12)
+    ws_rr=ws_disk
+    ws_rr=np.append(ws_rr, ws_scomp)
+    ws_rr=np.append(ws_rr, ws_hcomp)
 
     # ----- Print ring information ----- #
     if inpar.display==1:
         print_ring_info(name='R [Rg]',                 xs=rings.rs,                digit=1)
-        print_ring_info(name='Disk ring [Rg]',         xs=disk.rs,                 digit=1)
-        print_ring_info(name='Soft Compton ring [Rg]', xs=scomp.rs,                digit=1)
-        print_ring_info(name='Mid Compton ring [Rg]',  xs=mcomp.rs,                digit=1)
-        print_ring_info(name='Hard Compton ring [Rg]', xs=hcomp.rs,                digit=1)
+        print_ring_info(name='Disk ring [Rg]',         xs=rs_disk,                 digit=1)
+        print_ring_info(name='Soft Compton ring [Rg]', xs=rs_scomp,                digit=1)
+        print_ring_info(name='Hard Compton ring [Rg]', xs=rs_hcomp,                digit=1)
         print_ring_info(name='Viscous frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
         print_ring_info(name='Radial velocity [km/s]', xs=rings.vs_rad*bunit.c,    digit=3)
-        
+
+    #print(ws)
+    #print(ws_r)
+    #print(ws_rr)
+    #sys.exit()
+
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #
     # ------------------------------------------------------------------------------ #
-    sigma=inpar.lf_var/np.sqrt(rings.n_dec) #\mu is fixed to unity. Probably this does not lose generality. (2021/07/26)
+    #sigma=inpar.lf_var/np.sqrt(rings.n_dec) #\mu is fixed to unity. Probably this does not lose generality. (2021/07/26)
+    sigs=rings.lfs_var/np.sqrt(rings.n_dec) #\mu is fixed to unity. Probably this does not lose generality. (2021/07/26)
     flupro=FluPro()
-    flupro.sigma=sigma
+    #flupro.sigma=sigma
+    flupro.sigma_set(sigs=sigs)
     flupro.f_set(fs=tifr.fs)
     flupro.f_vis_set(fs_vis=rings.fs_vis)
     flupro.psd_wo_prop(c_rg=bunit.c_rg)
@@ -222,23 +155,28 @@ def preflow(engs, params, fluxes):
         print('PSD of the mass accretion rate with propagation was successfully calculated.')
 
     #return flupro.fs, flupro.psds_prop[-1]
+    #print(flupro.fs)
+    #print(flupro.psds_prop[-1])
 
     # ------------------------------------------------------------------------------------------------------------- #
     # ---------- Calculation of w_flow=\int dE w(r_n, E), w_tot_flow := \sum _{r<r_ds} \int dE w(r_n, E) ---------- #
     # ------------------------------------------------------------------------------------------------------------- #
-    ws_disk=np.zeros(len(disk.rs))
-    ws_scomp=scomp.eps*spec.scomprr/scomp.eps_tot
-    ws_mcomp=mcomp.eps*spec.mcomprr/mcomp.eps_tot
-    ws_hcomp=hcomp.eps*spec.hcomprr/hcomp.eps_tot
-    ws=ws_disk
-    ws=np.append(ws, ws_scomp)
-    ws=np.append(ws, ws_mcomp)
-    ws=np.append(ws, ws_hcomp)
-    # Integration over E
-    # The energy range is not perfectly accurate.
-    ws_flow=ws*(spec.e_maxrr-spec.e_minrr)  
-    w_flow_tot=np.sum(ws_flow)
+    #ws_disk=np.zeros(len(disk.rs))
+    #ws_scomp=scomp.eps*spec.scomprr/scomp.eps_tot
+    #ws_mcomp=mcomp.eps*spec.mcomprr/mcomp.eps_tot
+    #ws_hcomp=hcomp.eps*spec.hcomprr/hcomp.eps_tot
+    #ws=ws_disk
+    #ws=np.append(ws, ws_scomp)
+    #ws=np.append(ws, ws_mcomp)
+    #ws=np.append(ws, ws_hcomp)
+    ## Integration over E
+    ## The energy range is not perfectly accurate.
+    #ws_flow=ws*(spec.e_maxrr-spec.e_minrr)  
+    #w_flow_tot=np.sum(ws_flow)
 
+    # Integration over E
+    ws_flow=ws_rr*(inpar.e_maxrr-inpar.e_minrr)  
+    w_flow_tot=np.sum(ws_flow)
     ##############################################
     ########## Calculate power spectrum ##########
     ##############################################
@@ -249,29 +187,35 @@ def preflow(engs, params, fluxes):
         if inpar.display==1:
             print('--------------------------------------------------')
             print('Calculating power spectrum for')
-            print('{0:.2f} - {1:.2f} keV'.format(spec.e_min, spec.e_max))
+            print('{0:.2f} - {1:.2f} keV'.format(inpar.e_min, inpar.e_max))
         md2fl=Mdot2Flux()
-        md2fl.ene_set(e_min=spec.e_min, e_max=spec.e_max)
+        md2fl.ene_set(e_min=inpar.e_min, e_max=inpar.e_max)
         #################################################################################
         ###### (2021/08/17) Preliminary (haphazard) prescription to set weight, ... #####
         ###### Smarter implementation will be performed.                            #####
         #################################################################################
-        ws_disk =disk.eps *spec.disk /disk.eps_tot
-        ws_scomp=scomp.eps*spec.scomp/scomp.eps_tot
-        ws_mcomp=mcomp.eps*spec.mcomp/mcomp.eps_tot
-        ws_hcomp=hcomp.eps*spec.hcomp/hcomp.eps_tot
-        ws=ws_disk
-        ws=np.append(ws, ws_scomp)
-        ws=np.append(ws, ws_mcomp)
-        ws=np.append(ws, ws_hcomp)
+        #ws_disk =disk.eps *spec.disk /disk.eps_tot
+        #ws_scomp=scomp.eps*spec.scomp/scomp.eps_tot
+        #ws_mcomp=mcomp.eps*spec.mcomp/mcomp.eps_tot
+        #ws_hcomp=hcomp.eps*spec.hcomp/hcomp.eps_tot
+        #ws=ws_disk
+        #ws=np.append(ws, ws_scomp)
+        #ws=np.append(ws, ws_mcomp)
+        #ws=np.append(ws, ws_hcomp)
         md2fl.ws=ws
         md2fl.w_tot=np.sum(md2fl.ws)
 
-        md2fl.speceff_disk=spec.disk
-        md2fl.speceff_sref=spec.sref
-        md2fl.speceff_mref=spec.mref
-        md2fl.speceff_href=spec.href
-        md2fl.mu_fl=spec.tot
+        #md2fl.speceff_disk=spec.disk
+        #md2fl.speceff_sref=spec.sref
+        #md2fl.speceff_mref=spec.mref
+        #md2fl.speceff_href=spec.href
+        #md2fl.mu_fl=spec.tot
+
+        md2fl.speceff_disk=0.
+        md2fl.speceff_sref=0.
+        md2fl.speceff_mref=0.
+        md2fl.speceff_href=0.
+        md2fl.mu_fl=1. # <x(E,t)>=\sum _{r_n} w(r_n, E)=1
 
         md2fl.psd_norm_set(dt=tifr.dt, n_data=tifr.n_data)
         #f_dir=1. # fixed (not free parameter anymore and should be removed)
@@ -355,7 +299,7 @@ def preflow(engs, params, fluxes):
             print('--------------------------------------------------')
             print('Calculating cross spectrum for')
             print('{0:.2f} - {1:.2f} keV vs {2:.2f} - {3:.2f} keV'\
-                  .format(spec.e_min, spec.e_max, spec.e_minr, spec.e_maxr))
+                  .format(inpar.e_min, inpar.e_max, inpar.e_minr, inpar.e_maxr))
 
         # ----- Weight ----- #
         md2fl=Mdot2Flux()
@@ -363,45 +307,63 @@ def preflow(engs, params, fluxes):
         ###################
         ### Energy band ###
         ###################
-        md2fl.ene_set(e_min=spec.e_min, e_max=spec.e_max)
+        md2fl.ene_set(e_min=inpar.e_min, e_max=inpar.e_max)
         #################################################################################
         ###### (2021/08/17) Preliminary (haphazard) prescription to set weight, ... #####
         ###### Smarter implementation will be performed.                            #####
         #################################################################################
-        ws_disk =disk.eps *spec.disk /disk.eps_tot
-        ws_scomp=scomp.eps*spec.scomp/scomp.eps_tot
-        ws_mcomp=mcomp.eps*spec.mcomp/mcomp.eps_tot
-        ws_hcomp=hcomp.eps*spec.hcomp/hcomp.eps_tot
-        ws=ws_disk
-        ws=np.append(ws, ws_scomp)
-        ws=np.append(ws, ws_mcomp)
-        ws=np.append(ws, ws_hcomp)
+        #ws_disk =disk.eps *spec.disk /disk.eps_tot
+        #ws_scomp=scomp.eps*spec.scomp/scomp.eps_tot
+        #ws_mcomp=mcomp.eps*spec.mcomp/mcomp.eps_tot
+        #ws_hcomp=hcomp.eps*spec.hcomp/hcomp.eps_tot
+        #ws=ws_disk
+        #ws=np.append(ws, ws_scomp)
+        #ws=np.append(ws, ws_mcomp)
+        #ws=np.append(ws, ws_hcomp)
+        #md2fl.ws=ws
+        #md2fl.w_tot=np.sum(md2fl.ws)
+        #md2fl.speceff_disk=spec.disk
+        #md2fl.speceff_sref=spec.sref
+        #md2fl.speceff_mref=spec.mref
+        #md2fl.speceff_href=spec.href
+        #md2fl.mu_fl=spec.tot
+
         md2fl.ws=ws
         md2fl.w_tot=np.sum(md2fl.ws)
-        md2fl.speceff_disk=spec.disk
-        md2fl.speceff_sref=spec.sref
-        md2fl.speceff_mref=spec.mref
-        md2fl.speceff_href=spec.href
-        md2fl.mu_fl=spec.tot
+        # Ignore reflection for now (2021/12/10)
+        md2fl.speceff_disk=0.
+        md2fl.speceff_sref=0.
+        md2fl.speceff_mref=0.
+        md2fl.speceff_href=0.
+        md2fl.mu_fl=1. # <x(E,t)>=\sum _{r_n} w(r_n, E)=1
 
         ######################
         ### Reference band ###
         ######################
-        ws_disk =disk.eps *spec.diskr /disk.eps_tot
-        ws_scomp=scomp.eps*spec.scompr/scomp.eps_tot
-        ws_mcomp=mcomp.eps*spec.mcompr/mcomp.eps_tot
-        ws_hcomp=hcomp.eps*spec.hcompr/hcomp.eps_tot
-        ws=ws_disk
-        ws=np.append(ws, ws_scomp)
-        ws=np.append(ws, ws_mcomp)
-        ws=np.append(ws, ws_hcomp)
-        md2fl.ws_ref=ws
+        #ws_disk =disk.eps *spec.diskr /disk.eps_tot
+        #ws_scomp=scomp.eps*spec.scompr/scomp.eps_tot
+        #ws_mcomp=mcomp.eps*spec.mcompr/mcomp.eps_tot
+        #ws_hcomp=hcomp.eps*spec.hcompr/hcomp.eps_tot
+        #ws=ws_disk
+        #ws=np.append(ws, ws_scomp)
+        #ws=np.append(ws, ws_mcomp)
+        #ws=np.append(ws, ws_hcomp)
+        #md2fl.ws_ref=ws
+        #md2fl.w_tot_ref=np.sum(md2fl.ws_ref)
+        #md2fl.speceff_disk_ref=spec.diskr
+        #md2fl.speceff_sref_ref=spec.srefr
+        #md2fl.speceff_mref_ref=spec.mrefr
+        #md2fl.speceff_href_ref=spec.hrefr
+        #md2fl.mu_fl_ref=spec.totr
+
+        md2fl.ws_ref=ws_r
         md2fl.w_tot_ref=np.sum(md2fl.ws_ref)
-        md2fl.speceff_disk_ref=spec.diskr
-        md2fl.speceff_sref_ref=spec.srefr
-        md2fl.speceff_mref_ref=spec.mrefr
-        md2fl.speceff_href_ref=spec.hrefr
-        md2fl.mu_fl_ref=spec.totr
+        # Ignore reflection for now (2021/12/10)
+        md2fl.speceff_disk_ref=0.
+        md2fl.speceff_sref_ref=0.
+        md2fl.speceff_mref_ref=0.
+        md2fl.speceff_href_ref=0.
+        md2fl.mu_fl_ref=1. # <x(E,t)>=\sum _{r_n} w(r_n, E)=1
 
         # ----- Impulse response ----- #
         ### Channel-of-interest ###
@@ -436,18 +398,27 @@ def preflow(engs, params, fluxes):
             csds_fl=np.real(md2fl.csd_fl)
         # Im[CSD]
         elif inpar.quant==3:
-            csds_fl=np.imag(md2fl.csd_fl)
+            if inpar.invert==1:
+                csds_fl=np.imag(md2fl.csd_fl)
+            elif inpar.invert==2:
+                csds_fl=-np.imag(md2fl.csd_fl)
         # |CSD|
         elif inpar.quant==4:
             csds_fl=np.abs(md2fl.csd_fl)
         # Phase lag
         elif inpar.quant==5:
             md2fl.lagf_calc()
-            csds_fl=md2fl.phi
+            if inpar.invert==1:
+                csds_fl=md2fl.phi
+            elif inpar.invert==2:
+                csds_fl=-md2fl.phi
         # Time lag
         elif inpar.quant==6:
             md2fl.lagf_calc()
-            csds_fl=md2fl.tau
+            if inpar.invert==1:
+                csds_fl=md2fl.tau
+            elif inpar.invert==2:
+                csds_fl=-md2fl.tau
 
         if inpar.display==1:
             print('--------------------------------------------------')

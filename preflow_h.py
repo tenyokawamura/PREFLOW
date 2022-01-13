@@ -13,53 +13,51 @@ class SetParameter:
     def set_inpar(self, pars, es):
         self.mass        =pars[0]  # BH mass [solar mass]
         self.r_in        =pars[1]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
-        self.r_mh        =pars[2]  # Radius at which viscous frequency prescriptions changes [Rg]
-        self.r_sm        =pars[3]  # Transition radius between hard and soft Compton [Rg]
-        self.r_ds        =pars[4]  # Transition radius between soft Compton and variable disk [Rg]
-        self.r_out       =pars[5]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
-        self.n_ring      =pars[6]  # Outer radius of variable disk [Rg]
-        self.tref        =pars[7]  # Start time of reflection impulse response [sec]
-        self.dtref       =pars[8]  # Time width of reflection impulse response [sec]
-        self.lf_var      =pars[9]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.lb_disk     =pars[10] # B_{disk} [-]
-        self.m_disk      =pars[11] # m_{disk} [-]
-        self.lb_flow     =pars[12] # B_{flow} [-]
-        self.m_flow      =pars[13] # m_{flow} [-]
-        self.cd_ds       =pars[14] # D_{ds} [-]
-        self.cd_sm       =pars[15] # D_{sm} [-]
-        self.cd_mh       =pars[16] # D_{mh} [-]
-        self.stress      =pars[17] # 1: stressed, 2: stress-free in emissivity
-        self.gamma       =pars[18] # Radial index of emissivity [-]
-        self.e_min       =pars[19] # Lower bound of energy band [keV] (unused)
-        self.e_max       =pars[20] # Upper bound of energy band [keV] (unused)
-        self.frac_disk   =pars[21] # Fraction of variable disk in the energy band [counts keV^-1 s^-1]
-        self.frac_scomp  =pars[22] # Fraction of soft Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_mcomp  =pars[23] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_hcomp  =pars[24] # Fraction of hard Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_sref   =pars[25] # Fraction of soft reflection in the energy band [counts keV^-1 s^-1]
-        self.frac_mref   =pars[26] # Fraction of mid reflection in the energy band [counts keV^-1 s^-1]
-        self.frac_href   =pars[27] # Fraction of hard reflection in the energy band [counts keV^-1 s^-1]
-        self.e_minr      =pars[28] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[29] # Upper bound of reference band [keV] (unused)
-        self.frac_diskr  =pars[30] # Fraction of variable disk in the reference band [counts keV^-1 s^-1]
-        self.frac_scompr =pars[31] # Fraction of soft Compton in the reference band [counts keV^-1 s^-1]
-        self.frac_mcompr =pars[32] # Fraction of mid Compton in the energy band [counts keV^-1 s^-1]
-        self.frac_hcompr =pars[33] # Fraction of hard Compton in the reference band [counts keV^-1 s^-1]
-        self.frac_srefr  =pars[34] # Fraction of soft reflection in the reference band [counts keV^-1 s^-1]
-        self.frac_mrefr  =pars[35] # Fraction of mid reflection in the reference band [counts keV^-1 s^-1]
-        self.frac_hrefr  =pars[36] # Fraction of hard reflection in the reference band [counts keV^-1 s^-1]
-        self.e_minrr     =pars[37] # Lower bound of reference band 'for reflection' [keV] (unused)
-        self.e_maxrr     =pars[38] # Upper bound of reference band 'for reflection' [keV] (unused)
-        self.frac_scomprr=pars[39] # Soft Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
-        self.frac_mcomprr=pars[40] # Mid Compton in the reference band 'for reflection' [counts kev^-1 s^-1]
-        self.quant       =pars[41]
+        self.r_sh        =pars[2]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
+        self.r_ds        =pars[3]  # Transition radius between soft Compton and variable disk [Rg]
+        self.r_out       =pars[4]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
+        self.n_ring      =pars[5]  # Outer radius of variable disk [Rg]
+        self.tref        =pars[6]  # Start time of reflection impulse response [sec]
+        self.dtref       =pars[7]  # Time width of reflection impulse response [sec]
+        self.lf_var_disk =pars[8]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.r_sig_disk  =pars[9]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.lf_var_flow =pars[10]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.r_sig_flow  =pars[11]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.lb_disk     =pars[12] # B_{disk} [-]
+        self.m_disk      =pars[13] # m_{disk} [-]
+        self.lb_flow     =pars[14] # B_{flow} [-]
+        self.m_flow      =pars[15] # m_{flow} [-]
+        self.cd_disk     =pars[16] # D_{ds} [-]
+        self.cd_flow     =pars[17] # D_{sm} [-]
+        self.cd_tran     =pars[18] # D_{mh} [-]
+        self.stress      =pars[19] # 1: stressed, 2: stress-free in emissivity
+        self.e_min       =pars[20] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[21] # Upper bound of energy band [keV] (unused)
+        self.cc_hcomp    =pars[22] # Radial index of emissivity [-]
+        self.eps         =pars[23] # Radial index of emissivity [-]
+        self.gamma       =pars[24] # Radial index of emissivity [-]
+        self.r_min       =pars[25] # Radial index of emissivity [-]
+        self.e_minr      =pars[26] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[27] # Upper bound of reference band [keV] (unused)
+        self.cc_hcompr   =pars[28] # Radial index of emissivity [-]
+        self.epsr        =pars[29] # Radial index of emissivity [-]
+        self.gammar      =pars[30] # Radial index of emissivity [-]
+        self.r_minr      =pars[31] # Radial index of emissivity [-]
+        self.e_minrr     =pars[32] # Lower bound of reference band 'for reflection' [keV] (unused)
+        self.e_maxrr     =pars[33] # Upper bound of reference band 'for reflection' [keV] (unused)
+        self.cc_hcomprr  =pars[34] # Radial index of emissivity [-]
+        self.epsrr       =pars[35] # Radial index of emissivity [-]
+        self.gammarr     =pars[36] # Radial index of emissivity [-]
+        self.r_minrr     =pars[37] # Radial index of emissivity [-]
+        self.quant       =pars[38]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.display     =pars[42] # 1: display, 2: not display
+        self.invert      =pars[39] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display     =pars[40] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -72,7 +70,7 @@ class SetParameter:
         self.frac_totr=1. 
         # Fraction of hard Compton in the hot flow in the reference band 
         #'for reflection' [counts kev^-1 s^-1]
-        self.frac_hcomprr=1.-(self.frac_scomprr+self.frac_mcomprr) 
+        #self.frac_hcomprr=1.-(self.frac_scomprr+self.frac_mcomprr) 
 
         # Impulse response of reflection
         self.t0=self.tref+(self.dtref/2.)
@@ -81,92 +79,13 @@ class SetParameter:
         self.set_inpar_done=True
 
     def check_validity(self):
-        '''
-        #######################################
-        ### Need to be updated (2021/12/06) ###
-        #######################################
-        ### Flux ###
-        # Energy band
-        if frac_disk+frac_scomp+frac_mcomp+frac_hcomp+frac_sref+frac_href<=frac_tot:
-            pass
-        elif frac_disk>frac_tot:
-            print('Warning: frac_disk>1 --> frac_disk=1, frac_scomp=frac_hcomp=frac_sref=frac_href=0')
-            frac_disk=frac_tot
-            frac_scomp=0
-            frac_hcomp=0
-            frac_sref=0
-            frac_href=0
-        elif frac_disk+frac_scomp>frac_tot:
-            print('Warning: frac_disk+frac_scomp>1 --> frac_scomp=1-frac_disk, frac_hcomp=frac_sref=frac_href=0')
-            frac_scomp=frac_tot-frac_disk
-            frac_hcomp=0
-            frac_sref=0
-            frac_href=0
-        elif frac_disk+frac_scomp+frac_hcomp>frac_tot:
-            print('Warning: frac_disk+frac_scomp+frac_hcomp>1 --> frac_hcomp=1-(frac_disk+frac_scomp), frac_sref=frac_href=0')
-            frac_hcomp=frac_tot-(frac_disk+frac_scomp)
-            frac_sref=0
-            frac_href=0
-        elif frac_disk+frac_scomp+frac_hcomp+frac_sref>frac_tot:
-            print('Warning: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_sref=1-(frac_disk+frac_scomp+frac_hcomp), frac_href=0')
-            frac_sref=frac_tot-(frac_disk+frac_scomp+frac_hcomp)
-            frac_href=0
-        elif frac_disk+frac_scomp+frac_hcomp+frac_sref+frac_href>frac_tot:
-            print('Warning: frac_disk+frac_scomp+frac_hcomp+frac_sref>1 --> frac_href=1-(frac_disk+frac_scomp+frac_hcomp+frac_sref)')
-            frac_href=frac_tot-(frac_disk+frac_scomp+frac_hcomp+frac_sref)
-        else:
-            print('Error')
-
-        # Reference band
-        if frac_diskr+frac_scompr+frac_hcompr+frac_srefr+frac_hrefr<=frac_tot:
-            pass
-        elif frac_diskr>frac_tot:
-            print('Warning: frac_diskr>1 --> frac_diskr=1, frac_scompr=frac_hcompr=frac_srefr=frac_hrefr=0')
-            frac_diskr=frac_tot
-            frac_scompr=0.
-            frac_hcompr=0.
-            frac_srefr=0.
-            frac_hrefr=0.
-        elif frac_diskr+frac_scompr>frac_tot:
-            print('Warning: frac_diskr+frac_scompr>1 --> frac_scompr=1-frac_diskr, frac_hcompr=frac_srefr=frac_hrefr=0')
-            frac_scompr=frac_tot-frac_diskr
-            frac_hcompr=0.
-            frac_srefr=0.
-            frac_hrefr=0.
-        elif frac_diskr+frac_scompr+frac_hcompr>frac_tot:
-            print('Warning: frac_diskr+frac_scompr+frac_hcompr>1 --> frac_hcompr=1-(frac_diskr+frac_scompr), frac_srefr=frac_hrefr=0')
-            frac_hcompr=frac_tot-(frac_diskr+frac_scompr)
-            frac_srefr=0.
-            frac_hrefr=0.
-        elif frac_diskr+frac_scompr+frac_hcompr+frac_srefr>frac_tot:
-            print('Warning: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_srefr=1-(frac_diskr+frac_scompr+frac_hcompr), frac_hrefr=0')
-            frac_srefr=frac_tot-(frac_diskr+frac_scompr+frac_hcompr)
-            frac_hrefr=0.
-        elif frac_diskr+frac_scompr+frac_hcompr+frac_srefr+frac_hrefr>frac_tot:
-            print('Warning: frac_diskr+frac_scompr+frac_hcompr+frac_srefr>1 --> frac_hrefr=1-(frac_diskr+frac_scompr+frac_hcompr+frac_srefr)')
-            frac_hrefr=frac_tot-(frac_diskr+frac_scompr+frac_hcompr+frac_srefr)
-        else:
-            print('Error')
-
-        # Reference band 'for reflection'
-        if frac_scomprr<=1.:
-            pass
-        else:
-            print('Warning: frac_scomprr>1 --> frac_scomprr=1, frac_hcomprr=0')
-            frac_scomprr=1.
-            frac_hcomprr=0.
-        '''
-
         ### Geometry ###
-        self.r_in, self.r_mh =check_validity_geo(\
-            r_in=self.r_in, r_out=self.r_mh,\
-            name_r_in='rin', name_r_out='rmh')
-        self.r_mh, self.r_sm =check_validity_geo(\
-            r_in=self.r_mh, r_out=self.r_sm,\
-            name_r_in='rmh', name_r_out='rsm')
-        self.r_sm, self.r_ds =check_validity_geo(\
-            r_in=self.r_sm, r_out=self.r_ds,\
-            name_r_in='rsm', name_r_out='rds')
+        self.r_in, self.r_sh =check_validity_geo(\
+            r_in=self.r_in, r_out=self.r_sh,\
+            name_r_in='rin', name_r_out='rsh')
+        self.r_sh, self.r_ds =check_validity_geo(\
+            r_in=self.r_sh, r_out=self.r_ds,\
+            name_r_in='rsh', name_r_out='rds')
         self.r_ds, self.r_out=check_validity_geo(\
             r_in=self.r_ds, r_out=self.r_out,\
             name_r_in='rds', name_r_out='rout')
@@ -402,14 +321,15 @@ class Flow2Ring:
 
     # Final operation!
     def out2in(self):
-        self.rs=self.rs[::-1]
-        self.rs_min=self.rs_min[::-1]
-        self.wids=self.wids[::-1]
-        self.drs=self.drs[::-1]
-        self.fs_vis=self.fs_vis[::-1]
-        self.vs_rad=self.vs_rad[::-1]
-        self.eps=self.eps[::-1]
-        self.cds=self.cds[::-1]
+        self.rs     =self.rs[::-1]
+        self.rs_min =self.rs_min[::-1]
+        self.wids   =self.wids[::-1]
+        self.drs    =self.drs[::-1]
+        self.fs_vis =self.fs_vis[::-1]
+        self.vs_rad =self.vs_rad[::-1]
+        self.eps    =self.eps[::-1]
+        self.cds    =self.cds[::-1]
+        self.lfs_var=self.lfs_var[::-1]
 
 # ----------------------------------- #
 # ----- Assign spectrum to ring ----- #
@@ -531,6 +451,10 @@ def epsilon_calc(r, stress, gamma, r_min):
 
     return epsilon
 
+def gauss(x, norm, mu, sigma):
+    y=norm*np.exp(-((x-mu)**2)/(2.*(sigma**2)))
+    return y
+
 # ------------------------------------ #
 # ----- Mass accretion rate PSD ------ #
 # ------------------------------------ #
@@ -543,6 +467,7 @@ class FluPro:
         self.dt=0
         self.f_set_done=False
         self.f_vis_set_done=False
+        self.sigma_set_done=False
         self.psd_wo_prop_done=False
 
     def f_set(self, fs):
@@ -553,6 +478,32 @@ class FluPro:
         self.fs_vis=fs_vis #[c_rg]
         self.f_vis_set_done=True
 
+    def sigma_set(self, sigs):
+        self.sigs=sigs #[c_rg]
+        self.sigma_set_done=True
+
+    # Calculate PSD without propagation
+    #def psd_wo_prop(self, c_rg):
+    #    if self.f_set_done==False:
+    #        print('Error: parameter is not set.')
+    #        sys.exit()
+    #    if self.f_vis_set_done==False:
+    #        print('Error: parameter is not set.')
+    #        sys.exit()
+    #    if self.sigma==0:
+    #        print('Error: parameter is not set.')
+    #        sys.exit()
+    #    for i, f_vis in enumerate(self.fs_vis):
+    #        df=f_vis*c_rg # [Hz]
+    #        # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+    #        psd_intr=lorentz(f=self.fs, mu=self.mu, sigma=self.sigma, f_c=0, df=df) 
+
+    #        if i==0:
+    #            self.psds_intr=psd_intr
+    #        else:
+    #            self.psds_intr=np.vstack((self.psds_intr, psd_intr))
+    #    self.psd_wo_prop_done=True
+
     # Calculate PSD without propagation
     def psd_wo_prop(self, c_rg):
         if self.f_set_done==False:
@@ -561,13 +512,13 @@ class FluPro:
         if self.f_vis_set_done==False:
             print('Error: parameter is not set.')
             sys.exit()
-        if self.sigma==0:
+        if self.sigma_set_done==False:
             print('Error: parameter is not set.')
             sys.exit()
-        for i, f_vis in enumerate(self.fs_vis):
+        for i, (f_vis, sig) in enumerate(zip(self.fs_vis, self.sigs)):
             df=f_vis*c_rg # [Hz]
             # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
-            psd_intr=lorentz(f=self.fs, mu=self.mu, sigma=self.sigma, f_c=0, df=df) 
+            psd_intr=lorentz(f=self.fs, mu=self.mu, sigma=sig, f_c=0, df=df) 
 
             if i==0:
                 self.psds_intr=psd_intr
@@ -788,32 +739,36 @@ class Mdot2Flux:
                           dr_r=dr_r,\
                           rg_c=rg_c) 
 
-        #|X(f)|^2, (one term of) Reprocessed component
-        lf2s_rep=lf2_calc(fs=fs,\
-                          n_r=n_r,\
-                          ws=ws_flow,\
-                          lm2s=lm2s,\
-                          fs_vis=fs_vis,\
-                          cds=cds,\
-                          dr_r=dr_r,\
-                          rg_c=rg_c)*\
-                 lh2_rep_calc(f=fs, norm=self.norm_rep, dt0=dt0)
+        if self.norm_rep!=0:
+            #|X(f)|^2, (one term of) Reprocessed component
+            lf2s_rep=lf2_calc(fs=fs,\
+                              n_r=n_r,\
+                              ws=ws_flow,\
+                              lm2s=lm2s,\
+                              fs_vis=fs_vis,\
+                              cds=cds,\
+                              dr_r=dr_r,\
+                              rg_c=rg_c)*\
+                     lh2_rep_calc(f=fs, norm=self.norm_rep, dt0=dt0)
 
-        #|(X(f))^{*}Y(f)|^2, (one term of) Reprocessed component (cross term)
-        lflfs=lflf_calc(fs=fs,\
-                        n_r=n_r,\
-                        ws_ref=self.ws,\
-                        ws_coi=ws_flow,\
-                        lm2s=lm2s,\
-                        fs_vis=fs_vis,\
-                        cds=cds,\
-                        dr_r=dr_r,\
-                        rg_c=rg_c)*\
-              lh_rep_calc(f=fs, norm=self.norm_rep, t0=t0, dt0=dt0)
-        lflfs=2.*lflfs.real
+            #|(X(f))^{*}Y(f)|^2, (one term of) Reprocessed component (cross term)
+            lflfs=lflf_calc(fs=fs,\
+                            n_r=n_r,\
+                            ws_ref=self.ws,\
+                            ws_coi=ws_flow,\
+                            lm2s=lm2s,\
+                            fs_vis=fs_vis,\
+                            cds=cds,\
+                            dr_r=dr_r,\
+                            rg_c=rg_c)*\
+                  lh_rep_calc(f=fs, norm=self.norm_rep, t0=t0, dt0=dt0)
+            lflfs=2.*lflfs.real
 
-        # Total
-        lf2s=lf2s_dir+lf2s_rep+lflfs
+            # Total
+            lf2s=lf2s_dir+lf2s_rep+lflfs
+        else:
+            # Total
+            lf2s=lf2s_dir
         # Normalize
         self.psd_fl=self.norm_psd*lf2s
 
@@ -845,47 +800,50 @@ class Mdot2Flux:
                              dr_r=dr_r,\
                              rg_c=rg_c)
 
-        #|(X(f))^{*}Y(f)|^2, Reprocessed vs Reprocessed
-        csd_reprep=lf2_calc(fs=fs,\
-                            n_r=n_r,\
-                            ws=ws_rep,\
-                            lm2s=lm2s,\
-                            fs_vis=fs_vis,\
-                            cds=cds,\
-                            dr_r=dr_r,\
-                            rg_c=rg_c)*\
-                   (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())*\
-                    lh_rep_calc(f=self.fs, norm=self.norm_rep, t0=t0, dt0=dt0)
+        if self.norm_rep!=0 or self.norm_rep_ref!=0:
+            #|(X(f))^{*}Y(f)|^2, Reprocessed vs Reprocessed
+            csd_reprep=lf2_calc(fs=fs,\
+                                n_r=n_r,\
+                                ws=ws_rep,\
+                                lm2s=lm2s,\
+                                fs_vis=fs_vis,\
+                                cds=cds,\
+                                dr_r=dr_r,\
+                                rg_c=rg_c)*\
+                       (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())*\
+                        lh_rep_calc(f=self.fs, norm=self.norm_rep, t0=t0, dt0=dt0)
 
-        #|(X(f))^{*}Y(f)|^2, Direct vs Reprocessed
-        csd_dirrep=lflf_calc(fs=self.fs,\
-                             n_r=n_r,\
-                             ws_ref=self.ws_ref,\
-                             ws_coi=ws_rep,\
-                             lm2s=lm2s,\
-                             fs_vis=fs_vis,\
-                             cds=cds,\
-                             dr_r=dr_r,\
-                             rg_c=rg_c)*\
-                   lh_rep_calc(f=self.fs, norm=self.norm_rep, t0=t0, dt0=dt0)
+            #|(X(f))^{*}Y(f)|^2, Direct vs Reprocessed
+            csd_dirrep=lflf_calc(fs=self.fs,\
+                                 n_r=n_r,\
+                                 ws_ref=self.ws_ref,\
+                                 ws_coi=ws_rep,\
+                                 lm2s=lm2s,\
+                                 fs_vis=fs_vis,\
+                                 cds=cds,\
+                                 dr_r=dr_r,\
+                                 rg_c=rg_c)*\
+                       lh_rep_calc(f=self.fs, norm=self.norm_rep, t0=t0, dt0=dt0)
 
-        #|(X(f))^{*}Y(f)|^2, Reprocessed vs Direct
-        csd_repdir=lflf_calc(fs=self.fs,\
-                             n_r=n_r,\
-                             ws_ref=ws_rep,\
-                             ws_coi=self.ws,\
-                             lm2s=lm2s,\
-                             fs_vis=fs_vis,\
-                             cds=cds,\
-                             dr_r=dr_r,\
-                             rg_c=rg_c)*\
-                   (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())
+            #|(X(f))^{*}Y(f)|^2, Reprocessed vs Direct
+            csd_repdir=lflf_calc(fs=self.fs,\
+                                 n_r=n_r,\
+                                 ws_ref=ws_rep,\
+                                 ws_coi=self.ws,\
+                                 lm2s=lm2s,\
+                                 fs_vis=fs_vis,\
+                                 cds=cds,\
+                                 dr_r=dr_r,\
+                                 rg_c=rg_c)*\
+                       (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())
 
-        # Total
-        self.csd_fl=csd_dirdir+\
-                    csd_reprep+\
-                    csd_dirrep+\
-                    csd_repdir
+            # Total
+            self.csd_fl=csd_dirdir+\
+                        csd_reprep+\
+                        csd_dirrep+\
+                        csd_repdir
+        else:
+            self.csd_fl=csd_dirdir
         # Normalize
         self.csd_fl=self.norm_csd*self.csd_fl
         self.csd_flux_calc_done=True
@@ -906,6 +864,30 @@ class Mdot2Flux:
         # ----- Time lag ----- #
         self.tau=self.phi/(2.*np.pi*self.fs) #Positive lag = hard lag
 
+# ---------------------------- #
+# ---------- Weight ---------- #
+# ---------------------------- #
+def weight_calc(r, gamma, r_in, stress):
+    #Stressed
+    if stress==1:
+        w=r**(-gamma)
+
+    #Stress-free
+    elif stress==2:
+        w=(1.-np.sqrt(r_in/r))*(r**(-gamma))*(r>r_in)
+    w/=np.sum(w) # Normalize so that \sum w=1
+    return w
+
+def weight_calc_pivot(r, cc, gamma, r_in, stress):
+    #Stressed
+    if stress==1:
+        w=cc*r**(-gamma)
+
+    #Stress-free
+    elif stress==2:
+        w=cc*(1.-np.sqrt(r_in/r))*(r**(-gamma))*(r>r_in)
+    #w/=np.sum(w) # Normalize so that \sum w=1
+    return w
 # ---------------------------------- #
 # ---------- Reprocessing ---------- #
 # ---------------------------------- #
