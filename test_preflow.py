@@ -5,82 +5,60 @@ def main():
     # ---------- Setting ---------- #
     # ----------------------------- #
     engs=np.arange(1.e-2, 1.e1, 1.e-2)
-    #engs=np.arange(1.e-2, 1.e1, 1.e-3)
-    # 0.  mass
-    # 1.  r_in
-    # 2.  r_sh
-    # 3.  r_ds
-    # 4.  r_out
-    # 5.  n_ring
-    # 6.  tref
-    # 7.  dtref
-    # 8.  lf_var
-    # 9.  lb_disk
-    # 10. m_disk
-    # 11. lb_flow
-    # 12. m_flow
-    # 13. stress
-    # 14. gamma
-    # 15. E_min
-    # 16. E_max
-    # 17. frac_disk
-    # 18. frac_scomp
-    # 19. frac_hcomp
-    # 20. frac_sref
-    # 21. frac_href
-    # 22. E_minr
-    # 23. E_maxr
-    # 24. frac_diskr
-    # 25. frac_scompr
-    # 26. frac_hcompr
-    # 27. frac_srefr
-    # 28. frac_hrefr
-    # 39. E_minrr
-    # 30. E_maxrr
-    # 31. frac_scomprr
-    # 32. quant
-    # 33. display
-    params=[8.,\
-            6.,\
-            24.,\
-            32.,\
-            45.,\
-            40,\
-            4.e-3,\
-            4.e-3,\
-            0.8,\
-            100.,\
-            0.8,\
-            100.,\
-            0.03,\
-            0.5,\
-            6.,\
-            1.2,\
-            1.,\
-            1.,\
-            1.,\
-            2,\
-            0.51,\
-            1.50,\
-            1.,\
-            -1.,\
-            1.,\
-            6.,\
-            2.01,\
-            10.,\
-            1.,\
-            1.,\
-            1.,\
-            6.,\
-            0.51,\
-            10.,\
-            1.,\
-            1.,\
-            1.,\
-            6.,\
-            1,\
-            2,\
-            1]
+
+    Mass   =8.
+    rin    =6.
+    rsh    =24.
+    rds    =32.
+    rout   =45.
+    Nring  =40
+    tref   =4.e-3
+    dtref  =4.e-3
+    Fvdisk =0.8
+    drdisk =100.
+    Fvflow =0.8
+    drflow =100.
+    Bdisk  =0.03
+    mdisk  =0.5
+    Bflow  =6.
+    mflow  =1.2
+    Ddisk  =1.
+    Dflow  =1.
+    Dtran  =1.
+    gammad =3.
+    gammaf =3.
+    stress =2.
+    rmin   =6.
+    Emin   =0.5
+    Emax   =2.
+    Cd     =1.
+    Csc    =1.
+    Chc    =1.
+    Eminr  =2.
+    Emaxr  =10.
+    Cdr    =1.
+    Cscr   =-1.
+    Chcr   =1.
+    Eminrr =0.5
+    Emaxrr =10.
+    Cdrr   =1.
+    Cscrr  =1.
+    Chcrr  =-1.
+    quant  =2
+    invert =2
+    par_print=1 
+
+    params=[\
+        Mass,   rin,    rsh,   rds,    rout,\
+        Nring,  tref,   dtref, Fvdisk, drdisk,\
+        Fvflow, drflow, Bdisk, mdisk,  Bflow,\
+        mflow,  Ddisk,  Dflow, Dtran,  gammad,\
+        gammaf, stress, rmin,  Emin,   Emax,\
+        Cd,     Csc,    Chc,   Eminr,  Emaxr,\
+        Cdr,    Cscr,   Chcr,  Eminrr, Emaxrr,\
+        Cdrr,   Cscrr,  Chcrr, quant,  invert,\
+        par_print]
+
     fluxes=np.ones(len(engs)-1)
 
     # -------------------------- #

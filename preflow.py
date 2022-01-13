@@ -92,28 +92,31 @@ def preflow(engs, params, fluxes):
     # --- Weight --- #
     # Energy band
     ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomp,\
-        gamma=inpar.gamma,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.eps*np.abs(inpar.cc_hcomp),\
-        gamma=inpar.gamma,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_disk =np.zeros(len(rs_disk)) # Need to be corrected (2021/01/12)
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scomp,\
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_disk =weight_calc_pivot(r=rs_disk,  cc=inpar.cc_disk,\
+        gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
     ws=ws_disk
     ws=np.append(ws, ws_scomp)
     ws=np.append(ws, ws_hcomp)
     # Reference band
     ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcompr,\
-        gamma=inpar.gammar,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.epsr*np.abs(inpar.cc_hcompr),\
-        gamma=inpar.gammar,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_disk =np.zeros(len(rs_disk)) # Need to be corrected (2021/01/12)
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scompr,\
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_disk =weight_calc_pivot(r=rs_disk,  cc=inpar.cc_diskr,\
+        gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_r=ws_disk
     ws_r=np.append(ws_r, ws_scomp)
     ws_r=np.append(ws_r, ws_hcomp)
     # Reference band for reflection
     ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomprr,\
-        gamma=inpar.gammarr,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.epsrr*np.abs(inpar.cc_hcomprr),\
-        gamma=inpar.gammarr,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_disk =np.zeros(len(rs_disk)) # Need to be corrected (2021/01/12)
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scomprr,\
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_disk =weight_calc_pivot(r=rs_disk,  cc=inpar.cc_diskrr,\
+        gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_rr=ws_disk
     ws_rr=np.append(ws_rr, ws_scomp)
     ws_rr=np.append(ws_rr, ws_hcomp)
@@ -126,11 +129,6 @@ def preflow(engs, params, fluxes):
         print_ring_info(name='Hard Compton ring [Rg]', xs=rs_hcomp,                digit=1)
         print_ring_info(name='Viscous frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
         print_ring_info(name='Radial velocity [km/s]', xs=rings.vs_rad*bunit.c,    digit=3)
-
-    #print(ws)
-    #print(ws_r)
-    #print(ws_rr)
-    #sys.exit()
 
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #

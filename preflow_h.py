@@ -30,25 +30,25 @@ class SetParameter:
         self.cd_disk     =pars[16] # D_{ds} [-]
         self.cd_flow     =pars[17] # D_{sm} [-]
         self.cd_tran     =pars[18] # D_{mh} [-]
-        self.stress      =pars[19] # 1: stressed, 2: stress-free in emissivity
-        self.e_min       =pars[20] # Lower bound of energy band [keV] (unused)
-        self.e_max       =pars[21] # Upper bound of energy band [keV] (unused)
-        self.cc_hcomp    =pars[22] # Radial index of emissivity [-]
-        self.eps         =pars[23] # Radial index of emissivity [-]
-        self.gamma       =pars[24] # Radial index of emissivity [-]
-        self.r_min       =pars[25] # Radial index of emissivity [-]
-        self.e_minr      =pars[26] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[27] # Upper bound of reference band [keV] (unused)
-        self.cc_hcompr   =pars[28] # Radial index of emissivity [-]
-        self.epsr        =pars[29] # Radial index of emissivity [-]
-        self.gammar      =pars[30] # Radial index of emissivity [-]
-        self.r_minr      =pars[31] # Radial index of emissivity [-]
-        self.e_minrr     =pars[32] # Lower bound of reference band 'for reflection' [keV] (unused)
-        self.e_maxrr     =pars[33] # Upper bound of reference band 'for reflection' [keV] (unused)
-        self.cc_hcomprr  =pars[34] # Radial index of emissivity [-]
-        self.epsrr       =pars[35] # Radial index of emissivity [-]
-        self.gammarr     =pars[36] # Radial index of emissivity [-]
-        self.r_minrr     =pars[37] # Radial index of emissivity [-]
+        self.gamma_disk  =pars[19] # Radial index of emissivity [-]
+        self.gamma_flow  =pars[20] # Radial index of emissivity [-]
+        self.stress      =pars[21] # 1: stressed, 2: stress-free in emissivity
+        self.r_min       =pars[22] # Radial index of emissivity [-]
+        self.e_min       =pars[23] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[24] # Upper bound of energy band [keV] (unused)
+        self.cc_disk     =pars[25] # Radial index of emissivity [-]
+        self.cc_scomp    =pars[26] # Radial index of emissivity [-]
+        self.cc_hcomp    =pars[27] # Radial index of emissivity [-]
+        self.e_minr      =pars[28] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[29] # Upper bound of reference band [keV] (unused)
+        self.cc_diskr    =pars[30] # Radial index of emissivity [-]
+        self.cc_scompr   =pars[31] # Radial index of emissivity [-]
+        self.cc_hcompr   =pars[32] # Radial index of emissivity [-]
+        self.e_minrr     =pars[33] # Lower bound of reference band 'for reflection' [keV] (unused)
+        self.e_maxrr     =pars[34] # Upper bound of reference band 'for reflection' [keV] (unused)
+        self.cc_diskrr   =pars[35] # Radial index of emissivity [-]
+        self.cc_scomprr  =pars[36] # Radial index of emissivity [-]
+        self.cc_hcomprr  =pars[37] # Radial index of emissivity [-]
         self.quant       =pars[38]
             # 1: power spectrum 
             # 2: real part of cross spectrum
@@ -879,13 +879,14 @@ def weight_calc(r, gamma, r_in, stress):
     return w
 
 def weight_calc_pivot(r, cc, gamma, r_in, stress):
+    alpha=gamma-2 # r_n * dr_n \propto r^{+2}
     #Stressed
     if stress==1:
-        w=cc*r**(-gamma)
+        w=cc*r**(-alpha)
 
     #Stress-free
     elif stress==2:
-        w=cc*(1.-np.sqrt(r_in/r))*(r**(-gamma))*(r>r_in)
+        w=cc*(1.-np.sqrt(r_in/r))*(r**(-alpha))*(r>r_in)
     #w/=np.sum(w) # Normalize so that \sum w=1
     return w
 # ---------------------------------- #
