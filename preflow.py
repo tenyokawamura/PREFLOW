@@ -57,11 +57,13 @@ def preflow(engs, params, fluxes):
     r_min_eps=inpar.r_in
     # --- Viscous frequency --- #
     is_flow =np.where(rings.rs_min<=inpar.r_ds)[0]
-    is_hcomp=np.where(rings.rs_min<=inpar.r_sh)[0]
-    is_scomp=np.where((inpar.r_sh<rings.rs_min) & (rings.rs_min<=inpar.r_ds))[0]
+    is_hcomp=np.where(rings.rs_min<=inpar.r_mh)[0]
+    is_mcomp=np.where((inpar.r_mh<rings.rs_min) & (rings.rs_min<=inpar.r_sm))[0]
+    is_scomp=np.where((inpar.r_sm<rings.rs_min) & (rings.rs_min<=inpar.r_ds))[0]
     is_disk =np.where(inpar.r_ds<rings.rs_min)[0]
     rs_flow =rings.rs[is_flow]
     rs_hcomp=rings.rs[is_hcomp]
+    rs_mcomp=rings.rs[is_mcomp]
     rs_scomp=rings.rs[is_scomp]
     rs_disk =rings.rs[is_disk]
 
@@ -86,6 +88,7 @@ def preflow(engs, params, fluxes):
     rings.out2in()
     rs_flow =rs_flow[::-1]
     rs_hcomp=rs_hcomp[::-1]
+    rs_mcomp=rs_mcomp[::-1]
     rs_scomp=rs_scomp[::-1]
     rs_disk =rs_disk[::-1]
 
@@ -93,15 +96,20 @@ def preflow(engs, params, fluxes):
     # Energy band
     ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomp,\
         gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_mcomp=weight_calc_pivot(r=rs_mcomp, cc=inpar.cc_mcomp,\
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scomp,\
         gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_disk =weight_calc_pivot(r=rs_disk,  cc=inpar.cc_disk,\
         gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
     ws=ws_disk
     ws=np.append(ws, ws_scomp)
+    ws=np.append(ws, ws_mcomp)
     ws=np.append(ws, ws_hcomp)
     # Reference band
     ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcompr,\
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_mcomp=weight_calc_pivot(r=rs_mcomp, cc=inpar.cc_mcompr,\
         gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scompr,\
         gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
@@ -109,9 +117,12 @@ def preflow(engs, params, fluxes):
         gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_r=ws_disk
     ws_r=np.append(ws_r, ws_scomp)
+    ws_r=np.append(ws_r, ws_mcomp)
     ws_r=np.append(ws_r, ws_hcomp)
     # Reference band for reflection
     ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomprr,\
+        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
+    ws_mcomp=weight_calc_pivot(r=rs_mcomp, cc=inpar.cc_mcomprr,\
         gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scomprr,\
         gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
@@ -119,13 +130,18 @@ def preflow(engs, params, fluxes):
         gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
     ws_rr=ws_disk
     ws_rr=np.append(ws_rr, ws_scomp)
+    ws_rr=np.append(ws_rr, ws_mcomp)
     ws_rr=np.append(ws_rr, ws_hcomp)
+    #print(ws)
+    #print(ws_r)
+    #print(ws_rr)
 
     # ----- Print ring information ----- #
     if inpar.display==1:
         print_ring_info(name='R [Rg]',                 xs=rings.rs,                digit=1)
         print_ring_info(name='Disk ring [Rg]',         xs=rs_disk,                 digit=1)
         print_ring_info(name='Soft Compton ring [Rg]', xs=rs_scomp,                digit=1)
+        print_ring_info(name='Mid Compton ring [Rg]',  xs=rs_mcomp,                digit=1)
         print_ring_info(name='Hard Compton ring [Rg]', xs=rs_hcomp,                digit=1)
         print_ring_info(name='Viscous frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
         print_ring_info(name='Radial velocity [km/s]', xs=rings.vs_rad*bunit.c,    digit=3)

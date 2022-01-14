@@ -8,7 +8,8 @@ def main():
 
     Mass   =8.
     rin    =6.
-    rsh    =24.
+    rmh    =16.
+    rsm    =24.
     rds    =32.
     rout   =45.
     Nring  =40
@@ -31,33 +32,36 @@ def main():
     rmin   =6.
     Emin   =0.5
     Emax   =2.
-    Cd     =1.
+    Cd     =0.
     Csc    =1.
+    Cmc    =1.
     Chc    =1.
     Eminr  =2.
     Emaxr  =10.
-    Cdr    =1.
+    Cdr    =0.
     Cscr   =-1.
+    Cmcr   =1.
     Chcr   =1.
     Eminrr =0.5
     Emaxrr =10.
-    Cdrr   =1.
+    Cdrr   =0.
     Cscrr  =1.
-    Chcrr  =-1.
+    Cmcrr  =-1.
+    Chcrr  =1.
     quant  =2
     invert =2
     par_print=1 
 
     params=[\
-        Mass,   rin,    rsh,   rds,    rout,\
-        Nring,  tref,   dtref, Fvdisk, drdisk,\
-        Fvflow, drflow, Bdisk, mdisk,  Bflow,\
-        mflow,  Ddisk,  Dflow, Dtran,  gammad,\
-        gammaf, stress, rmin,  Emin,   Emax,\
-        Cd,     Csc,    Chc,   Eminr,  Emaxr,\
-        Cdr,    Cscr,   Chcr,  Eminrr, Emaxrr,\
-        Cdrr,   Cscrr,  Chcrr, quant,  invert,\
-        par_print]
+        Mass,   rin,    rmh,    rsm,    rds,\
+        rout,   Nring,  tref,   dtref,  Fvdisk,\
+        drdisk, Fvflow, drflow, Bdisk,  mdisk,\
+        Bflow,  mflow,  Ddisk,  Dflow,  Dtran,\
+        gammad, gammaf, stress, rmin,   Emin,\
+        Emax,   Cd,     Csc,    Cmc,    Chc,\
+        Eminr,  Emaxr,  Cdr,    Cscr,   Cmcr,\
+        Chcr,   Eminrr, Emaxrr, Cdrr,   Cscrr,\
+        Cmcrr,  Chcrr,  quant,  invert, par_print]
 
     fluxes=np.ones(len(engs)-1)
 
