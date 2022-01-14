@@ -30,34 +30,35 @@ class SetParameter:
         self.cd_disk     =pars[16] # D_{ds} [-]
         self.cd_flow     =pars[17] # D_{sm} [-]
         self.cd_tran     =pars[18] # D_{mh} [-]
-        self.gamma_disk  =pars[19] # Radial index of emissivity [-]
-        self.gamma_flow  =pars[20] # Radial index of emissivity [-]
-        self.stress      =pars[21] # 1: stressed, 2: stress-free in emissivity
-        self.r_min       =pars[22] # Radial index of emissivity [-]
-        self.e_min       =pars[23] # Lower bound of energy band [keV] (unused)
-        self.e_max       =pars[24] # Upper bound of energy band [keV] (unused)
-        self.cc_disk     =pars[25] # Radial index of emissivity [-]
-        self.cc_scomp    =pars[26] # Radial index of emissivity [-]
-        self.cc_hcomp    =pars[27] # Radial index of emissivity [-]
-        self.e_minr      =pars[28] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[29] # Upper bound of reference band [keV] (unused)
-        self.cc_diskr    =pars[30] # Radial index of emissivity [-]
-        self.cc_scompr   =pars[31] # Radial index of emissivity [-]
-        self.cc_hcompr   =pars[32] # Radial index of emissivity [-]
-        self.e_minrr     =pars[33] # Lower bound of reference band 'for reflection' [keV] (unused)
-        self.e_maxrr     =pars[34] # Upper bound of reference band 'for reflection' [keV] (unused)
-        self.cc_diskrr   =pars[35] # Radial index of emissivity [-]
-        self.cc_scomprr  =pars[36] # Radial index of emissivity [-]
-        self.cc_hcomprr  =pars[37] # Radial index of emissivity [-]
-        self.quant       =pars[38]
+        self.xlag        =pars[19] # xlag [-]
+        self.gamma_disk  =pars[20] # Radial index of emissivity [-]
+        self.gamma_flow  =pars[21] # Radial index of emissivity [-]
+        self.stress      =pars[22] # 1: stressed, 2: stress-free in emissivity
+        self.r_min       =pars[23] # Radial index of emissivity [-]
+        self.e_min       =pars[24] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[25] # Upper bound of energy band [keV] (unused)
+        self.cc_disk     =pars[26] # Radial index of emissivity [-]
+        self.cc_scomp    =pars[27] # Radial index of emissivity [-]
+        self.cc_hcomp    =pars[28] # Radial index of emissivity [-]
+        self.e_minr      =pars[29] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[30] # Upper bound of reference band [keV] (unused)
+        self.cc_diskr    =pars[31] # Radial index of emissivity [-]
+        self.cc_scompr   =pars[32] # Radial index of emissivity [-]
+        self.cc_hcompr   =pars[33] # Radial index of emissivity [-]
+        self.e_minrr     =pars[34] # Lower bound of reference band 'for reflection' [keV] (unused)
+        self.e_maxrr     =pars[35] # Upper bound of reference band 'for reflection' [keV] (unused)
+        self.cc_diskrr   =pars[36] # Radial index of emissivity [-]
+        self.cc_scomprr  =pars[37] # Radial index of emissivity [-]
+        self.cc_hcomprr  =pars[38] # Radial index of emissivity [-]
+        self.quant       =pars[39]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert      =pars[39] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display     =pars[40] # 1: display, 2: not display
+        self.invert      =pars[40] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display     =pars[41] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -721,6 +722,7 @@ class Mdot2Flux:
                           lm2s,\
                           fs_vis,\
                           cds,\
+                          xlag,\
                           dr_r,\
                           t0,\
                           dt0,\
@@ -736,6 +738,7 @@ class Mdot2Flux:
                           lm2s=lm2s,\
                           fs_vis=fs_vis,\
                           cds=cds,\
+                          xlag=xlag,\
                           dr_r=dr_r,\
                           rg_c=rg_c) 
 
@@ -747,6 +750,7 @@ class Mdot2Flux:
                               lm2s=lm2s,\
                               fs_vis=fs_vis,\
                               cds=cds,\
+                              xlag=xlag,\
                               dr_r=dr_r,\
                               rg_c=rg_c)*\
                      lh2_rep_calc(f=fs, norm=self.norm_rep, dt0=dt0)
@@ -759,6 +763,7 @@ class Mdot2Flux:
                             lm2s=lm2s,\
                             fs_vis=fs_vis,\
                             cds=cds,\
+                            xlag=xlag,\
                             dr_r=dr_r,\
                             rg_c=rg_c)*\
                   lh_rep_calc(f=fs, norm=self.norm_rep, t0=t0, dt0=dt0)
@@ -780,6 +785,7 @@ class Mdot2Flux:
                           lm2s,\
                           fs_vis,\
                           cds,\
+                          xlag,\
                           dr_r,\
                           t0,\
                           dt0,\
@@ -797,6 +803,7 @@ class Mdot2Flux:
                              lm2s=lm2s,\
                              fs_vis=fs_vis,\
                              cds=cds,\
+                             xlag=xlag,\
                              dr_r=dr_r,\
                              rg_c=rg_c)
 
@@ -808,6 +815,7 @@ class Mdot2Flux:
                                 lm2s=lm2s,\
                                 fs_vis=fs_vis,\
                                 cds=cds,\
+                                xlag=xlag,\
                                 dr_r=dr_r,\
                                 rg_c=rg_c)*\
                        (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())*\
@@ -821,6 +829,7 @@ class Mdot2Flux:
                                  lm2s=lm2s,\
                                  fs_vis=fs_vis,\
                                  cds=cds,\
+                                 xlag=xlag,\
                                  dr_r=dr_r,\
                                  rg_c=rg_c)*\
                        lh_rep_calc(f=self.fs, norm=self.norm_rep, t0=t0, dt0=dt0)
@@ -833,6 +842,7 @@ class Mdot2Flux:
                                  lm2s=lm2s,\
                                  fs_vis=fs_vis,\
                                  cds=cds,\
+                                 xlag=xlag,\
                                  dr_r=dr_r,\
                                  rg_c=rg_c)*\
                        (lh_rep_calc(f=self.fs, norm=self.norm_rep_ref, t0=t0, dt0=dt0).conjugate())
@@ -932,6 +942,7 @@ def lf2_calc(fs,\
              lm2s,\
              fs_vis,\
              cds,\
+             xlag,\
              dr_r,\
              rg_c):
     ts_vis=1./fs_vis #[Rg/c]
@@ -946,7 +957,7 @@ def lf2_calc(fs,\
         tot_c=0
         for i_ro in range(i_r):
             ### Propagation time ###
-            t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r) #[Rg/c]
+            t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r)*xlag #[Rg/c]
             t_prop*=rg_c #[s]
 
             ### Cross term ###
@@ -968,6 +979,7 @@ def lflf_calc(fs,\
               lm2s,\
               fs_vis,\
               cds,\
+              xlag,\
               dr_r,\
               rg_c):
     ts_vis=1./fs_vis #[Rg/c]
@@ -982,7 +994,7 @@ def lflf_calc(fs,\
         tot_c=0
         for i_ro in range(i_r):
             ### Propagation time ###
-            t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r) #[Rg/c]
+            t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r)*xlag #[Rg/c]
             t_prop*=rg_c #[s]
             ### Cross term ###
             # Ingram & van der Klis

@@ -25,6 +25,7 @@ def main():
     Ddisk  =1.
     Dflow  =1.
     Dtran  =1.
+    xlag   =1.
     gammad =3.
     gammaf =3.
     stress =2.
@@ -44,7 +45,7 @@ def main():
     Cdrr   =1.
     Cscrr  =1.
     Chcrr  =-1.
-    quant  =2
+    quant  =1
     invert =2
     par_print=1 
 
@@ -52,12 +53,12 @@ def main():
         Mass,   rin,    rsh,   rds,    rout,\
         Nring,  tref,   dtref, Fvdisk, drdisk,\
         Fvflow, drflow, Bdisk, mdisk,  Bflow,\
-        mflow,  Ddisk,  Dflow, Dtran,  gammad,\
-        gammaf, stress, rmin,  Emin,   Emax,\
-        Cd,     Csc,    Chc,   Eminr,  Emaxr,\
-        Cdr,    Cscr,   Chcr,  Eminrr, Emaxrr,\
-        Cdrr,   Cscrr,  Chcrr, quant,  invert,\
-        par_print]
+        mflow,  Ddisk,  Dflow, Dtran,  xlag,\
+        gammad, gammaf, stress, rmin,  Emin,\
+        Emax,   Cd,     Csc,    Chc,   Eminr,\
+        Emaxr,  Cdr,    Cscr,   Chcr,  Eminrr,\
+        Emaxrr, Cdrr,   Cscrr,  Chcrr, quant,\
+        invert, par_print]
 
     fluxes=np.ones(len(engs)-1)
 
