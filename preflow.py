@@ -245,6 +245,7 @@ def preflow(engs, params, fluxes):
                                 lm2s=lm2s_prop,\
                                 fs_vis=rings.fs_vis,\
                                 cds=rings.cds,\
+                                xlag=inpar.xlag,\
                                 dr_r=rings.dr_r,\
                                 t0=inpar.t0,\
                                 dt0=inpar.dt0,\
@@ -402,6 +403,7 @@ def preflow(engs, params, fluxes):
                                 lm2s=lm2s_prop,\
                                 fs_vis=rings.fs_vis,\
                                 cds=rings.cds,\
+                                xlag=inpar.xlag,\
                                 dr_r=rings.dr_r,\
                                 t0=inpar.t0,\
                                 dt0=inpar.dt0,\
