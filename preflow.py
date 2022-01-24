@@ -7,7 +7,7 @@ def preflow(engs, params, fluxes):
     # ------------------------------------- #
     inpar=SetParameter()
     inpar.set_inpar(pars=params, es=engs)
-    inpar.check_validity()
+    #inpar.check_validity()
     
     # ------------------------------------ #
     # ---------- Set basic unit ---------- #

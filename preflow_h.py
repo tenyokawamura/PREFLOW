@@ -13,10 +13,10 @@ class SetParameter:
     def set_inpar(self, pars, es):
         self.mass        =pars[0]  # BH mass [solar mass]
         self.r_in        =pars[1]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
-        self.r_mh        =pars[2]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
-        self.r_sm        =pars[3]  # Transition radius between soft Compton and variable disk [Rg]
-        self.r_ds        =pars[4]  # Transition radius between soft Compton and variable disk [Rg]
-        self.r_out       =pars[5]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
+        self.dr_hcomp    =pars[2]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
+        self.dr_mcomp    =pars[3]  # Transition radius between soft Compton and variable disk [Rg]
+        self.dr_scomp    =pars[4]  # Transition radius between soft Compton and variable disk [Rg]
+        self.dr_disk     =pars[5]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
         self.n_ring      =pars[6]  # Outer radius of variable disk [Rg]
         self.tref        =pars[7]  # Start time of reflection impulse response [sec]
         self.dtref       =pars[8]  # Time width of reflection impulse response [sec]
@@ -67,6 +67,12 @@ class SetParameter:
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
         self.fs_data=es
+
+        ### Geometry ###
+        self.r_mh        =self.r_in+self.dr_hcomp  # Inner radius of mid Compton [Rg]
+        self.r_sm        =self.r_mh+self.dr_mcomp  # Inner radius of soft Compton [Rg]
+        self.r_ds        =self.r_sm+self.dr_scomp  # Inner radius of disk [Rg]
+        self.r_out       =self.r_ds+self.dr_disk   # Outer radius of disk [Rg]
 
         ### Parameters, which are no longer free. ###
         # Total fraction in the energy band [counts keV^-1 s^-1], i.e., 1.

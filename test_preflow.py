@@ -8,10 +8,10 @@ def main():
 
     Mass   =8.
     rin    =6.
-    rmh    =16.
-    rsm    =24.
-    rds    =32.
-    rout   =45.
+    drhc   =10.
+    drmc   =8.
+    drsc   =8.
+    drd    =13.
     Nring  =40
     tref   =4.e-3
     dtref  =4.e-3
@@ -54,8 +54,8 @@ def main():
     par_print=1 
 
     params=[\
-        Mass,   rin,    rmh,    rsm,    rds,\
-        rout,   Nring,  tref,   dtref,  Fvdisk,\
+        Mass,   rin,    drhc,   drmc,   drsc,\
+        drd,    Nring,  tref,   dtref,  Fvdisk,\
         drdisk, Fvflow, drflow, Bdisk,  mdisk,\
         Bflow,  mflow,  Ddisk,  Dflow,  Dtran,\
         xlag,   gammad, gammaf, stress, rmin,\
