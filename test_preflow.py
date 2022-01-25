@@ -13,8 +13,6 @@ def main():
     drsc   =8.
     drd    =13.
     Nring  =40
-    tref   =4.e-3
-    dtref  =4.e-3
     Fvdisk =0.8
     drdisk =100.
     Fvflow =0.8
@@ -37,33 +35,37 @@ def main():
     Csc    =1.
     Cmc    =1.
     Chc    =1.
+    Arep   =1.
     Eminr  =2.
     Emaxr  =10.
     Cdr    =0.
     Cscr   =-1.
     Cmcr   =1.
     Chcr   =1.
+    Arepr  =1.
     Eminrr =0.5
     Emaxrr =10.
     Cdrr   =0.
     Cscrr  =1.
-    Cmcrr  =-1.
-    Chcrr  =1.
+    Cmcrr  =0.
+    Chcrr  =0.
+    tref   =4.e-3
+    dtref  =4.e-3
     quant  =2
     invert =2
     par_print=1 
 
     params=[\
         Mass,   rin,    drhc,   drmc,   drsc,\
-        drd,    Nring,  tref,   dtref,  Fvdisk,\
-        drdisk, Fvflow, drflow, Bdisk,  mdisk,\
-        Bflow,  mflow,  Ddisk,  Dflow,  Dtran,\
-        xlag,   gammad, gammaf, stress, rmin,\
-        Emin,   Emax,   Cd,     Csc,    Cmc,\
-        Chc,    Eminr,  Emaxr,  Cdr,    Cscr,\
-        Cmcr,   Chcr,   Eminrr, Emaxrr, Cdrr,\
-        Cscrr,  Cmcrr,  Chcrr,  quant,  invert,\
-        par_print]
+        drd,    Nring,  Fvdisk, drdisk, Fvflow,\
+        drflow, Bdisk,  mdisk,  Bflow,  mflow,\
+        Ddisk,  Dflow,  Dtran,  xlag,   gammad,\
+        gammaf, stress, rmin,   Emin,   Emax,\
+        Cd,     Csc,    Cmc,    Chc,    Arep,\
+        Eminr,  Emaxr,  Cdr,    Cscr,   Cmcr,\
+        Chcr,   Arepr,  Eminrr, Emaxrr, Cdrr,\
+        Cscrr,  Cmcrr,  Chcrr,  tref,   dtref,\
+        quant,  invert, par_print]
 
     fluxes=np.ones(len(engs)-1)
 

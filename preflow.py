@@ -149,10 +149,8 @@ def preflow(engs, params, fluxes):
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #
     # ------------------------------------------------------------------------------ #
-    #sigma=inpar.lf_var/np.sqrt(rings.n_dec) #\mu is fixed to unity. Probably this does not lose generality. (2021/07/26)
     sigs=rings.lfs_var/np.sqrt(rings.n_dec) #\mu is fixed to unity. Probably this does not lose generality. (2021/07/26)
     flupro=FluPro()
-    #flupro.sigma=sigma
     flupro.sigma_set(sigs=sigs)
     flupro.f_set(fs=tifr.fs)
     flupro.f_vis_set(fs_vis=rings.fs_vis)
@@ -189,8 +187,9 @@ def preflow(engs, params, fluxes):
     #w_flow_tot=np.sum(ws_flow)
 
     # Integration over E
-    ws_flow=ws_rr*(inpar.e_maxrr-inpar.e_minrr)  
-    w_flow_tot=np.sum(ws_flow)
+    #ws_flow=ws_rr*(inpar.e_maxrr-inpar.e_minrr)  
+    #w_flow_tot=np.sum(ws_flow)
+
     ##############################################
     ########## Calculate power spectrum ##########
     ##############################################
@@ -235,13 +234,15 @@ def preflow(engs, params, fluxes):
         #f_dir=1. # fixed (not free parameter anymore and should be removed)
         #f_rep=1.-f_dir # Fraction of the reprocessed component
         #md2fl.norm_rep_set(f_rep=f_rep, dt0=dt0, w_flow_tot=w_flow_tot)
-        md2fl.norm_rep_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot)
+        #md2fl.norm_rep_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot)
+
+        md2fl.norm_rep=inpar.h0_rep # Normalization of the top-hat response function.
 
         lm2s_prop=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
         md2fl.psd_flux_rep_calc(fs=flupro.fs,\
                                 n_r=rings.n_ring,\
-                                ws_flow=ws_flow,\
+                                ws_flow=ws_rr,\
                                 lm2s=lm2s_prop,\
                                 fs_vis=rings.fs_vis,\
                                 cds=rings.cds,\
@@ -385,11 +386,13 @@ def preflow(engs, params, fluxes):
         #f_dir=1. # fixed (not free parameter anymore and should be removed)
         #f_rep=1.-f_dir # Fraction of the reprocessed component
         #md2fl.norm_rep_set(f_rep=f_rep, dt0=dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
-        md2fl.norm_rep_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
+        #md2fl.norm_rep_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
+        md2fl.norm_rep=inpar.h0_rep # Normalization of the top-hat response function.
 
         ### Reference band ###
         #md2fl.norm_rep_ref_set(f_rep=f_rep, dt0=dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
-        md2fl.norm_rep_ref_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
+        #md2fl.norm_rep_ref_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
+        md2fl.norm_rep_ref=inpar.h0_repr # Normalization of the top-hat response function.
 
         # ----- Normalization ----- #
         md2fl.csd_norm_set(dt=tifr.dt, n_data=tifr.n_data)
@@ -399,7 +402,7 @@ def preflow(engs, params, fluxes):
 
         md2fl.csd_flux_rep_calc(fs=flupro.fs,\
                                 n_r=rings.n_ring,\
-                                ws_rep=ws_flow,\
+                                ws_rep=ws_rr,\
                                 lm2s=lm2s_prop,\
                                 fs_vis=rings.fs_vis,\
                                 cds=rings.cds,\

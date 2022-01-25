@@ -18,51 +18,53 @@ class SetParameter:
         self.dr_scomp    =pars[4]  # Transition radius between soft Compton and variable disk [Rg]
         self.dr_disk     =pars[5]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
         self.n_ring      =pars[6]  # Outer radius of variable disk [Rg]
-        self.tref        =pars[7]  # Start time of reflection impulse response [sec]
-        self.dtref       =pars[8]  # Time width of reflection impulse response [sec]
-        self.lf_var_disk =pars[9]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.r_sig_disk  =pars[10]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.lf_var_flow =pars[11]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.r_sig_flow  =pars[12]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.lb_disk     =pars[13] # B_{disk} [-]
-        self.m_disk      =pars[14] # m_{disk} [-]
-        self.lb_flow     =pars[15] # B_{flow} [-]
-        self.m_flow      =pars[16] # m_{flow} [-]
-        self.cd_disk     =pars[17] # D_{ds} [-]
-        self.cd_flow     =pars[18] # D_{sm} [-]
-        self.cd_tran     =pars[19] # D_{mh} [-]
-        self.xlag        =pars[20] # xlag [-]
-        self.gamma_disk  =pars[21] # Radial index of emissivity [-]
-        self.gamma_flow  =pars[22] # Radial index of emissivity [-]
-        self.stress      =pars[23] # 1: stressed, 2: stress-free in emissivity
-        self.r_min       =pars[24] # Radial index of emissivity [-]
-        self.e_min       =pars[25] # Lower bound of energy band [keV] (unused)
-        self.e_max       =pars[26] # Upper bound of energy band [keV] (unused)
-        self.cc_disk     =pars[27] # Radial index of emissivity [-]
-        self.cc_scomp    =pars[28] # Radial index of emissivity [-]
-        self.cc_mcomp    =pars[29] # Radial index of emissivity [-]
-        self.cc_hcomp    =pars[30] # Radial index of emissivity [-]
-        self.e_minr      =pars[31] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[32] # Upper bound of reference band [keV] (unused)
-        self.cc_diskr    =pars[33] # Radial index of emissivity [-]
-        self.cc_scompr   =pars[34] # Radial index of emissivity [-]
-        self.cc_mcompr   =pars[35] # Radial index of emissivity [-]
-        self.cc_hcompr   =pars[36] # Radial index of emissivity [-]
+        self.lf_var_disk =pars[7]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.r_sig_disk  =pars[8]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.lf_var_flow =pars[9]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.r_sig_flow  =pars[10]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.lb_disk     =pars[11] # B_{disk} [-]
+        self.m_disk      =pars[12] # m_{disk} [-]
+        self.lb_flow     =pars[13] # B_{flow} [-]
+        self.m_flow      =pars[14] # m_{flow} [-]
+        self.cd_disk     =pars[15] # D_{ds} [-]
+        self.cd_flow     =pars[16] # D_{sm} [-]
+        self.cd_tran     =pars[17] # D_{mh} [-]
+        self.xlag        =pars[18] # xlag [-]
+        self.gamma_disk  =pars[19] # Radial index of emissivity [-]
+        self.gamma_flow  =pars[20] # Radial index of emissivity [-]
+        self.stress      =pars[21] # 1: stressed, 2: stress-free in emissivity
+        self.r_min       =pars[22] # Radial index of emissivity [-]
+        self.e_min       =pars[23] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[24] # Upper bound of energy band [keV] (unused)
+        self.cc_disk     =pars[25] # Radial index of emissivity [-]
+        self.cc_scomp    =pars[26] # Radial index of emissivity [-]
+        self.cc_mcomp    =pars[27] # Radial index of emissivity [-]
+        self.cc_hcomp    =pars[28] # Radial index of emissivity [-]
+        self.area_rep    =pars[29] # Area of top-hat impulse response [-]
+        self.e_minr      =pars[30] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[31] # Upper bound of reference band [keV] (unused)
+        self.cc_diskr    =pars[32] # Radial index of emissivity [-]
+        self.cc_scompr   =pars[33] # Radial index of emissivity [-]
+        self.cc_mcompr   =pars[34] # Radial index of emissivity [-]
+        self.cc_hcompr   =pars[35] # Radial index of emissivity [-]
+        self.area_repr   =pars[36] # Amplitude of top-hat impulse response [-]
         self.e_minrr     =pars[37] # Lower bound of reference band 'for reflection' [keV] (unused)
         self.e_maxrr     =pars[38] # Upper bound of reference band 'for reflection' [keV] (unused)
         self.cc_diskrr   =pars[39] # Radial index of emissivity [-]
         self.cc_scomprr  =pars[40] # Radial index of emissivity [-]
         self.cc_mcomprr  =pars[41] # Radial index of emissivity [-]
         self.cc_hcomprr  =pars[42] # Radial index of emissivity [-]
-        self.quant       =pars[43]
+        self.tref        =pars[43] # Start time of reflection impulse response [sec]
+        self.dtref       =pars[44] # Time width of reflection impulse response [sec]
+        self.quant       =pars[45]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert      =pars[44] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display     =pars[45] # 1: display, 2: not display
+        self.invert      =pars[46] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display     =pars[47] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -86,6 +88,8 @@ class SetParameter:
         # Impulse response of reflection
         self.t0=self.tref+(self.dtref/2.)
         self.dt0=self.dtref
+        self.h0_rep      =self.area_rep /self.dt0 # Amplitude of top-hat impulse response [s]
+        self.h0_repr     =self.area_repr/self.dt0 # Amplitude of top-hat impulse response [s]
 
         self.set_inpar_done=True
 
@@ -725,7 +729,7 @@ class Mdot2Flux:
     def norm_rep_ref_set(self, dt0, w_flow_tot):
         #C(E) in the impulse response
         ref=self.speceff_sref_ref+self.speceff_mref_ref+self.speceff_href_ref
-        self.norm_rep=ref/(w_flow_tot*dt0) 
+        self.norm_rep_ref=ref/(w_flow_tot*dt0) 
 
     # Reprocessing is included.
     def psd_flux_rep_calc(self,\
