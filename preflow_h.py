@@ -24,47 +24,51 @@ class SetParameter:
         self.r_sig_flow  =pars[10]  # Fractional variability of mass accretion rate in radial decade [-]
         self.lb_disk     =pars[11] # B_{disk} [-]
         self.m_disk      =pars[12] # m_{disk} [-]
-        self.lb_flow     =pars[13] # B_{flow} [-]
-        self.m_flow      =pars[14] # m_{flow} [-]
-        self.cd_disk     =pars[15] # D_{ds} [-]
-        self.cd_flow     =pars[16] # D_{sm} [-]
-        self.cd_tran     =pars[17] # D_{mh} [-]
-        self.xlag        =pars[18] # xlag [-]
-        self.gamma_disk  =pars[19] # Radial index of emissivity [-]
-        self.gamma_flow  =pars[20] # Radial index of emissivity [-]
-        self.stress      =pars[21] # 1: stressed, 2: stress-free in emissivity
-        self.r_min       =pars[22] # Radial index of emissivity [-]
-        self.e_min       =pars[23] # Lower bound of energy band [keV] (unused)
-        self.e_max       =pars[24] # Upper bound of energy band [keV] (unused)
-        self.cc_disk     =pars[25] # Radial index of emissivity [-]
-        self.cc_scomp    =pars[26] # Radial index of emissivity [-]
-        self.cc_mcomp    =pars[27] # Radial index of emissivity [-]
-        self.cc_hcomp    =pars[28] # Radial index of emissivity [-]
-        self.area_rep    =pars[29] # Area of top-hat impulse response [-]
-        self.e_minr      =pars[30] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[31] # Upper bound of reference band [keV] (unused)
-        self.cc_diskr    =pars[32] # Radial index of emissivity [-]
-        self.cc_scompr   =pars[33] # Radial index of emissivity [-]
-        self.cc_mcompr   =pars[34] # Radial index of emissivity [-]
-        self.cc_hcompr   =pars[35] # Radial index of emissivity [-]
-        self.area_repr   =pars[36] # Amplitude of top-hat impulse response [-]
-        self.e_minrr     =pars[37] # Lower bound of reference band 'for reflection' [keV] (unused)
-        self.e_maxrr     =pars[38] # Upper bound of reference band 'for reflection' [keV] (unused)
-        self.cc_diskrr   =pars[39] # Radial index of emissivity [-]
-        self.cc_scomprr  =pars[40] # Radial index of emissivity [-]
-        self.cc_mcomprr  =pars[41] # Radial index of emissivity [-]
-        self.cc_hcomprr  =pars[42] # Radial index of emissivity [-]
-        self.tref        =pars[43] # Start time of reflection impulse response [sec]
-        self.dtref       =pars[44] # Time width of reflection impulse response [sec]
-        self.quant       =pars[45]
+        self.lb_acc_disk =pars[13] # B_{disk} [-]
+        self.m_acc_disk  =pars[14] # m_{disk} [-]
+        self.lb_flow     =pars[15] # B_{flow} [-]
+        self.m_flow      =pars[16] # m_{flow} [-]
+        self.lb_acc_flow =pars[17] # B_{flow} [-]
+        self.m_acc_flow  =pars[18] # m_{flow} [-]
+        self.cd_disk     =pars[19] # D_{ds} [-]
+        self.cd_flow     =pars[20] # D_{sm} [-]
+        self.cd_tran     =pars[21] # D_{mh} [-]
+        self.xlag        =pars[22] # xlag [-]
+        self.gamma_disk  =pars[23] # Radial index of emissivity [-]
+        self.gamma_flow  =pars[24] # Radial index of emissivity [-]
+        self.stress      =pars[25] # 1: stressed, 2: stress-free in emissivity
+        self.r_min       =pars[26] # Radial index of emissivity [-]
+        self.e_min       =pars[27] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[28] # Upper bound of energy band [keV] (unused)
+        self.cc_disk     =pars[29] # Radial index of emissivity [-]
+        self.cc_scomp    =pars[30] # Radial index of emissivity [-]
+        self.cc_mcomp    =pars[31] # Radial index of emissivity [-]
+        self.cc_hcomp    =pars[32] # Radial index of emissivity [-]
+        self.area_rep    =pars[33] # Area of top-hat impulse response [-]
+        self.e_minr      =pars[34] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[35] # Upper bound of reference band [keV] (unused)
+        self.cc_diskr    =pars[36] # Radial index of emissivity [-]
+        self.cc_scompr   =pars[37] # Radial index of emissivity [-]
+        self.cc_mcompr   =pars[38] # Radial index of emissivity [-]
+        self.cc_hcompr   =pars[39] # Radial index of emissivity [-]
+        self.area_repr   =pars[40] # Amplitude of top-hat impulse response [-]
+        self.e_minrr     =pars[41] # Lower bound of reference band 'for reflection' [keV] (unused)
+        self.e_maxrr     =pars[42] # Upper bound of reference band 'for reflection' [keV] (unused)
+        self.cc_diskrr   =pars[43] # Radial index of emissivity [-]
+        self.cc_scomprr  =pars[44] # Radial index of emissivity [-]
+        self.cc_mcomprr  =pars[45] # Radial index of emissivity [-]
+        self.cc_hcomprr  =pars[46] # Radial index of emissivity [-]
+        self.tref        =pars[47] # Start time of reflection impulse response [sec]
+        self.dtref       =pars[48] # Time width of reflection impulse response [sec]
+        self.quant       =pars[49]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert      =pars[46] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display     =pars[47] # 1: display, 2: not display
+        self.invert      =pars[50] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display     =pars[51] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -256,6 +260,7 @@ class Flow2Ring:
         self.wids=np.zeros(self.n_ring)
         self.drs=np.zeros(self.n_ring-1)
         self.fs_vis=np.zeros(self.n_ring)
+        self.fs_acc=np.zeros(self.n_ring)
         self.vs_rad=np.zeros(self.n_ring)
         self.eps=np.zeros(self.n_ring)
         self.set=True
@@ -344,6 +349,7 @@ class Flow2Ring:
         self.wids   =self.wids[::-1]
         self.drs    =self.drs[::-1]
         self.fs_vis =self.fs_vis[::-1]
+        self.fs_acc =self.fs_acc[::-1]
         self.vs_rad =self.vs_rad[::-1]
         self.eps    =self.eps[::-1]
         self.cds    =self.cds[::-1]

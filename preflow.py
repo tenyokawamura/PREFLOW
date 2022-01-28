@@ -67,10 +67,15 @@ def preflow(engs, params, fluxes):
     rs_scomp=rings.rs[is_scomp]
     rs_disk =rings.rs[is_disk]
 
+    # Variability time-scale
     fs_vis_flow=f_vis_calc(r=rs_flow, lb=inpar.lb_flow, m=inpar.m_flow) #[c/Rg]
     fs_vis_disk=f_vis_calc(r=rs_disk, lb=inpar.lb_disk, m=inpar.m_disk) #[c/Rg]
     rings.fs_vis=np.append(fs_vis_flow, fs_vis_disk)
-    rings.vs_rad=rings.rs*rings.fs_vis #[c]
+    # Accretion time-scale
+    fs_acc_flow=f_vis_calc(r=rs_flow, lb=inpar.lb_acc_flow, m=inpar.m_acc_flow) #[c/Rg]
+    fs_acc_disk=f_vis_calc(r=rs_disk, lb=inpar.lb_acc_disk, m=inpar.m_acc_disk) #[c/Rg]
+    rings.fs_acc=np.append(fs_acc_flow, fs_acc_disk)
+    rings.vs_rad=rings.rs*rings.fs_acc #[c]
 
     # --- Damping factor --- #
     cds_flow=(inpar.cd_flow**(1./rings.n_dec))*np.ones(len(rs_flow))
@@ -138,13 +143,14 @@ def preflow(engs, params, fluxes):
 
     # ----- Print ring information ----- #
     if inpar.display==1:
-        print_ring_info(name='R [Rg]',                 xs=rings.rs,                digit=1)
-        print_ring_info(name='Disk ring [Rg]',         xs=rs_disk,                 digit=1)
-        print_ring_info(name='Soft Compton ring [Rg]', xs=rs_scomp,                digit=1)
-        print_ring_info(name='Mid Compton ring [Rg]',  xs=rs_mcomp,                digit=1)
-        print_ring_info(name='Hard Compton ring [Rg]', xs=rs_hcomp,                digit=1)
-        print_ring_info(name='Viscous frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
-        print_ring_info(name='Radial velocity [km/s]', xs=rings.vs_rad*bunit.c,    digit=3)
+        print_ring_info(name='R [Rg]',                     xs=rings.rs,                digit=1)
+        print_ring_info(name='Disk ring [Rg]',             xs=rs_disk,                 digit=1)
+        print_ring_info(name='Soft Compton ring [Rg]',     xs=rs_scomp,                digit=1)
+        print_ring_info(name='Mid Compton ring [Rg]',      xs=rs_mcomp,                digit=1)
+        print_ring_info(name='Hard Compton ring [Rg]',     xs=rs_hcomp,                digit=1)
+        print_ring_info(name='Variability frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
+        print_ring_info(name='Accretion frequency [Hz]',   xs=rings.fs_acc*bunit.c_rg, digit=3)
+        print_ring_info(name='Radial velocity [km/s]',     xs=rings.vs_rad*bunit.c,    digit=3)
 
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #
@@ -240,11 +246,23 @@ def preflow(engs, params, fluxes):
 
         lm2s_prop=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
+        #md2fl.psd_flux_rep_calc(fs=flupro.fs,\
+        #                        n_r=rings.n_ring,\
+        #                        ws_flow=ws_rr,\
+        #                        lm2s=lm2s_prop,\
+        #                        fs_vis=rings.fs_vis,\
+        #                        cds=rings.cds,\
+        #                        xlag=inpar.xlag,\
+        #                        dr_r=rings.dr_r,\
+        #                        t0=inpar.t0,\
+        #                        dt0=inpar.dt0,\
+        #                        rg_c=bunit.rg_c)
+        # fs_vis here is used to calculate accretion time!
         md2fl.psd_flux_rep_calc(fs=flupro.fs,\
                                 n_r=rings.n_ring,\
                                 ws_flow=ws_rr,\
                                 lm2s=lm2s_prop,\
-                                fs_vis=rings.fs_vis,\
+                                fs_vis=rings.fs_acc,\
                                 cds=rings.cds,\
                                 xlag=inpar.xlag,\
                                 dr_r=rings.dr_r,\
@@ -400,11 +418,23 @@ def preflow(engs, params, fluxes):
         # ----- CSD ----- #
         lm2s_prop=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
+        #md2fl.csd_flux_rep_calc(fs=flupro.fs,\
+        #                        n_r=rings.n_ring,\
+        #                        ws_rep=ws_rr,\
+        #                        lm2s=lm2s_prop,\
+        #                        fs_vis=rings.fs_vis,\
+        #                        cds=rings.cds,\
+        #                        xlag=inpar.xlag,\
+        #                        dr_r=rings.dr_r,\
+        #                        t0=inpar.t0,\
+        #                        dt0=inpar.dt0,\
+        #                        rg_c=bunit.rg_c)
+        # fs_vis here is used to calculate accretion time!
         md2fl.csd_flux_rep_calc(fs=flupro.fs,\
                                 n_r=rings.n_ring,\
                                 ws_rep=ws_rr,\
                                 lm2s=lm2s_prop,\
-                                fs_vis=rings.fs_vis,\
+                                fs_vis=rings.fs_acc,\
                                 cds=rings.cds,\
                                 xlag=inpar.xlag,\
                                 dr_r=rings.dr_r,\

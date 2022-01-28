@@ -19,8 +19,12 @@ def main():
     drflow =100.
     Bdisk  =0.03
     mdisk  =0.5
-    Bflow  =6.
-    mflow  =1.2
+    Badisk =0.03
+    madisk =0.5
+    Bflow  =4.
+    mflow  =1.
+    Baflow =6.
+    maflow =1.2
     Ddisk  =1.
     Dflow  =1.
     Dtran  =1.
@@ -35,7 +39,7 @@ def main():
     Csc    =1.
     Cmc    =1.
     Chc    =1.
-    Arep   =1.
+    Arep   =0.
     Eminr  =2.
     Emaxr  =10.
     Cdr    =0.
@@ -58,14 +62,15 @@ def main():
     params=[\
         Mass,   rin,    drhc,   drmc,   drsc,\
         drd,    Nring,  Fvdisk, drdisk, Fvflow,\
-        drflow, Bdisk,  mdisk,  Bflow,  mflow,\
-        Ddisk,  Dflow,  Dtran,  xlag,   gammad,\
-        gammaf, stress, rmin,   Emin,   Emax,\
-        Cd,     Csc,    Cmc,    Chc,    Arep,\
-        Eminr,  Emaxr,  Cdr,    Cscr,   Cmcr,\
-        Chcr,   Arepr,  Eminrr, Emaxrr, Cdrr,\
-        Cscrr,  Cmcrr,  Chcrr,  tref,   dtref,\
-        quant,  invert, par_print]
+        drflow, Bdisk,  mdisk,  Badisk, madisk,\
+        Bflow,  mflow,  Baflow, maflow, Ddisk,\
+        Dflow,  Dtran,  xlag,   gammad, gammaf,\
+        stress, rmin,   Emin,   Emax,   Cd,\
+        Csc,    Cmc,    Chc,    Arep,   Eminr,\
+        Emaxr,  Cdr,    Cscr,   Cmcr,   Chcr,\
+        Arepr,  Eminrr, Emaxrr, Cdrr,   Cscrr,\
+        Cmcrr,  Chcrr,  tref,   dtref,  quant,\
+        invert, par_print]
 
     fluxes=np.ones(len(engs)-1)
 
