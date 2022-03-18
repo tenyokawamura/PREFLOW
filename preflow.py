@@ -66,6 +66,12 @@ def preflow(engs, params, fluxes):
     rs_mcomp=rings.rs[is_mcomp]
     rs_scomp=rings.rs[is_scomp]
     rs_disk =rings.rs[is_disk]
+    # Width is used to calculate weight. (2022/01/28)
+    wids_flow =rings.wids[is_flow]
+    wids_hcomp=rings.wids[is_hcomp]
+    wids_mcomp=rings.wids[is_mcomp]
+    wids_scomp=rings.wids[is_scomp]
+    wids_disk =rings.wids[is_disk]
 
     # Variability time-scale
     fs_vis_flow=f_vis_calc(r=rs_flow, lb=inpar.lb_flow, m=inpar.m_flow) #[c/Rg]
@@ -96,50 +102,105 @@ def preflow(engs, params, fluxes):
     rs_mcomp=rs_mcomp[::-1]
     rs_scomp=rs_scomp[::-1]
     rs_disk =rs_disk[::-1]
+    wids_flow =wids_flow[::-1]
+    wids_hcomp=wids_hcomp[::-1]
+    wids_mcomp=wids_mcomp[::-1]
+    wids_scomp=wids_scomp[::-1]
+    wids_disk =wids_disk[::-1]
 
     # --- Weight --- #
-    # Energy band
-    ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomp,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_mcomp=weight_calc_pivot(r=rs_mcomp, cc=inpar.cc_mcomp,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scomp,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_disk =weight_calc_pivot(r=rs_disk,  cc=inpar.cc_disk,\
-        gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
+    # Stressed
+    if inpar.stress==1:
+        stress=True 
+    # Stress-free
+    elif inpar.stress==2:
+        stress=False
+    else:
+        print('Error')
+        sys.exit()
+    ### Energy band ###
+    # Energy dissipated
+    es_dis=epsilon_calc(r=rs_hcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_hcomp*wids_hcomp
+    # Total energy dissipated (normalization)
+    es_dis_tot=np.sum(es_dis)
+    ws_hcomp=inpar.cc_hcomp*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_mcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_mcomp*wids_mcomp
+    es_dis_tot=np.sum(es_dis)
+    ws_mcomp=inpar.cc_mcomp*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_scomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_scomp*wids_scomp
+    es_dis_tot=np.sum(es_dis)
+    ws_scomp=inpar.cc_scomp*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_disk, stress=stress,  gamma=inpar.gamma_disk, r_min=inpar.r_min)*\
+        2.*np.pi*rs_disk*wids_disk
+    es_dis_tot=np.sum(es_dis)
+    ws_disk=inpar.cc_disk*es_dis/es_dis_tot
+
     ws=ws_disk
     ws=np.append(ws, ws_scomp)
     ws=np.append(ws, ws_mcomp)
     ws=np.append(ws, ws_hcomp)
-    # Reference band
-    ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcompr,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_mcomp=weight_calc_pivot(r=rs_mcomp, cc=inpar.cc_mcompr,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scompr,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_disk =weight_calc_pivot(r=rs_disk,  cc=inpar.cc_diskr,\
-        gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
+
+    ### Reference band ###
+    # Energy dissipated
+    es_dis=epsilon_calc(r=rs_hcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_hcomp*wids_hcomp
+    # Total energy dissipated (normalization)
+    es_dis_tot=np.sum(es_dis)
+    ws_hcomp=inpar.cc_hcompr*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_mcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_mcomp*wids_mcomp
+    es_dis_tot=np.sum(es_dis)
+    ws_mcomp=inpar.cc_mcompr*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_scomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_scomp*wids_scomp
+    es_dis_tot=np.sum(es_dis)
+    ws_scomp=inpar.cc_scompr*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_disk, stress=stress,  gamma=inpar.gamma_disk, r_min=inpar.r_min)*\
+        2.*np.pi*rs_disk*wids_disk
+    es_dis_tot=np.sum(es_dis)
+    ws_disk=inpar.cc_diskr*es_dis/es_dis_tot
+
     ws_r=ws_disk
     ws_r=np.append(ws_r, ws_scomp)
     ws_r=np.append(ws_r, ws_mcomp)
     ws_r=np.append(ws_r, ws_hcomp)
-    # Reference band for reflection
-    ws_hcomp=weight_calc_pivot(r=rs_hcomp, cc=inpar.cc_hcomprr,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_mcomp=weight_calc_pivot(r=rs_mcomp, cc=inpar.cc_mcomprr,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_scomp=weight_calc_pivot(r=rs_scomp, cc=inpar.cc_scomprr,\
-        gamma=inpar.gamma_flow,   r_in=inpar.r_min,   stress=inpar.stress)
-    ws_disk =weight_calc_pivot(r=rs_disk,  cc=inpar.cc_diskrr,\
-        gamma=inpar.gamma_disk,   r_in=inpar.r_min,   stress=inpar.stress)
+    
+    ### Reference band for reflection ###
+    # Energy dissipated
+    es_dis=epsilon_calc(r=rs_hcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_hcomp*wids_hcomp
+    # Total energy dissipated (normalization)
+    es_dis_tot=np.sum(es_dis)
+    ws_hcomp=inpar.cc_hcomprr*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_mcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_mcomp*wids_mcomp
+    es_dis_tot=np.sum(es_dis)
+    ws_mcomp=inpar.cc_mcomprr*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_scomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
+        2.*np.pi*rs_scomp*wids_scomp
+    es_dis_tot=np.sum(es_dis)
+    ws_scomp=inpar.cc_scomprr*es_dis/es_dis_tot
+
+    es_dis=epsilon_calc(r=rs_disk, stress=stress,  gamma=inpar.gamma_disk, r_min=inpar.r_min)*\
+        2.*np.pi*rs_disk*wids_disk
+    es_dis_tot=np.sum(es_dis)
+    ws_disk=inpar.cc_diskrr*es_dis/es_dis_tot
+
     ws_rr=ws_disk
     ws_rr=np.append(ws_rr, ws_scomp)
     ws_rr=np.append(ws_rr, ws_mcomp)
     ws_rr=np.append(ws_rr, ws_hcomp)
-    #print(ws)
-    #print(ws_r)
-    #print(ws_rr)
 
     # ----- Print ring information ----- #
     if inpar.display==1:
@@ -151,6 +212,11 @@ def preflow(engs, params, fluxes):
         print_ring_info(name='Variability frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
         print_ring_info(name='Accretion frequency [Hz]',   xs=rings.fs_acc*bunit.c_rg, digit=3)
         print_ring_info(name='Radial velocity [km/s]',     xs=rings.vs_rad*bunit.c,    digit=3)
+
+    #print(ws)
+    #print(ws_r)
+    #print(ws_rr)
+    #return rings.rs, ws
 
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #

@@ -35,10 +35,10 @@ def main():
     rmin   =6.
     Emin   =0.5
     Emax   =2.
-    Cd     =0.
-    Csc    =1.
-    Cmc    =1.
-    Chc    =1.
+    Cd     =0.1
+    Csc    =0.1
+    Cmc    =0.25
+    Chc    =0.25
     Arep   =0.
     Eminr  =2.
     Emaxr  =10.
@@ -55,7 +55,7 @@ def main():
     Chcrr  =0.
     tref   =4.e-3
     dtref  =4.e-3
-    quant  =2
+    quant  =1
     invert =2
     par_print=1 
 

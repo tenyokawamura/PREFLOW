@@ -296,6 +296,9 @@ class Flow2Ring:
                 self.rs_min[i]=self.r_in
             else:
                 self.rs_min[i]=self.rs_min[i-1]*(1.+self.k)
+        # Change the actual outer radius rout (2022/01/28)
+        # This is for setting weight appropriately.
+        self.r_out_act=self.rs_min[-1]*(1.+self.k)
 
     # Center position of ring
     def centerr_calc(self):
@@ -304,7 +307,9 @@ class Flow2Ring:
             sys.exit()
         for i in range(self.n_ring):
             if i==self.n_ring-1:
-                self.rs[i]=(self.rs_min[i]+self.r_out)/2.
+                # 2022/01/28
+                #self.rs[i]=(self.rs_min[i]+self.r_out)/2.
+                self.rs[i]=(self.rs_min[i]+self.r_out_act)/2.
             else:
                 self.rs[i]=(self.rs_min[i]+self.rs_min[i+1])/2.
 
@@ -315,7 +320,9 @@ class Flow2Ring:
             sys.exit()
         for i in range(self.n_ring):
             if i==self.n_ring-1:
-                self.wids[i]=self.r_out-self.rs_min[i]
+                # 2022/01/28
+                #self.wids[i]=self.r_out-self.rs_min[i]
+                self.wids[i]=self.r_out_act-self.rs_min[i]
             else:
                 self.wids[i]=self.rs_min[i+1]-self.rs_min[i]
 
@@ -1041,11 +1048,14 @@ def print_ring_info(name, xs, digit):
     print('--------------------------------------------------')
     print('{0}: '.format(name), end='')
     n_x=len(xs)
-    for i_x, x in enumerate(xs):
-        if i_x==n_x-1:
-            print_digit_end(x=x, digit=digit, end=True)
-        else:
-            print_digit_end(x=x, digit=digit, end=False)
+    if n_x==0:
+        print('')
+    else:
+        for i_x, x in enumerate(xs):
+            if i_x==n_x-1:
+                print_digit_end(x=x, digit=digit, end=True)
+            else:
+                print_digit_end(x=x, digit=digit, end=False)
 
 def print_digit_end(x, digit, end):
     if digit==1:
