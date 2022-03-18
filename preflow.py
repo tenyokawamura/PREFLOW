@@ -202,6 +202,27 @@ def preflow(engs, params, fluxes):
     ws_rr=np.append(ws_rr, ws_mcomp)
     ws_rr=np.append(ws_rr, ws_hcomp)
 
+    # --- Lag --- #
+    # Time taken for spectra to respond to mass accretion rate fluctuations
+    ### Energy band ###
+    lags_disk=inpar.lag_disk*np.ones(len(rs_disk))
+    lags_scomp=inpar.lag_scomp*np.ones(len(rs_scomp))
+    lags_mcomp=inpar.lag_mcomp*np.ones(len(rs_mcomp))
+    lags_hcomp=inpar.lag_hcomp*np.ones(len(rs_hcomp))
+    lags=lags_disk
+    lags=np.append(lags, lags_scomp)
+    lags=np.append(lags, lags_mcomp)
+    lags=np.append(lags, lags_hcomp)
+    ### Reference band ###
+    lags_disk=inpar.lag_diskr*np.ones(len(rs_disk))
+    lags_scomp=inpar.lag_scompr*np.ones(len(rs_scomp))
+    lags_mcomp=inpar.lag_mcompr*np.ones(len(rs_mcomp))
+    lags_hcomp=inpar.lag_hcompr*np.ones(len(rs_hcomp))
+    lags_r=lags_disk
+    lags_r=np.append(lags_r, lags_scomp)
+    lags_r=np.append(lags_r, lags_mcomp)
+    lags_r=np.append(lags_r, lags_hcomp)
+
     # ----- Print ring information ----- #
     if inpar.display==1:
         print_ring_info(name='R [Rg]',                     xs=rings.rs,                digit=1)
@@ -217,6 +238,8 @@ def preflow(engs, params, fluxes):
     #print(ws_r)
     #print(ws_rr)
     #return rings.rs, ws
+    #print(lags)
+    #print(lags_r)
 
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #
@@ -279,22 +302,10 @@ def preflow(engs, params, fluxes):
         ###### (2021/08/17) Preliminary (haphazard) prescription to set weight, ... #####
         ###### Smarter implementation will be performed.                            #####
         #################################################################################
-        #ws_disk =disk.eps *spec.disk /disk.eps_tot
-        #ws_scomp=scomp.eps*spec.scomp/scomp.eps_tot
-        #ws_mcomp=mcomp.eps*spec.mcomp/mcomp.eps_tot
-        #ws_hcomp=hcomp.eps*spec.hcomp/hcomp.eps_tot
-        #ws=ws_disk
-        #ws=np.append(ws, ws_scomp)
-        #ws=np.append(ws, ws_mcomp)
-        #ws=np.append(ws, ws_hcomp)
         md2fl.ws=ws
         md2fl.w_tot=np.sum(md2fl.ws)
 
-        #md2fl.speceff_disk=spec.disk
-        #md2fl.speceff_sref=spec.sref
-        #md2fl.speceff_mref=spec.mref
-        #md2fl.speceff_href=spec.href
-        #md2fl.mu_fl=spec.tot
+        md2fl.lags=lags
 
         md2fl.speceff_disk=0.
         md2fl.speceff_sref=0.
@@ -303,38 +314,31 @@ def preflow(engs, params, fluxes):
         md2fl.mu_fl=1. # <x(E,t)>=\sum _{r_n} w(r_n, E)=1
 
         md2fl.psd_norm_set(dt=tifr.dt, n_data=tifr.n_data)
-        #f_dir=1. # fixed (not free parameter anymore and should be removed)
-        #f_rep=1.-f_dir # Fraction of the reprocessed component
-        #md2fl.norm_rep_set(f_rep=f_rep, dt0=dt0, w_flow_tot=w_flow_tot)
-        #md2fl.norm_rep_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot)
 
         md2fl.norm_rep=inpar.h0_rep # Normalization of the top-hat response function.
 
         lm2s_prop=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
+        # fs_vis here is used to calculate accretion time!
         #md2fl.psd_flux_rep_calc(fs=flupro.fs,\
         #                        n_r=rings.n_ring,\
         #                        ws_flow=ws_rr,\
         #                        lm2s=lm2s_prop,\
-        #                        fs_vis=rings.fs_vis,\
+        #                        fs_vis=rings.fs_acc,\
         #                        cds=rings.cds,\
         #                        xlag=inpar.xlag,\
         #                        dr_r=rings.dr_r,\
         #                        t0=inpar.t0,\
         #                        dt0=inpar.dt0,\
         #                        rg_c=bunit.rg_c)
-        # fs_vis here is used to calculate accretion time!
-        md2fl.psd_flux_rep_calc(fs=flupro.fs,\
-                                n_r=rings.n_ring,\
-                                ws_flow=ws_rr,\
-                                lm2s=lm2s_prop,\
-                                fs_vis=rings.fs_acc,\
-                                cds=rings.cds,\
-                                xlag=inpar.xlag,\
-                                dr_r=rings.dr_r,\
-                                t0=inpar.t0,\
-                                dt0=inpar.dt0,\
-                                rg_c=bunit.rg_c)
+        md2fl.psd_flux_calc(fs=flupro.fs,\
+                            n_r=rings.n_ring,\
+                            lm2s=lm2s_prop,\
+                            fs_vis=rings.fs_acc,\
+                            cds=rings.cds,\
+                            xlag=inpar.xlag,\
+                            dr_r=rings.dr_r,\
+                            rg_c=bunit.rg_c)
 
         #mus_fl=md2fl.mu_fl
         #ws=md2fl.ws
@@ -412,24 +416,9 @@ def preflow(engs, params, fluxes):
         ###### (2021/08/17) Preliminary (haphazard) prescription to set weight, ... #####
         ###### Smarter implementation will be performed.                            #####
         #################################################################################
-        #ws_disk =disk.eps *spec.disk /disk.eps_tot
-        #ws_scomp=scomp.eps*spec.scomp/scomp.eps_tot
-        #ws_mcomp=mcomp.eps*spec.mcomp/mcomp.eps_tot
-        #ws_hcomp=hcomp.eps*spec.hcomp/hcomp.eps_tot
-        #ws=ws_disk
-        #ws=np.append(ws, ws_scomp)
-        #ws=np.append(ws, ws_mcomp)
-        #ws=np.append(ws, ws_hcomp)
-        #md2fl.ws=ws
-        #md2fl.w_tot=np.sum(md2fl.ws)
-        #md2fl.speceff_disk=spec.disk
-        #md2fl.speceff_sref=spec.sref
-        #md2fl.speceff_mref=spec.mref
-        #md2fl.speceff_href=spec.href
-        #md2fl.mu_fl=spec.tot
-
         md2fl.ws=ws
         md2fl.w_tot=np.sum(md2fl.ws)
+        md2fl.lags=lags
         # Ignore reflection for now (2021/12/10)
         md2fl.speceff_disk=0.
         md2fl.speceff_sref=0.
@@ -440,24 +429,9 @@ def preflow(engs, params, fluxes):
         ######################
         ### Reference band ###
         ######################
-        #ws_disk =disk.eps *spec.diskr /disk.eps_tot
-        #ws_scomp=scomp.eps*spec.scompr/scomp.eps_tot
-        #ws_mcomp=mcomp.eps*spec.mcompr/mcomp.eps_tot
-        #ws_hcomp=hcomp.eps*spec.hcompr/hcomp.eps_tot
-        #ws=ws_disk
-        #ws=np.append(ws, ws_scomp)
-        #ws=np.append(ws, ws_mcomp)
-        #ws=np.append(ws, ws_hcomp)
-        #md2fl.ws_ref=ws
-        #md2fl.w_tot_ref=np.sum(md2fl.ws_ref)
-        #md2fl.speceff_disk_ref=spec.diskr
-        #md2fl.speceff_sref_ref=spec.srefr
-        #md2fl.speceff_mref_ref=spec.mrefr
-        #md2fl.speceff_href_ref=spec.hrefr
-        #md2fl.mu_fl_ref=spec.totr
-
         md2fl.ws_ref=ws_r
         md2fl.w_tot_ref=np.sum(md2fl.ws_ref)
+        md2fl.lags_ref=lags_r
         # Ignore reflection for now (2021/12/10)
         md2fl.speceff_disk_ref=0.
         md2fl.speceff_sref_ref=0.
@@ -496,17 +470,14 @@ def preflow(engs, params, fluxes):
         #                        dt0=inpar.dt0,\
         #                        rg_c=bunit.rg_c)
         # fs_vis here is used to calculate accretion time!
-        md2fl.csd_flux_rep_calc(fs=flupro.fs,\
-                                n_r=rings.n_ring,\
-                                ws_rep=ws_rr,\
-                                lm2s=lm2s_prop,\
-                                fs_vis=rings.fs_acc,\
-                                cds=rings.cds,\
-                                xlag=inpar.xlag,\
-                                dr_r=rings.dr_r,\
-                                t0=inpar.t0,\
-                                dt0=inpar.dt0,\
-                                rg_c=bunit.rg_c)
+        md2fl.csd_flux_calc(fs=flupro.fs,\
+                            n_r=rings.n_ring,\
+                            lm2s=lm2s_prop,\
+                            fs_vis=rings.fs_acc,\
+                            cds=rings.cds,\
+                            xlag=inpar.xlag,\
+                            dr_r=rings.dr_r,\
+                            rg_c=bunit.rg_c)
 
         # Re[CSD]
         if inpar.quant==2:
