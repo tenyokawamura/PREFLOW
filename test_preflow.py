@@ -39,10 +39,10 @@ def main():
     Csc    =0.1
     Cmc    =0.25
     Chc    =0.25
-    lagd   =0
-    lagsc  =0.1
-    lagmc  =0.2
-    laghc  =0.3
+    Fdd    =0
+    Fdsc   =0.1
+    Fdmc   =0.2
+    Fdhc   =0.3
     Arep   =0.
     Eminr  =2.
     Emaxr  =10.
@@ -50,10 +50,10 @@ def main():
     Cscr   =-1.
     Cmcr   =1.
     Chcr   =1.
-    lagdr  =0
-    lagscr =0.2
-    lagmcr =0.4
-    laghcr =0.6
+    Fddr   =0
+    Fdscr  =0.2
+    Fdmcr  =0.4
+    Fdhcr  =0.6
     Arepr  =1.
     Eminrr =0.5
     Emaxrr =10.
@@ -74,10 +74,10 @@ def main():
         Bflow,  mflow,  Baflow, maflow, Ddisk,\
         Dflow,  Dtran,  xlag,   gammad, gammaf,\
         stress, rmin,   Emin,   Emax,   Cd,\
-        Csc,    Cmc,    Chc,    lagd,   lagsc,\
-        lagmc,  laghc,  Arep,   Eminr,  Emaxr,\
-        Cdr,    Cscr,   Cmcr,   Chcr,   lagdr,\
-        lagscr, lagmcr, laghcr, Arepr,  Eminrr,\
+        Csc,    Cmc,    Chc,    Fdd,    Fdsc,\
+        Fdmc,   Fdhc,   Arep,   Eminr,  Emaxr,\
+        Cdr,    Cscr,   Cmcr,   Chcr,   Fddr,\
+        Fdscr,  Fdmcr,  Fdhcr,  Arepr,  Eminrr,\
         Emaxrr, Cdrr,   Cscrr,  Cmcrr,  Chcrr,\
         tref,   dtref,  quant,  invert, par_print]
 

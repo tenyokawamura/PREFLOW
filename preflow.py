@@ -205,23 +205,25 @@ def preflow(engs, params, fluxes):
     # --- Lag --- #
     # Time taken for spectra to respond to mass accretion rate fluctuations
     ### Energy band ###
-    lags_disk=inpar.lag_disk*np.ones(len(rs_disk))
-    lags_scomp=inpar.lag_scomp*np.ones(len(rs_scomp))
-    lags_mcomp=inpar.lag_mcomp*np.ones(len(rs_mcomp))
-    lags_hcomp=inpar.lag_hcomp*np.ones(len(rs_hcomp))
-    lags=lags_disk
-    lags=np.append(lags, lags_scomp)
-    lags=np.append(lags, lags_mcomp)
-    lags=np.append(lags, lags_hcomp)
-    ### Reference band ###
-    lags_disk=inpar.lag_diskr*np.ones(len(rs_disk))
-    lags_scomp=inpar.lag_scompr*np.ones(len(rs_scomp))
-    lags_mcomp=inpar.lag_mcompr*np.ones(len(rs_mcomp))
-    lags_hcomp=inpar.lag_hcompr*np.ones(len(rs_hcomp))
-    lags_r=lags_disk
-    lags_r=np.append(lags_r, lags_scomp)
-    lags_r=np.append(lags_r, lags_mcomp)
-    lags_r=np.append(lags_r, lags_hcomp)
+    cfds_disk =inpar.cfd_disk *np.ones(len(rs_disk))
+    cfds_scomp=inpar.cfd_scomp*np.ones(len(rs_scomp))
+    cfds_mcomp=inpar.cfd_mcomp*np.ones(len(rs_mcomp))
+    cfds_hcomp=inpar.cfd_hcomp*np.ones(len(rs_hcomp))
+    cfds=cfds_disk
+    cfds=np.append(cfds, cfds_scomp)
+    cfds=np.append(cfds, cfds_mcomp)
+    cfds=np.append(cfds, cfds_hcomp)
+    lags=cfds/(rings.fs_vis*bunit.c_rg) # [s]
+
+    cfds_disk =inpar.cfd_diskr *np.ones(len(rs_disk))
+    cfds_scomp=inpar.cfd_scompr*np.ones(len(rs_scomp))
+    cfds_mcomp=inpar.cfd_mcompr*np.ones(len(rs_mcomp))
+    cfds_hcomp=inpar.cfd_hcompr*np.ones(len(rs_hcomp))
+    cfds=cfds_disk
+    cfds=np.append(cfds, cfds_scomp)
+    cfds=np.append(cfds, cfds_mcomp)
+    cfds=np.append(cfds, cfds_hcomp)
+    lags_r=cfds/(rings.fs_vis*bunit.c_rg) # [s]
 
     # ----- Print ring information ----- #
     if inpar.display==1:
