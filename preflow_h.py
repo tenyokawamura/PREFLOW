@@ -44,39 +44,53 @@ class SetParameter:
         self.cc_scomp    =pars[30] # Radial index of emissivity [-]
         self.cc_mcomp    =pars[31] # Radial index of emissivity [-]
         self.cc_hcomp    =pars[32] # Radial index of emissivity [-]
-        self.cfd_disk    =pars[33] # Fdelay: fractional delay time for local viscous time-scale [-]
-        self.cfd_scomp   =pars[34] # Fdelay: fractional delay time for local viscous time-scale [-]
-        self.cfd_mcomp   =pars[35] # Fdelay: fractional delay time for local viscous time-scale [-]
-        self.cfd_hcomp   =pars[36] # Fdelay: fractional delay time for local viscous time-scale [-]
-        self.area_rep    =pars[37] # Area of top-hat impulse response [-]
-        self.e_minr      =pars[38] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[39] # Upper bound of reference band [keV] (unused)
-        self.cc_diskr    =pars[40] # Radial index of emissivity [-]
-        self.cc_scompr   =pars[41] # Radial index of emissivity [-]
-        self.cc_mcompr   =pars[42] # Radial index of emissivity [-]
-        self.cc_hcompr   =pars[43] # Radial index of emissivity [-]
-        self.cfd_diskr   =pars[44] # Radial index of emissivity [-]
-        self.cfd_scompr  =pars[45] # Radial index of emissivity [-]
-        self.cfd_mcompr  =pars[46] # Radial index of emissivity [-]
-        self.cfd_hcompr  =pars[47] # Radial index of emissivity [-]
-        self.area_repr   =pars[48] # Amplitude of top-hat impulse response [-]
-        self.e_minrr     =pars[49] # Lower bound of reference band 'for reflection' [keV] (unused)
-        self.e_maxrr     =pars[50] # Upper bound of reference band 'for reflection' [keV] (unused)
-        self.cc_diskrr   =pars[51] # Radial index of emissivity [-]
-        self.cc_scomprr  =pars[52] # Radial index of emissivity [-]
-        self.cc_mcomprr  =pars[53] # Radial index of emissivity [-]
-        self.cc_hcomprr  =pars[54] # Radial index of emissivity [-]
-        self.tref        =pars[55] # Start time of reflection impulse response [sec]
-        self.dtref       =pars[56] # Time width of reflection impulse response [sec]
-        self.quant       =pars[57]
+        self.cf_disk     =pars[33] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cf_scomp    =pars[34] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cf_mcomp    =pars[35] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cf_hcomp    =pars[36] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.ccr_disk    =pars[37] # Radial index of emissivity [-]
+        self.ccr_scomp   =pars[38] # Radial index of emissivity [-]
+        self.ccr_mcomp   =pars[39] # Radial index of emissivity [-]
+        self.ccr_hcomp   =pars[40] # Radial index of emissivity [-]
+        self.cfr_disk    =pars[41] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cfr_scomp   =pars[42] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cfr_mcomp   =pars[43] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cfr_hcomp   =pars[44] # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.e_minr      =pars[45] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[46] # Upper bound of reference band [keV] (unused)
+        self.cc_diskr    =pars[47] # Radial index of emissivity [-]
+        self.cc_scompr   =pars[48] # Radial index of emissivity [-]
+        self.cc_mcompr   =pars[49] # Radial index of emissivity [-]
+        self.cc_hcompr   =pars[50] # Radial index of emissivity [-]
+        self.cf_diskr    =pars[51] # Radial index of emissivity [-]
+        self.cf_scompr   =pars[52] # Radial index of emissivity [-]
+        self.cf_mcompr   =pars[53] # Radial index of emissivity [-]
+        self.cf_hcompr   =pars[54] # Radial index of emissivity [-]
+        self.ccr_diskr   =pars[55] # Radial index of emissivity [-]
+        self.ccr_scompr  =pars[56] # Radial index of emissivity [-]
+        self.ccr_mcompr  =pars[57] # Radial index of emissivity [-]
+        self.ccr_hcompr  =pars[58] # Radial index of emissivity [-]
+        self.cfr_diskr   =pars[59] # Radial index of emissivity [-]
+        self.cfr_scompr  =pars[60] # Radial index of emissivity [-]
+        self.cfr_mcompr  =pars[61] # Radial index of emissivity [-]
+        self.cfr_hcompr  =pars[62] # Radial index of emissivity [-]
+        self.tr_disk     =pars[63] # Start time of reflection impulse response [sec]
+        self.dt0_disk    =pars[64] # Time width of reflection impulse response [sec]
+        self.tr_scomp    =pars[65] # Start time of reflection impulse response [sec]
+        self.dt0_scomp   =pars[66] # Time width of reflection impulse response [sec]
+        self.tr_mcomp    =pars[67] # Start time of reflection impulse response [sec]
+        self.dt0_mcomp   =pars[68] # Time width of reflection impulse response [sec]
+        self.tr_hcomp    =pars[69] # Start time of reflection impulse response [sec]
+        self.dt0_hcomp   =pars[70] # Time width of reflection impulse response [sec]
+        self.quant       =pars[71]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert      =pars[58] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display     =pars[59] # 1: display, 2: not display
+        self.invert      =pars[72] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display     =pars[73] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -93,15 +107,12 @@ class SetParameter:
         self.frac_tot =1. 
         # Total fraction in the reference band [counts keV^-1 s^-1], 1.e., 1.
         self.frac_totr=1. 
-        # Fraction of hard Compton in the hot flow in the reference band 
-        #'for reflection' [counts kev^-1 s^-1]
-        #self.frac_hcomprr=1.-(self.frac_scomprr+self.frac_mcomprr) 
 
         # Impulse response of reflection
-        self.t0=self.tref+(self.dtref/2.)
-        self.dt0=self.dtref
-        self.h0_rep      =self.area_rep /self.dt0 # Amplitude of top-hat impulse response [s]
-        self.h0_repr     =self.area_repr/self.dt0 # Amplitude of top-hat impulse response [s]
+        self.t0_disk =self.tr_disk +(self.dt0_disk /2.)
+        self.t0_scomp=self.tr_scomp+(self.dt0_scomp/2.)
+        self.t0_mcomp=self.tr_mcomp+(self.dt0_mcomp/2.)
+        self.t0_hcomp=self.tr_hcomp+(self.dt0_hcomp/2.)
 
         self.set_inpar_done=True
 
@@ -753,7 +764,7 @@ class Mdot2Flux:
         self.norm_rep_ref=ref/(w_flow_tot*dt0) 
 
     # Lag taken for spectra to respond to mass accretion rate fluctuations included
-    # Reflection not included
+    # Reflection included
     def psd_flux_calc(self,\
                       fs,\
                       n_r,\
@@ -767,23 +778,40 @@ class Mdot2Flux:
             print('Error: normalization of PSD is not set.')
             sys.exit()
 
-        #|X(f)|^2, Direct component
-        lf2s=lf2_calc_lag(fs=fs,\
-                          n_r=n_r,\
-                          ws=self.ws,\
-                          lags=self.lags,\
-                          lm2s=lm2s,\
-                          fs_vis=fs_vis,\
-                          cds=cds,\
-                          xlag=xlag,\
-                          dr_r=dr_r,\
-                          rg_c=rg_c) 
+        # No reflection
+        if np.all(self.wrs==0)==True:
+            lf2s=lf2_calc_lag(fs=fs,\
+                              n_r=n_r,\
+                              ws=self.ws,\
+                              lags=self.lags,\
+                              lm2s=lm2s,\
+                              fs_vis=fs_vis,\
+                              cds=cds,\
+                              xlag=xlag,\
+                              dr_r=dr_r,\
+                              rg_c=rg_c) 
+        # Reflection is included
+        else:
+            lf2s=lf2_calc_lag_rep(fs=fs,\
+                                  n_r=n_r,\
+                                  ws=self.ws,\
+                                  wrs=self.wrs,\
+                                  lags=self.lags,\
+                                  lagrs=self.lagrs,\
+                                  lm2s=lm2s,\
+                                  fs_vis=fs_vis,\
+                                  cds=cds,\
+                                  xlag=xlag,\
+                                  dr_r=dr_r,\
+                                  rg_c=rg_c,\
+                                  t0s=self.t0s,\
+                                  dt0s=self.dt0s) 
 
         # Normalize
         self.psd_fl=self.norm_psd*lf2s
 
     # Lag taken for spectra to respond to mass accretion rate fluctuations included
-    # Reflection not included
+    # Reflection included
     def csd_flux_calc(self,\
                       fs,\
                       n_r,\
@@ -799,23 +827,46 @@ class Mdot2Flux:
         self.fs=fs
 
         #|(X(f))^{*}Y(f)|^2, Direct vs Direct
-        lflfs=lflf_calc_lag(fs=self.fs,\
-                             n_r=n_r,\
-                             ws_ref=self.ws_ref,\
-                             ws_coi=self.ws,\
-                             lags_ref=self.lags_ref,\
-                             lags_coi=self.lags,\
-                             lm2s=lm2s,\
-                             fs_vis=fs_vis,\
-                             cds=cds,\
-                             xlag=xlag,\
-                             dr_r=dr_r,\
-                             rg_c=rg_c)
+        # No reflection
+        if np.all(self.wrs==0)==True and np.all(self.wrs_ref==0)==True:
+            lflfs=lflf_calc_lag(fs=self.fs,\
+                                n_r=n_r,\
+                                ws_ref=self.ws_ref,\
+                                ws_coi=self.ws,\
+                                lags_ref=self.lags_ref,\
+                                lags_coi=self.lags,\
+                                lm2s=lm2s,\
+                                fs_vis=fs_vis,\
+                                cds=cds,\
+                                xlag=xlag,\
+                                dr_r=dr_r,\
+                                rg_c=rg_c)
+        # Reflection is included
+        else:
+            lflfs=lflf_calc_lag_rep(fs       =fs,\
+                                    n_r      =n_r,\
+                                    ws       =self.ws,\
+                                    wrs      =self.wrs,\
+                                    lags     =self.lags,\
+                                    lagrs    =self.lagrs,\
+                                    ws_ref   =self.ws_ref,\
+                                    wrs_ref  =self.wrs_ref,\
+                                    lags_ref =self.lags_ref,\
+                                    lagrs_ref=self.lagrs_ref,\
+                                    lm2s     =lm2s,\
+                                    fs_vis   =fs_vis,\
+                                    cds      =cds,\
+                                    xlag     =xlag,\
+                                    dr_r     =dr_r,\
+                                    rg_c     =rg_c,\
+                                    t0s      =self.t0s,\
+                                    dt0s     =self.dt0s) 
 
         # Normalize
         self.csd_fl=self.norm_csd*lflfs
         self.csd_flux_calc_done=True
 
+    ### OLD ###
     # Reprocessing is included.
     def psd_flux_rep_calc(self,\
                           fs,\
@@ -879,6 +930,7 @@ class Mdot2Flux:
         # Normalize
         self.psd_fl=self.norm_psd*lf2s
 
+    ### OLD ###
     # Reprocessing is included.
     def csd_flux_rep_calc(self,\
                           fs,\
@@ -1021,6 +1073,11 @@ def lh_rep_calc(f, norm, t0, dt0):
     lh=norm*dt0*np.sinc(omega*dt0/(2.*np.pi))*np.exp(-1j*omega*t0) # Correct!
     return lh
 
+# Normalized transfer function for reprocessing
+def ch_rep_calc(f, t0, dt0):
+    omega=2.*np.pi*f
+    lh=np.sinc(omega*dt0/(2.*np.pi))*np.exp(-1j*omega*t0)
+    return lh
 # Modulus square of transfer function for reprocessing
 def lh2_rep_calc(f, norm, dt0):
     omega=2.*np.pi*f
@@ -1038,6 +1095,7 @@ def prop_time_calc(i_start, i_end, ts_vis, dr_r):
     t_prop*=dr_r
     return t_prop
 
+# Lag, No reflection
 def lf2_calc_lag(fs,\
                  n_r,\
                  ws,\
@@ -1078,6 +1136,7 @@ def lf2_calc_lag(fs,\
 
     return tot
 
+# Lag, No reflection
 def lflf_calc_lag(fs,\
                   n_r,\
                   ws_ref,\
@@ -1125,6 +1184,120 @@ def lflf_calc_lag(fs,\
 
     return tot
 
+# Lag, Reflection
+def lf2_calc_lag_rep(fs,\
+                     n_r,\
+                     ws,\
+                     wrs,\
+                     lags,\
+                     lagrs,\
+                     lm2s,\
+                     fs_vis,\
+                     cds,\
+                     xlag,\
+                     dr_r,\
+                     rg_c,\
+                     t0s,\
+                     dt0s):
+    ts_vis=1./fs_vis #[Rg/c]
+    tot=0
+    for i_r in range(n_r):
+        tot=tot+\
+            (np.abs(ws[i_r] *np.exp(-1j*2.*np.pi*fs*lags [i_r]) +\
+                    wrs[i_r]*np.exp(-1j*2.*np.pi*fs*lagrs[i_r])*\
+                    ch_rep_calc(f=fs, t0=t0s[i_r], dt0=dt0s[i_r]))**2)*lm2s[i_r]
+
+        if i_r==0:
+            continue
+
+        # Cross term
+        tot_c=0
+        for i_ro in range(i_r):
+            ### Propagation time ###
+            t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r)*xlag #[Rg/c]
+            t_prop*=rg_c #[s]
+
+            ### Cross term ###
+            # with damping + lag + reflection
+            cd=np.prod(cds[i_ro+1:i_r+1])
+            tot_c=tot_c+\
+                  2.*np.real((\
+                    (ws [i_ro]*np.exp( 1j*2.*np.pi*fs*lags [i_ro])+\
+                     wrs[i_ro]*np.exp( 1j*2.*np.pi*fs*lagrs[i_ro])*\
+                     np.conjugate(ch_rep_calc(f=fs, t0=t0s[i_ro], dt0=dt0s[i_ro])))*\
+                    (ws [i_r] *np.exp(-1j*2.*np.pi*fs*lags [i_r] )+\
+                     wrs[i_r] *np.exp(-1j*2.*np.pi*fs*lagrs[i_r] )*\
+                                  ch_rep_calc(f=fs, t0=t0s[i_r ], dt0=dt0s[i_r]))\
+                             )*np.exp(-1j*2.*np.pi*fs*t_prop))*\
+                  lm2s[i_ro]/cd      
+
+        tot+=2.*tot_c
+
+    return tot
+
+# Lag, Reflection
+def lflf_calc_lag_rep(fs       ,\
+                      n_r      ,\
+                      ws       ,\
+                      wrs      ,\
+                      lags     ,\
+                      lagrs    ,\
+                      ws_ref   ,\
+                      wrs_ref  ,\
+                      lags_ref ,\
+                      lagrs_ref,\
+                      lm2s     ,\
+                      fs_vis   ,\
+                      cds      ,\
+                      xlag     ,\
+                      dr_r     ,\
+                      rg_c     ,\
+                      t0s      ,\
+                      dt0s     ):
+    ts_vis=1./fs_vis #[Rg/c]
+    tot=0
+    for i_r in range(n_r):
+        tot=tot+\
+            (ws_ref [i_r]*np.exp( 1j*2.*np.pi*fs*lags_ref [i_r])+\
+             wrs_ref[i_r]*np.exp( 1j*2.*np.pi*fs*lagrs_ref[i_r])*\
+             np.conjugate(ch_rep_calc(f=fs, t0=t0s[i_r], dt0=dt0s[i_r])))*\
+            (ws     [i_r]*np.exp(-1j*2.*np.pi*fs*lags     [i_r])+\
+             wrs    [i_r]*np.exp(-1j*2.*np.pi*fs*lagrs    [i_r])*\
+                          ch_rep_calc(f=fs, t0=t0s[i_r], dt0=dt0s[i_r]))*\
+            lm2s[i_r]
+
+        if i_r==0:
+            continue
+
+        # Cross term
+        tot_c=0
+        for i_ro in range(i_r):
+            ### Propagation time ###
+            t_prop=prop_time_calc(i_start=i_ro, i_end=i_r, ts_vis=ts_vis, dr_r=dr_r)*xlag #[Rg/c]
+            t_prop*=rg_c #[s]
+            ### Cross term ###
+            # with damping + lag + reflection
+            cd=np.prod(cds[i_ro+1:i_r+1])
+            tot_c=tot_c+\
+                ((ws_ref [i_ro]*np.exp( 1j*2.*np.pi*fs*lags_ref [i_ro])+\
+                  wrs_ref[i_ro]*np.exp( 1j*2.*np.pi*fs*lagrs_ref[i_ro])*\
+                  np.conjugate(ch_rep_calc(f=fs, t0=t0s[i_ro], dt0=dt0s[i_ro])))*\
+                 (ws     [i_r ]*np.exp(-1j*2.*np.pi*fs*lags     [i_r ])+\
+                  wrs    [i_r ]*np.exp(-1j*2.*np.pi*fs*lagrs    [i_r ])*\
+                               ch_rep_calc(f=fs, t0=t0s[i_r ], dt0=dt0s[i_r ]))*np.exp(-1j*2.*np.pi*fs*t_prop)+\
+                 (ws_ref [i_r ]*np.exp( 1j*2.*np.pi*fs*lags_ref [i_r ])+\
+                  wrs_ref[i_r ]*np.exp( 1j*2.*np.pi*fs*lagrs_ref[i_r ])*\
+                  np.conjugate(ch_rep_calc(f=fs, t0=t0s[i_r ], dt0=dt0s[i_r ])))*\
+                 (ws     [i_ro]*np.exp(-1j*2.*np.pi*fs*lags     [i_ro])+\
+                  wrs    [i_ro]*np.exp(-1j*2.*np.pi*fs*lagrs    [i_ro])*\
+                               ch_rep_calc(f=fs, t0=t0s[i_ro], dt0=dt0s[i_ro]))*np.exp( 1j*2.*np.pi*fs*t_prop))*\
+                lm2s[i_ro]/cd
+        tot=tot+tot_c
+
+    return tot
+
+
+# No lag, No reflection
 def lf2_calc(fs,\
              n_r,\
              ws,\
@@ -1161,6 +1334,7 @@ def lf2_calc(fs,\
 
     return tot
 
+# No lag, No reflection
 def lflf_calc(fs,\
               n_r,\
               ws_ref,\

@@ -77,7 +77,7 @@ def preflow(engs, params, fluxes):
     fs_vis_flow=f_vis_calc(r=rs_flow, lb=inpar.lb_flow, m=inpar.m_flow) #[c/Rg]
     fs_vis_disk=f_vis_calc(r=rs_disk, lb=inpar.lb_disk, m=inpar.m_disk) #[c/Rg]
     rings.fs_vis=np.append(fs_vis_flow, fs_vis_disk)
-    # Accretion time-scale
+    # Propagation time-scale
     fs_acc_flow=f_vis_calc(r=rs_flow, lb=inpar.lb_acc_flow, m=inpar.m_acc_flow) #[c/Rg]
     fs_acc_disk=f_vis_calc(r=rs_disk, lb=inpar.lb_acc_disk, m=inpar.m_acc_disk) #[c/Rg]
     rings.fs_acc=np.append(fs_acc_flow, fs_acc_disk)
@@ -124,27 +124,46 @@ def preflow(engs, params, fluxes):
         2.*np.pi*rs_hcomp*wids_hcomp
     # Total energy dissipated (normalization)
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_hcomp=inpar.cc_hcomp*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_hcomp=inpar.ccr_hcomp*es_dis/es_dis_tot
 
     es_dis=epsilon_calc(r=rs_mcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
         2.*np.pi*rs_mcomp*wids_mcomp
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_mcomp=inpar.cc_mcomp*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_mcomp=inpar.ccr_mcomp*es_dis/es_dis_tot
 
     es_dis=epsilon_calc(r=rs_scomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
         2.*np.pi*rs_scomp*wids_scomp
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_scomp=inpar.cc_scomp*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_scomp=inpar.ccr_scomp*es_dis/es_dis_tot
 
     es_dis=epsilon_calc(r=rs_disk, stress=stress,  gamma=inpar.gamma_disk, r_min=inpar.r_min)*\
         2.*np.pi*rs_disk*wids_disk
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_disk=inpar.cc_disk*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_disk=inpar.ccr_disk*es_dis/es_dis_tot
 
+    # Direct
     ws=ws_disk
     ws=np.append(ws, ws_scomp)
     ws=np.append(ws, ws_mcomp)
     ws=np.append(ws, ws_hcomp)
+    # Reprocessed
+    wrs=wrs_disk
+    wrs=np.append(wrs, wrs_scomp)
+    wrs=np.append(wrs, wrs_mcomp)
+    wrs=np.append(wrs, wrs_hcomp)
+
 
     ### Reference band ###
     # Energy dissipated
@@ -152,78 +171,114 @@ def preflow(engs, params, fluxes):
         2.*np.pi*rs_hcomp*wids_hcomp
     # Total energy dissipated (normalization)
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_hcomp=inpar.cc_hcompr*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_hcomp=inpar.ccr_hcompr*es_dis/es_dis_tot
 
     es_dis=epsilon_calc(r=rs_mcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
         2.*np.pi*rs_mcomp*wids_mcomp
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_mcomp=inpar.cc_mcompr*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_mcomp=inpar.ccr_mcompr*es_dis/es_dis_tot
 
     es_dis=epsilon_calc(r=rs_scomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
         2.*np.pi*rs_scomp*wids_scomp
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_scomp=inpar.cc_scompr*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_scomp=inpar.ccr_scompr*es_dis/es_dis_tot
 
     es_dis=epsilon_calc(r=rs_disk, stress=stress,  gamma=inpar.gamma_disk, r_min=inpar.r_min)*\
         2.*np.pi*rs_disk*wids_disk
     es_dis_tot=np.sum(es_dis)
+    # Direct
     ws_disk=inpar.cc_diskr*es_dis/es_dis_tot
+    # Reprocessed
+    wrs_disk=inpar.ccr_diskr*es_dis/es_dis_tot
 
+    # Direct
     ws_r=ws_disk
     ws_r=np.append(ws_r, ws_scomp)
     ws_r=np.append(ws_r, ws_mcomp)
     ws_r=np.append(ws_r, ws_hcomp)
+    # Reprocessed
+    wrs_r=wrs_disk
+    wrs_r=np.append(wrs_r, wrs_scomp)
+    wrs_r=np.append(wrs_r, wrs_mcomp)
+    wrs_r=np.append(wrs_r, wrs_hcomp)
     
-    ### Reference band for reflection ###
-    # Energy dissipated
-    es_dis=epsilon_calc(r=rs_hcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
-        2.*np.pi*rs_hcomp*wids_hcomp
-    # Total energy dissipated (normalization)
-    es_dis_tot=np.sum(es_dis)
-    ws_hcomp=inpar.cc_hcomprr*es_dis/es_dis_tot
-
-    es_dis=epsilon_calc(r=rs_mcomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
-        2.*np.pi*rs_mcomp*wids_mcomp
-    es_dis_tot=np.sum(es_dis)
-    ws_mcomp=inpar.cc_mcomprr*es_dis/es_dis_tot
-
-    es_dis=epsilon_calc(r=rs_scomp, stress=stress, gamma=inpar.gamma_flow, r_min=inpar.r_min)*\
-        2.*np.pi*rs_scomp*wids_scomp
-    es_dis_tot=np.sum(es_dis)
-    ws_scomp=inpar.cc_scomprr*es_dis/es_dis_tot
-
-    es_dis=epsilon_calc(r=rs_disk, stress=stress,  gamma=inpar.gamma_disk, r_min=inpar.r_min)*\
-        2.*np.pi*rs_disk*wids_disk
-    es_dis_tot=np.sum(es_dis)
-    ws_disk=inpar.cc_diskrr*es_dis/es_dis_tot
-
-    ws_rr=ws_disk
-    ws_rr=np.append(ws_rr, ws_scomp)
-    ws_rr=np.append(ws_rr, ws_mcomp)
-    ws_rr=np.append(ws_rr, ws_hcomp)
-
     # --- Lag --- #
     # Time taken for spectra to respond to mass accretion rate fluctuations
     ### Energy band ###
-    cfds_disk =inpar.cfd_disk *np.ones(len(rs_disk))
-    cfds_scomp=inpar.cfd_scomp*np.ones(len(rs_scomp))
-    cfds_mcomp=inpar.cfd_mcomp*np.ones(len(rs_mcomp))
-    cfds_hcomp=inpar.cfd_hcomp*np.ones(len(rs_hcomp))
-    cfds=cfds_disk
-    cfds=np.append(cfds, cfds_scomp)
-    cfds=np.append(cfds, cfds_mcomp)
-    cfds=np.append(cfds, cfds_hcomp)
-    lags=cfds/(rings.fs_vis*bunit.c_rg) # [s]
+    # Direct #
+    cfs_disk =inpar.cf_disk *np.ones(len(rs_disk))
+    cfs_scomp=inpar.cf_scomp*np.ones(len(rs_scomp))
+    cfs_mcomp=inpar.cf_mcomp*np.ones(len(rs_mcomp))
+    cfs_hcomp=inpar.cf_hcomp*np.ones(len(rs_hcomp))
+    cfs=cfs_disk
+    cfs=np.append(cfs, cfs_scomp)
+    cfs=np.append(cfs, cfs_mcomp)
+    cfs=np.append(cfs, cfs_hcomp)
+    lags=cfs/(rings.fs_vis*bunit.c_rg) # [s]
 
-    cfds_disk =inpar.cfd_diskr *np.ones(len(rs_disk))
-    cfds_scomp=inpar.cfd_scompr*np.ones(len(rs_scomp))
-    cfds_mcomp=inpar.cfd_mcompr*np.ones(len(rs_mcomp))
-    cfds_hcomp=inpar.cfd_hcompr*np.ones(len(rs_hcomp))
-    cfds=cfds_disk
-    cfds=np.append(cfds, cfds_scomp)
-    cfds=np.append(cfds, cfds_mcomp)
-    cfds=np.append(cfds, cfds_hcomp)
-    lags_r=cfds/(rings.fs_vis*bunit.c_rg) # [s]
+    # Reprocessed #
+    cfs_disk =inpar.cfr_disk *np.ones(len(rs_disk))
+    cfs_scomp=inpar.cfr_scomp*np.ones(len(rs_scomp))
+    cfs_mcomp=inpar.cfr_mcomp*np.ones(len(rs_mcomp))
+    cfs_hcomp=inpar.cfr_hcomp*np.ones(len(rs_hcomp))
+    cfs=cfs_disk
+    cfs=np.append(cfs, cfs_scomp)
+    cfs=np.append(cfs, cfs_mcomp)
+    cfs=np.append(cfs, cfs_hcomp)
+    lagrs=cfs/(rings.fs_vis*bunit.c_rg) # [s]
+
+    ### Reference band ###
+    # Direct #
+    cfs_disk =inpar.cf_diskr *np.ones(len(rs_disk))
+    cfs_scomp=inpar.cf_scompr*np.ones(len(rs_scomp))
+    cfs_mcomp=inpar.cf_mcompr*np.ones(len(rs_mcomp))
+    cfs_hcomp=inpar.cf_hcompr*np.ones(len(rs_hcomp))
+    cfs=cfs_disk
+    cfs=np.append(cfs, cfs_scomp)
+    cfs=np.append(cfs, cfs_mcomp)
+    cfs=np.append(cfs, cfs_hcomp)
+    lags_r=cfs/(rings.fs_vis*bunit.c_rg) # [s]
+
+    # Reprocessed #
+    cfs_disk =inpar.cfr_diskr *np.ones(len(rs_disk))
+    cfs_scomp=inpar.cfr_scompr*np.ones(len(rs_scomp))
+    cfs_mcomp=inpar.cfr_mcompr*np.ones(len(rs_mcomp))
+    cfs_hcomp=inpar.cfr_hcompr*np.ones(len(rs_hcomp))
+    cfs=cfs_disk
+    cfs=np.append(cfs, cfs_scomp)
+    cfs=np.append(cfs, cfs_mcomp)
+    cfs=np.append(cfs, cfs_hcomp)
+    lagrs_r=cfs/(rings.fs_vis*bunit.c_rg) # [s]
+
+    # --- Impulse response --- #
+    # Delay #
+    t0s_disk =inpar.t0_disk *np.ones(len(rs_disk))
+    t0s_scomp=inpar.t0_scomp*np.ones(len(rs_scomp))
+    t0s_mcomp=inpar.t0_mcomp*np.ones(len(rs_mcomp))
+    t0s_hcomp=inpar.t0_hcomp*np.ones(len(rs_hcomp))
+    t0s=t0s_disk
+    t0s=np.append(t0s, t0s_scomp)
+    t0s=np.append(t0s, t0s_mcomp)
+    t0s=np.append(t0s, t0s_hcomp)
+
+    # Duration #
+    dt0s_disk =inpar.dt0_disk *np.ones(len(rs_disk))
+    dt0s_scomp=inpar.dt0_scomp*np.ones(len(rs_scomp))
+    dt0s_mcomp=inpar.dt0_mcomp*np.ones(len(rs_mcomp))
+    dt0s_hcomp=inpar.dt0_hcomp*np.ones(len(rs_hcomp))
+    dt0s=dt0s_disk
+    dt0s=np.append(dt0s, dt0s_scomp)
+    dt0s=np.append(dt0s, dt0s_mcomp)
+    dt0s=np.append(dt0s, dt0s_hcomp)
 
     # ----- Print ring information ----- #
     if inpar.display==1:
@@ -233,15 +288,10 @@ def preflow(engs, params, fluxes):
         print_ring_info(name='Mid Compton ring [Rg]',      xs=rs_mcomp,                digit=1)
         print_ring_info(name='Hard Compton ring [Rg]',     xs=rs_hcomp,                digit=1)
         print_ring_info(name='Variability frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
-        print_ring_info(name='Accretion frequency [Hz]',   xs=rings.fs_acc*bunit.c_rg, digit=3)
-        print_ring_info(name='Radial velocity [km/s]',     xs=rings.vs_rad*bunit.c,    digit=3)
+        #print_ring_info(name='Propagation frequency [Hz]', xs=rings.fs_acc*bunit.c_rg, digit=3)
+        print_ring_info(name='Propagation speed [km/s]',   xs=rings.vs_rad*bunit.c,    digit=3)
 
-    #print(ws)
-    #print(ws_r)
-    #print(ws_rr)
-    #return rings.rs, ws
-    #print(lags)
-    #print(lags_r)
+    #return
 
     # ------------------------------------------------------------------------------ #
     # ---------- PSD of mass accretion rate for each ring w/o propagation ---------- #
@@ -264,28 +314,6 @@ def preflow(engs, params, fluxes):
         print('PSD of the mass accretion rate with propagation was successfully calculated.')
 
     #return flupro.fs, flupro.psds_prop[-1]
-    #print(flupro.fs)
-    #print(flupro.psds_prop[-1])
-
-    # ------------------------------------------------------------------------------------------------------------- #
-    # ---------- Calculation of w_flow=\int dE w(r_n, E), w_tot_flow := \sum _{r<r_ds} \int dE w(r_n, E) ---------- #
-    # ------------------------------------------------------------------------------------------------------------- #
-    #ws_disk=np.zeros(len(disk.rs))
-    #ws_scomp=scomp.eps*spec.scomprr/scomp.eps_tot
-    #ws_mcomp=mcomp.eps*spec.mcomprr/mcomp.eps_tot
-    #ws_hcomp=hcomp.eps*spec.hcomprr/hcomp.eps_tot
-    #ws=ws_disk
-    #ws=np.append(ws, ws_scomp)
-    #ws=np.append(ws, ws_mcomp)
-    #ws=np.append(ws, ws_hcomp)
-    ## Integration over E
-    ## The energy range is not perfectly accurate.
-    #ws_flow=ws*(spec.e_maxrr-spec.e_minrr)  
-    #w_flow_tot=np.sum(ws_flow)
-
-    # Integration over E
-    #ws_flow=ws_rr*(inpar.e_maxrr-inpar.e_minrr)  
-    #w_flow_tot=np.sum(ws_flow)
 
     ##############################################
     ########## Calculate power spectrum ##########
@@ -304,35 +332,27 @@ def preflow(engs, params, fluxes):
         ###### (2021/08/17) Preliminary (haphazard) prescription to set weight, ... #####
         ###### Smarter implementation will be performed.                            #####
         #################################################################################
+        # Weight (direct)
         md2fl.ws=ws
-        md2fl.w_tot=np.sum(md2fl.ws)
+        # Weight (reprocessed)
+        md2fl.wrs=wrs
 
+        # Lag (direct)
         md2fl.lags=lags
+        # Lag (reprocessed)
+        md2fl.lagrs=lagrs
 
-        md2fl.speceff_disk=0.
-        md2fl.speceff_sref=0.
-        md2fl.speceff_mref=0.
-        md2fl.speceff_href=0.
+        # Impulse response (delay)
+        md2fl.t0s=t0s
+        # Impulse response (duration)
+        md2fl.dt0s=dt0s
+
         md2fl.mu_fl=1. # <x(E,t)>=\sum _{r_n} w(r_n, E)=1
-
         md2fl.psd_norm_set(dt=tifr.dt, n_data=tifr.n_data)
-
-        md2fl.norm_rep=inpar.h0_rep # Normalization of the top-hat response function.
 
         lm2s_prop=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
         # fs_vis here is used to calculate accretion time!
-        #md2fl.psd_flux_rep_calc(fs=flupro.fs,\
-        #                        n_r=rings.n_ring,\
-        #                        ws_flow=ws_rr,\
-        #                        lm2s=lm2s_prop,\
-        #                        fs_vis=rings.fs_acc,\
-        #                        cds=rings.cds,\
-        #                        xlag=inpar.xlag,\
-        #                        dr_r=rings.dr_r,\
-        #                        t0=inpar.t0,\
-        #                        dt0=inpar.dt0,\
-        #                        rg_c=bunit.rg_c)
         md2fl.psd_flux_calc(fs=flupro.fs,\
                             n_r=rings.n_ring,\
                             lm2s=lm2s_prop,\
@@ -342,35 +362,28 @@ def preflow(engs, params, fluxes):
                             dr_r=rings.dr_r,\
                             rg_c=bunit.rg_c)
 
-        #mus_fl=md2fl.mu_fl
-        #ws=md2fl.ws
-        #ws_tot=md2fl.w_tot
-        #norms_rep=md2fl.norm_rep
         psds_fl=md2fl.psd_fl
 
         if inpar.display==1:
             print('--------------------------------------------------')
             print('PSD of the flux was successfully calculated.')
 
-        #print(psds_fl)
-        '''
-        ###########################################
-        ########## Simplest integratinon ##########
-        ###########################################
-        for i_f_data, f_data in enumerate(fs_data):
-            i_f=np.abs(flupro.fs-f_data).argmin()
-            psd=psds_fl[i_f]
-            if i_f_data==0:
-                psds=psd
-            else:
-                psds=np.append(psds, psd)
+        ############################################
+        ########### Simplest integratinon ##########
+        ############################################
+        #for i_f_data, f_data in enumerate(fs_data):
+        #    i_f=np.abs(flupro.fs-f_data).argmin()
+        #    psd=psds_fl[i_f]
+        #    if i_f_data==0:
+        #        psds=psd
+        #    else:
+        #        psds=np.append(psds, psd)
 
-        n_f_data=len(fs_data)
-        for i_f_data in range(n_f_data-1):
-            # the most simple integration (area of trapezoid)
-            flux=(psds[i_f_data]+psds[i_f_data+1])*(fs_data[i_f_data+1]-fs_data[i_f_data])/2.
-            fluxes[i_f_data]=flux
-        '''
+        #n_f_data=len(fs_data)
+        #for i_f_data in range(n_f_data-1):
+        #    # the most simple integration (area of trapezoid)
+        #    flux=(psds[i_f_data]+psds[i_f_data+1])*(fs_data[i_f_data+1]-fs_data[i_f_data])/2.
+        #    fluxes[i_f_data]=flux
 
         ################################################
         ########## More accurate integratinon ##########
@@ -418,41 +431,37 @@ def preflow(engs, params, fluxes):
         ###### (2021/08/17) Preliminary (haphazard) prescription to set weight, ... #####
         ###### Smarter implementation will be performed.                            #####
         #################################################################################
+        # Weight (direct)
         md2fl.ws=ws
-        md2fl.w_tot=np.sum(md2fl.ws)
+        # Weight (reprocessed)
+        md2fl.wrs=wrs
+
+        # Lag (direct)
         md2fl.lags=lags
-        # Ignore reflection for now (2021/12/10)
-        md2fl.speceff_disk=0.
-        md2fl.speceff_sref=0.
-        md2fl.speceff_mref=0.
-        md2fl.speceff_href=0.
+        # Lag (reprocessed)
+        md2fl.lagrs=lagrs
+
+        # Impulse response (delay)
+        md2fl.t0s=t0s
+        # Impulse response (duration)
+        md2fl.dt0s=dt0s
+
         md2fl.mu_fl=1. # <x(E,t)>=\sum _{r_n} w(r_n, E)=1
 
         ######################
         ### Reference band ###
         ######################
+        # Weight (direct)
         md2fl.ws_ref=ws_r
-        md2fl.w_tot_ref=np.sum(md2fl.ws_ref)
+        # Weight (reprocessed)
+        md2fl.wrs_ref=wrs_r
+
+        # Lag (direct)
         md2fl.lags_ref=lags_r
-        # Ignore reflection for now (2021/12/10)
-        md2fl.speceff_disk_ref=0.
-        md2fl.speceff_sref_ref=0.
-        md2fl.speceff_mref_ref=0.
-        md2fl.speceff_href_ref=0.
+        # Lag (reprocessed)
+        md2fl.lagrs_ref=lagrs_r
+
         md2fl.mu_fl_ref=1. # <x(E,t)>=\sum _{r_n} w(r_n, E)=1
-
-        # ----- Impulse response ----- #
-        ### Channel-of-interest ###
-        #f_dir=1. # fixed (not free parameter anymore and should be removed)
-        #f_rep=1.-f_dir # Fraction of the reprocessed component
-        #md2fl.norm_rep_set(f_rep=f_rep, dt0=dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
-        #md2fl.norm_rep_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
-        md2fl.norm_rep=inpar.h0_rep # Normalization of the top-hat response function.
-
-        ### Reference band ###
-        #md2fl.norm_rep_ref_set(f_rep=f_rep, dt0=dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
-        #md2fl.norm_rep_ref_set(dt0=inpar.dt0, w_flow_tot=w_flow_tot) # C(E) in the impulse response
-        md2fl.norm_rep_ref=inpar.h0_repr # Normalization of the top-hat response function.
 
         # ----- Normalization ----- #
         md2fl.csd_norm_set(dt=tifr.dt, n_data=tifr.n_data)
@@ -460,17 +469,6 @@ def preflow(engs, params, fluxes):
         # ----- CSD ----- #
         lm2s_prop=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
-        #md2fl.csd_flux_rep_calc(fs=flupro.fs,\
-        #                        n_r=rings.n_ring,\
-        #                        ws_rep=ws_rr,\
-        #                        lm2s=lm2s_prop,\
-        #                        fs_vis=rings.fs_vis,\
-        #                        cds=rings.cds,\
-        #                        xlag=inpar.xlag,\
-        #                        dr_r=rings.dr_r,\
-        #                        t0=inpar.t0,\
-        #                        dt0=inpar.dt0,\
-        #                        rg_c=bunit.rg_c)
         # fs_vis here is used to calculate accretion time!
         md2fl.csd_flux_calc(fs=flupro.fs,\
                             n_r=rings.n_ring,\
@@ -512,24 +510,22 @@ def preflow(engs, params, fluxes):
             print('--------------------------------------------------')
             print('CSD of the flux was successfully calculated.')
 
-        '''
-        ###########################################
-        ########## Simplest integratinon ##########
-        ###########################################
-        for i_f_data, f_data in enumerate(fs_data):
-            i_f=np.abs(flupro.fs-f_data).argmin()
-            csd=csds_fl[i_f]
-            if i_f_data==0:
-                csds=csd
-            else:
-                csds=np.append(csds, csd)
+        ############################################
+        ########### Simplest integratinon ##########
+        ############################################
+        #for i_f_data, f_data in enumerate(fs_data):
+        #    i_f=np.abs(flupro.fs-f_data).argmin()
+        #    csd=csds_fl[i_f]
+        #    if i_f_data==0:
+        #        csds=csd
+        #    else:
+        #        csds=np.append(csds, csd)
 
-        n_f_data=len(fs_data)
-        for i_f_data in range(n_f_data-1):
-            # the most simple integration (area of trapezoid)
-            flux=(csds[i_f_data]+csds[i_f_data+1])*(fs_data[i_f_data+1]-fs_data[i_f_data])/2.
-            fluxes[i_f_data]=flux
-        '''
+        #n_f_data=len(fs_data)
+        #for i_f_data in range(n_f_data-1):
+        #    # the most simple integration (area of trapezoid)
+        #    flux=(csds[i_f_data]+csds[i_f_data+1])*(fs_data[i_f_data+1]-fs_data[i_f_data])/2.
+        #    fluxes[i_f_data]=flux
 
         ################################################
         ########## More accurate integratinon ##########

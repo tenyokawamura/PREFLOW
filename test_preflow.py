@@ -39,30 +39,44 @@ def main():
     Csc    =0.1
     Cmc    =0.25
     Chc    =0.25
-    Fdd    =0
-    Fdsc   =0.1
-    Fdmc   =0.2
-    Fdhc   =0.3
-    Arep   =0.
+    Fd     =0
+    Fsc    =0.1
+    Fmc    =0.2
+    Fhc    =0.3
+    Crd    =0.
+    Crsc   =0.
+    Crmc   =0.
+    Crhc   =0.1
+    Frd    =0.
+    Frsc   =0.
+    Frmc   =0.
+    Frhc   =0.
     Eminr  =2.
     Emaxr  =10.
     Cdr    =0.
     Cscr   =-1.
     Cmcr   =1.
     Chcr   =1.
-    Fddr   =0
-    Fdscr  =0.2
-    Fdmcr  =0.4
-    Fdhcr  =0.6
-    Arepr  =1.
-    Eminrr =0.5
-    Emaxrr =10.
-    Cdrr   =0.
-    Cscrr  =1.
-    Cmcrr  =0.
-    Chcrr  =0.
-    tref   =4.e-3
-    dtref  =4.e-3
+    Fdr    =0
+    Fscr   =0.2
+    Fmcr   =0.4
+    Fhcr   =0.6
+    Crdr   =0.
+    Crscr  =0.
+    Crmcr  =0.
+    Crhcr  =0.
+    Frdr   =0.
+    Frscr  =0.
+    Frmcr  =0.
+    Frhcr  =0.
+    trd    =4.e-3
+    dt0d   =4.e-3
+    trsc   =4.e-3
+    dt0sc  =4.e-3
+    trmc   =4.e-3
+    dt0mc  =4.e-3
+    trhc   =4.e-3
+    dt0hc  =4.e-3
     quant  =2
     invert =2
     par_print=1 
@@ -74,12 +88,15 @@ def main():
         Bflow,  mflow,  Baflow, maflow, Ddisk,\
         Dflow,  Dtran,  xlag,   gammad, gammaf,\
         stress, rmin,   Emin,   Emax,   Cd,\
-        Csc,    Cmc,    Chc,    Fdd,    Fdsc,\
-        Fdmc,   Fdhc,   Arep,   Eminr,  Emaxr,\
-        Cdr,    Cscr,   Cmcr,   Chcr,   Fddr,\
-        Fdscr,  Fdmcr,  Fdhcr,  Arepr,  Eminrr,\
-        Emaxrr, Cdrr,   Cscrr,  Cmcrr,  Chcrr,\
-        tref,   dtref,  quant,  invert, par_print]
+        Csc,    Cmc,    Chc,    Fd,     Fsc,\
+        Fmc,    Fhc,    Crd,    Crsc,   Crmc,\
+        Crhc,   Frd,    Frsc,   Frmc,   Frhc,\
+        Eminr,  Emaxr,  Cdr,    Cscr,   Cmcr,\
+        Chcr,   Fdr,    Fscr,   Fmcr,   Fhcr,\
+        Crdr,   Crscr,  Crmcr,  Crhcr,  Frdr,\
+        Frscr,  Frmcr,  Frhcr,  trd,    dt0d,\
+        trsc,   dt0sc,  trmc,   dt0mc,  trhc,\
+        dt0hc,  quant,  invert, par_print]
 
     fluxes=np.ones(len(engs)-1)
 
