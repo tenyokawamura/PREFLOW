@@ -34,7 +34,7 @@ def main():
     Ss    =0.2
     Sh    =0.2
     Ssr   =0.
-    Shr   =0.2
+    Shr   =0.
     Eminr =2.6
     Emaxr =4.8
     Srd   =0.
@@ -46,7 +46,7 @@ def main():
     dt0s  =1.e-2
     t0h   =1.e-3
     dt0h  =1.e-2
-    quant =2
+    quant =5
     invert=2
     par_print=1
 

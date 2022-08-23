@@ -1611,9 +1611,9 @@ class Mdot2Flux:
         if np.all(self.wrs==0)==True and np.all(self.wrs_r==0)==True:
             lflfs=lflf_calc_lag(fs=self.fs,\
                                 n_r=self.n_ring,\
-                                ws_ref=self.ws_ref,\
+                                ws_ref=self.ws_r,\
                                 ws_coi=self.ws,\
-                                lags_ref=self.lags_ref,\
+                                lags_ref=self.lags_r,\
                                 lags_coi=self.lags,\
                                 lm2s=self.lm2s,\
                                 fs_vis=self.fs_prop,\
