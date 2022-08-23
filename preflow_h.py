@@ -885,9 +885,9 @@ def preflow_weight_calc(\
     ws=np.append(ws, ws_s)
     ws=np.append(ws, ws_d)
     # Reprocessed
-    wrs=ws_dr
+    wrs=ws_hr
     wrs=np.append(wrs, ws_sr)
-    wrs=np.append(wrs, ws_hr)
+    wrs=np.append(wrs, ws_dr)
 
     return ws, wrs
 
@@ -1008,9 +1008,9 @@ def preflows_weight_calc(\
     ws=np.append(ws, ws_s)
     ws=np.append(ws, ws_d)
     # Reprocessed
-    wrs=ws_dr
+    wrs=ws_hr
     wrs=np.append(wrs, ws_sr)
-    wrs=np.append(wrs, ws_hr)
+    wrs=np.append(wrs, ws_dr)
 
     return ws, wrs
 
@@ -1136,9 +1136,9 @@ def preflowscp_weight_calc(\
     ws=np.append(ws, ws_s)
     ws=np.append(ws, ws_d)
     # Reprocessed
-    wrs=ws_dr
+    wrs=ws_hr
     wrs=np.append(wrs, ws_sr)
-    wrs=np.append(wrs, ws_hr)
+    wrs=np.append(wrs, ws_dr)
 
     return ws, wrs
 

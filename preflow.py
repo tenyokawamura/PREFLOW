@@ -97,6 +97,10 @@ def preflow(engs, params, fluxes):
         print_ring_info(name='Variability frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
         print_ring_info(name='Propagation speed [km/s]',   xs=rings.vs_prop*bunit.c,   digit=3)
 
+    #print(rings.ws)
+    #print(rings.wrs)
+    #print(rings.ws_r)
+    #print(rings.wrs_r)
     #return
 
     # ----------------------------------------------------------- #
