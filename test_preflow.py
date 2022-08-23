@@ -46,7 +46,7 @@ def main():
     dt0s  =1.e-2
     t0h   =1.e-3
     dt0h  =1.e-2
-    quant =1
+    quant =2
     invert=2
     par_print=1
 

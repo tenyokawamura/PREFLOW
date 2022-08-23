@@ -1608,7 +1608,7 @@ class Mdot2Flux:
             sys.exit()
 
         # No reflection
-        if np.all(self.wrs==0)==True and np.all(self.wrs_ref==0)==True:
+        if np.all(self.wrs==0)==True and np.all(self.wrs_r==0)==True:
             lflfs=lflf_calc_lag(fs=self.fs,\
                                 n_r=self.n_ring,\
                                 ws_ref=self.ws_ref,\
