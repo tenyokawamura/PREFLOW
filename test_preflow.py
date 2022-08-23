@@ -6,97 +6,149 @@ def main():
     # ----------------------------- #
     engs=np.arange(1.e-2, 1.e1, 1.e-2)
 
-    Mass   =8.
-    rin    =6.
-    drhc   =10.
-    drmc   =8.
-    drsc   =8.
-    drd    =13.
-    Nring  =40
-    Fvdisk =0.8
-    drdisk =100.
-    Fvflow =0.8
-    drflow =100.
-    Bdisk  =0.03
-    mdisk  =0.5
-    Badisk =0.03
-    madisk =0.5
-    Bflow  =4.
-    mflow  =1.
-    Baflow =6.
-    maflow =1.2
-    Ddisk  =1.
-    Dflow  =1.
-    Dtran  =1.
-    xlag   =1.
-    gammad =3.
-    gammaf =3.
-    stress =2.
-    rmin   =6.
-    Emin   =0.5
-    Emax   =2.
-    Cd     =0.1
-    Csc    =0.1
-    Cmc    =0.25
-    Chc    =0.25
-    Fd     =0
-    Fsc    =0.1
-    Fmc    =0.2
-    Fhc    =0.3
-    Crd    =0.
-    Crsc   =0.
-    Crmc   =0.
-    Crhc   =0.1
-    Frd    =0.
-    Frsc   =0.
-    Frmc   =0.
-    Frhc   =0.
-    Eminr  =2.
-    Emaxr  =10.
-    Cdr    =0.
-    Cscr   =-1.
-    Cmcr   =1.
-    Chcr   =1.
-    Fdr    =0
-    Fscr   =0.2
-    Fmcr   =0.4
-    Fhcr   =0.6
-    Crdr   =0.
-    Crscr  =0.
-    Crmcr  =0.
-    Crhcr  =0.
-    Frdr   =0.
-    Frscr  =0.
-    Frmcr  =0.
-    Frhcr  =0.
-    trd    =4.e-3
-    dt0d   =4.e-3
-    trsc   =4.e-3
-    dt0sc  =4.e-3
-    trmc   =4.e-3
-    dt0mc  =4.e-3
-    trhc   =4.e-3
-    dt0hc  =4.e-3
-    quant  =2
-    invert =2
-    par_print=1 
+    kTbbd    =0.2
+    normd    =5.e4
+    Gammas   =1.8
+    kTbbs    =kTbbd
+    kTes     =1.e2
+    norms    =2.
+    Gammah   =1.5
+    kTbbh    =kTbbd
+    kTeh     =kTes
+    normh    =1.5
+    Incl     =60.
+    a        =0.998
+    Afe      =1.
+    Rins     =45.
+    Routs    =400.
+    Indexs   =3.
+    logxis   =3.
+    logNs    =15.
+    Frefs    =0.01
+    Rinh     =45.
+    Routh    =400.
+    Indexh   =3.
+    logxih   =3.
+    logNh    =15.
+    Frefh    =0.01
+    Mass     =8.
+    rin      =6.
+    drhc     =10.
+    drsc     =16.
+    drd      =0.
+    Nring    =40
+    Fvdisk   =0.8
+    drdisk   =1.e3
+    Fvflow   =0.8
+    drflow   =1.e3
+    Bdisk    =0.05
+    mdisk    =0.3
+    Badisk   =0.05
+    madisk   =0.3
+    Bflow    =4.
+    mflow    =1.
+    Baflow   =4.
+    maflow   =1.
+    Sm       =1.e-1
+    gammad   =3.
+    gammaf   =3.
+    stress   =2.
+    rmin     =6.
+    Emin     =0.5
+    Emax     =1.
+    #Emin     =1.
+    #Emax     =2.6
+    Eminr    =2.6
+    Emaxr    =4.8
+    eta0d    =1.
+    eta1d    =0.2
+    eta0sc   =1.
+    eta1sc   =0.3
+    eta0hc   =1.
+    eta1hc   =0.4
+    eta0sr   =1.
+    eta1sr   =-0.2
+    eta0hr   =1.
+    eta1hr   =-0.5
+    t0sc     =1.e-3
+    dt0sc    =1.e-2
+    t0hc     =1.e-3
+    dt0hc    =1.e-2
+    quant    =5
+    invert   =2
+    par_print=1
 
     params=[\
-        Mass,   rin,    drhc,   drmc,   drsc,\
-        drd,    Nring,  Fvdisk, drdisk, Fvflow,\
-        drflow, Bdisk,  mdisk,  Badisk, madisk,\
-        Bflow,  mflow,  Baflow, maflow, Ddisk,\
-        Dflow,  Dtran,  xlag,   gammad, gammaf,\
-        stress, rmin,   Emin,   Emax,   Cd,\
-        Csc,    Cmc,    Chc,    Fd,     Fsc,\
-        Fmc,    Fhc,    Crd,    Crsc,   Crmc,\
-        Crhc,   Frd,    Frsc,   Frmc,   Frhc,\
-        Eminr,  Emaxr,  Cdr,    Cscr,   Cmcr,\
-        Chcr,   Fdr,    Fscr,   Fmcr,   Fhcr,\
-        Crdr,   Crscr,  Crmcr,  Crhcr,  Frdr,\
-        Frscr,  Frmcr,  Frhcr,  trd,    dt0d,\
-        trsc,   dt0sc,  trmc,   dt0mc,  trhc,\
-        dt0hc,  quant,  invert, par_print]
+        kTbbd    ,\
+        normd    ,\
+        Gammas   ,\
+        kTbbs    ,\
+        kTes     ,\
+        norms    ,\
+        Gammah   ,\
+        kTbbh    ,\
+        kTeh     ,\
+        normh    ,\
+        Incl     ,\
+        a        ,\
+        Afe      ,\
+        Rins     ,\
+        Routs    ,\
+        Indexs   ,\
+        logxis   ,\
+        logNs    ,\
+        Frefs    ,\
+        Rinh     ,\
+        Routh    ,\
+        Indexh   ,\
+        logxih   ,\
+        logNh    ,\
+        Frefh    ,\
+        Mass     ,\
+        rin      ,\
+        drhc     ,\
+        drsc     ,\
+        drd      ,\
+        Nring    ,\
+        Fvdisk   ,\
+        drdisk   ,\
+        Fvflow   ,\
+        drflow   ,\
+        Bdisk    ,\
+        mdisk    ,\
+        Badisk   ,\
+        madisk   ,\
+        Bflow    ,\
+        mflow    ,\
+        Baflow   ,\
+        maflow   ,\
+        Sm       ,\
+        gammad   ,\
+        gammaf   ,\
+        stress   ,\
+        rmin     ,\
+        Emin     ,\
+        Emax     ,\
+        Eminr    ,\
+        Emaxr    ,\
+        eta0d    ,\
+        eta1d    ,\
+        eta0sc   ,\
+        eta1sc   ,\
+        eta0hc   ,\
+        eta1hc   ,\
+        eta0sr   ,\
+        eta1sr   ,\
+        eta0hr   ,\
+        eta1hr   ,\
+        t0sc     ,\
+        dt0sc    ,\
+        t0hc     ,\
+        dt0hc    ,\
+        quant    ,\
+        invert   ,\
+        par_print\
+        ]
 
     fluxes=np.ones(len(engs)-1)
 
