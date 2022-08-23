@@ -826,8 +826,8 @@ class Flow2Ring:
         self.lfs_var=self.lfs_var[::-1]
         self.ws     =self.ws[::-1]  # Subject band, Direct component
         self.wrs    =self.wrs[::-1] # Subject band, Reflected component
-        self.ws_r   =self.ws[::-1]  # Reference band, Direct component
-        self.wrs_r  =self.wrs[::-1] # Reference band, Reflected component
+        self.ws_r   =self.ws_r[::-1]  # Reference band, Direct component
+        self.wrs_r  =self.wrs_r[::-1] # Reference band, Reflected component
 
 # ---------------------------- #
 # ----- Calculate weight ----- #
