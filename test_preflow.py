@@ -20,9 +20,9 @@ def main():
     md    =0.5
     Bpd   =0.03
     mpd   =0.5
-    Bf    =1.
+    Bf    =4.
     mf    =1.
-    Bpf   =1.
+    Bpf   =4.
     mpf   =1.
     D     =0.
     indexd=3.

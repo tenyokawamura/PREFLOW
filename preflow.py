@@ -158,6 +158,8 @@ def preflow(engs, params, fluxes):
     md2fl.fs=flupro.fs
     md2fl.lm2s=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
+    #print(md2fl.n_ring, md2fl.cs, md2fl.cds, md2fl.xlag, md2fl.t0s, md2fl.dt0s)
+
     del flupro
 
     # ----- Power spectrum ----- #

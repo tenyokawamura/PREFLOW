@@ -810,10 +810,10 @@ class Flow2Ring:
         self.rs_min =self.rs_min[::-1]
         self.wids   =self.wids[::-1]
         self.drs    =self.drs[::-1]
-        self.rs_d=self.rs_d[::-1]
-        self.rs_f=self.rs_f[::-1]
-        self.rs_s=self.rs_s[::-1]
-        self.rs_h=self.rs_h[::-1]
+        self.rs_d   =self.rs_d[::-1]
+        self.rs_f   =self.rs_f[::-1]
+        self.rs_s   =self.rs_s[::-1]
+        self.rs_h   =self.rs_h[::-1]
         self.fs_vis =self.fs_vis[::-1]
         self.fs_prop=self.fs_prop[::-1]
         self.vs_prop=self.vs_prop[::-1]
@@ -824,6 +824,8 @@ class Flow2Ring:
         self.lags_r =self.lags_r[::-1]
         self.lagrs_r=self.lagrs_r[::-1]
         self.lfs_var=self.lfs_var[::-1]
+        self.t0s    =self.t0s[::-1]
+        self.dt0s   =self.dt0s[::-1]
         self.ws     =self.ws[::-1]  # Subject band, Direct component
         self.wrs    =self.wrs[::-1] # Subject band, Reflected component
         self.ws_r   =self.ws_r[::-1]  # Reference band, Direct component
