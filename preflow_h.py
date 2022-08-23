@@ -11,6 +11,7 @@ class SetParameter:
     def __init__(self):
         self.set_inpar_done=False
 
+    # --- Model: preflow --- #
     def preflow_set_inpar(self, pars, es):
         self.mass        =pars[0]  # BH mass [solar mass]
         self.r_in        =pars[1]  # Inner radius of hard Compton [Rg]
@@ -106,6 +107,137 @@ class SetParameter:
 
         self.set_inpar_done=True
 
+    # --- Model: preflows --- #
+    def preflows_set_inpar(self, pars, es):
+        ###########################
+        ### Spectral parameters ###
+        ###########################
+        # Disk (diskbb is employed)
+        self.temp_bb_d    =pars[0]  # Blackbody temperature [keV]
+        self.norm_d       =pars[1]  # Normalization of disk [-]
+        # Soft Compton (cutoffpl is employed)
+        self.gamma_s      =pars[2]  # Spectral index of soft Compton [-]
+        self.ecut_s       =pars[3]  # Electron temperature of soft Compton [keV]
+        self.norm_s       =pars[4]  # Normalization of soft Compton [-]
+        # Hard Compton (cutoffpl is employed)
+        self.gamma_h      =pars[5]  # Spectral index of hard Compton [-]
+        self.ecut_h       =pars[6]  # Electron temperature of hard Compton [keV]
+        self.norm_h       =pars[7]  # Normalization of hard Compton [-]
+        # Reflection (common) (relxill is employed)
+        self.incl         =pars[8]
+        self.a            =pars[9]
+        self.cafe         =pars[10]
+        # Soft reflection
+        self.r_in_sr      =pars[11]
+        self.r_out_sr     =pars[12]
+        self.index_sr     =pars[13]
+        self.logxi_sr     =pars[14]
+        self.cf_sr        =pars[15] # This is normalization, not refl_frac!
+        # Hard reflection
+        self.r_in_hr      =pars[16]
+        self.r_out_hr     =pars[17]
+        self.index_hr     =pars[18]
+        self.logxi_hr     =pars[19]
+        self.cf_hr        =pars[20] # This is normalization, not refl_frac! 
+
+        ##############################
+        ### Variability parameters ###
+        ##############################
+        self.mass         =pars[21]  # BH mass [solar mass]
+        self.r_in         =pars[22]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
+        self.dr_hcomp     =pars[23]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
+        self.dr_scomp     =pars[24]  # Transition radius between soft Compton and variable disk [Rg]
+        self.dr_disk      =pars[25]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
+        self.n_ring       =pars[26]  # Outer radius of variable disk [Rg]
+        self.cf_var_d     =pars[27]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.dr_var_d     =pars[28]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.cf_var_f     =pars[29]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.dr_var_f     =pars[30]  # Fractional variability of mass accretion rate in radial decade [-]
+        self.cb_d         =pars[31]  # B_{disk} [-]
+        self.m_d          =pars[32]  # m_{disk} [-]
+        self.cbp_d        =pars[33]  # Bprop_{disk} [-]
+        self.mp_d         =pars[34]  # mprop_{disk} [-]
+        self.cb_f         =pars[35]  # B_{flow} [-]
+        self.m_f          =pars[36]  # m_{flow} [-]
+        self.cbp_f        =pars[37]  # Bprop_{flow} [-]
+        self.mp_f         =pars[38]  # mprop_{flow} [-]
+        self.cs           =pars[39]  # Smoothing factor [-]
+        self.gamma_disk   =pars[40]  # Radial index of emissivity [-]
+        self.gamma_flow   =pars[41]  # Radial index of emissivity [-]
+        self.stress       =pars[42]  # 1: stressed, 2: stress-free in emissivity
+        self.e_min        =pars[43]  # Lower bound of energy band [keV] (unused)
+        self.e_max        =pars[44]  # Upper bound of energy band [keV] (unused)
+        self.e_minr       =pars[45]  # Lower bound of reference band [keV] (unused)
+        self.e_maxr       =pars[46]  # Upper bound of reference band [keV] (unused)
+        self.eta0_d       =pars[47]
+        self.eta1_d       =pars[48]
+        self.eta0_s       =pars[49]
+        self.eta1_s       =pars[50]
+        self.eta0_h       =pars[51]
+        self.eta1_h       =pars[52]
+        self.eta0_sr      =pars[53]
+        self.eta1_sr      =pars[54]
+        self.eta0_hr      =pars[55]
+        self.eta1_hr      =pars[56]
+        self.tr_s         =pars[57] # Start time of reflection impulse response [sec]
+        self.dt0_s        =pars[58] # Time width of reflection impulse response [sec]
+        self.tr_h         =pars[59] # Start time of reflection impulse response [sec]
+        self.dt0_h        =pars[60] # Time width of reflection impulse response [sec]
+        self.quant        =pars[61]
+            # 0: energy spectrum
+            # 1: power spectrum 
+            # 2: real part of cross spectrum
+            # 3: imaginary part of cross spectrum
+            # 4: absolute value of cross spectrum
+            # 5: phase lag (Positive lag means reference band lagging behind energy band.)
+            # 6: time lag  (Positive lag means reference band lagging behind energy band.)
+        self.invert       =pars[62] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display      =pars[63] # 1: display, 2: not display
+
+        # PREFLOW model is a spectral-timing model!
+        # Energy in XSPEC corresponds to Fourier frequency in preflow.
+        self.es=np.array(es)
+        self.fs_data=es
+
+        # Hidden parameters 
+        self.r_min        =self.r_in  # Minumum radius of emissivity [-]
+        self.tr_d         =0.    # Time width of reflection impulse response (variable disk) [sec]
+        self.dt0_d        =1.e-2 # Time width of reflection impulse response (variable disk) [sec]
+
+        self.xlag         =1. # xlag [-]
+        self.cf_disk      =0. # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cf_scomp     =0. # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cf_hcomp     =0. # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cfr_disk     =0. # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cfr_scomp    =0. # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cfr_hcomp    =0. # Fdelay: fractional delay time for local viscous time-scale [-]
+        self.cf_diskr     =0. # Radial index of emissivity [-]
+        self.cf_scompr    =0. # Radial index of emissivity [-]
+        self.cf_hcompr    =0. # Radial index of emissivity [-]
+        self.cfr_diskr    =0. # Radial index of emissivity [-]
+        self.cfr_scompr   =0. # Radial index of emissivity [-]
+        self.cfr_hcompr   =0. # Radial index of emissivity [-]
+        self.cd_disk      =1. # D_{ds} [-]
+        self.cd_flow      =1. # D_{sm} [-]
+        self.cd_tran      =1. # D_{mh} [-]
+
+        ### Geometry ###
+        self.r_sh        =self.r_in+self.dr_hcomp  # Inner radius of soft Compton [Rg]
+        self.r_ds        =self.r_sh+self.dr_scomp  # Inner radius of disk [Rg]
+        self.r_out       =self.r_ds+self.dr_disk   # Outer radius of disk [Rg]
+
+        # Impulse response of reflection
+        self.t0_d=self.tr_d+(self.dt0_d/2.)
+        self.t0_s=self.tr_s+(self.dt0_s/2.)
+        self.t0_h=self.tr_h+(self.dt0_h/2.)
+
+        # For the case that the disk is not variable
+        if self.cf_var_d==0.:
+            self.r_out=self.r_ds
+
+        self.set_inpar_done=True
+
+    # --- Model: preflowscp --- #
     def preflowscp_set_inpar(self, pars, es):
         ###########################
         ### Spectral parameters ###
@@ -305,6 +437,22 @@ class SpectralModelXspec:
         return fluxes
 
     # Hidden parameters: z=0, refl_frac=-1
+    def relxill_spec(self, es, incl, a, r_in, r_out, index, gamma, logxi, cafe, kte, norm):
+        if norm==0:
+            fluxes=0.*np.ones(len(es)-1)
+        else:
+            z=0
+            r_br=(r_in+r_out)/2.
+            # refl_frac (Fref) must be -1 so that relxillCp calculates only reflected emission.
+            params=[index, index, r_br, a, incl, r_in, r_out, z, gamma, logxi, cafe, kte, -1.]
+            fluxes=[]
+            es=es.tolist()
+            xspec.callModelFunction(modelName='relxill', energies=es, params=params, flux=fluxes)
+            fluxes=np.array(fluxes)
+            fluxes*=norm
+        return fluxes
+
+    # Hidden parameters: z=0, refl_frac=-1
     def relxillcp_spec(self, es, incl, a, r_in, r_out, index, gamma, logxi, logcn, cafe, kte, norm):
         if norm==0:
             fluxes=0.*np.ones(len(es)-1)
@@ -327,7 +475,49 @@ class EnergySpectrum:
     def __init__(self):
         pass    
 
-    def calc_spectra(self, es, pars):
+    def preflows_calc_spectra(self, es, pars):
+        ktbbd =pars[0] 
+        normd =pars[1] 
+        gammas=pars[2] 
+        ecuts =pars[3] 
+        norms =pars[4] 
+        gammah=pars[5] 
+        ecuth =pars[6] 
+        normh =pars[7] 
+        incl  =pars[8]
+        a     =pars[9]
+        afe   =pars[10]
+        rins  =pars[11]
+        routs =pars[12]
+        indexs=pars[13]
+        logxis=pars[14]
+        normsr=pars[15]
+        rinh  =pars[16]
+        routh =pars[17]
+        indexh=pars[18]
+        logxih=pars[19]
+        normhr=pars[20]
+
+        specx=SpectralModelXspec()
+        fluxes_d =specx.diskbb_spec   (es=es, temp=ktbbd, norm=normd)
+        fluxes_s =specx.cutoffpl_spec (es=es, gamma=gammas, ecut=ecuts, norm=norms)
+        fluxes_h =specx.cutoffpl_spec (es=es, gamma=gammah, ecut=ecuth, norm=normh)
+        fluxes_sr=specx.relxill_spec(\
+            es=es,        incl=incl,    a=a,\
+            r_in=rins,    r_out=routs,  index=indexs,\
+            gamma=gammas, logxi=logxis,\
+            cafe=afe,     kte=ecuts,    norm=normsr)
+        fluxes_hr=specx.relxill_spec(\
+            es=es,        incl=incl,    a=a,\
+            r_in=rinh,    r_out=routh,  index=indexh,\
+            gamma=gammah, logxi=logxih,\
+            cafe=afe,     kte=ecuth,    norm=normhr)
+
+        fluxes=fluxes_d+fluxes_s+fluxes_h+fluxes_sr+fluxes_hr
+
+        return fluxes
+
+    def preflowscp_calc_spectra(self, es, pars):
         ktbbd =pars[0] 
         normd =pars[1] 
         gammas=pars[2] 
@@ -436,55 +626,6 @@ class TimeFrequency:
             print('Error')
             print(2*len(self.fs)+1, self.n_data)
             sys.exit()
-
-# ------------------------- #
-# ----- Spectral data ----- #
-# ------------------------- #
-class FluxData:
-    def __init__(self):
-        self.set_flux_done=False
-
-    def set_flux(self,\
-                 e_min,   e_max,   disk,    scomp,   mcomp,   hcomp,   sref,  mref,  href,  tot,\
-                 e_minr,  e_maxr,  diskr,   scompr,  mcompr,  hcompr,  srefr, mrefr, hrefr, totr,\
-                 e_minrr, e_maxrr, scomprr, mcomprr, hcomprr):
-        #################################################################################
-        ##### Unit: [counts keV^-1 s^-1]                                            #####
-        ##### But this unit is not intuitive and it is hard to give initial values. #####
-        ##### This will be modified for easy use.                                   #####
-        #################################################################################
-        # ----- Energy band ----- #
-        self.e_min=e_min
-        self.e_max=e_max
-        self.disk=disk
-        self.scomp=scomp
-        self.mcomp=mcomp
-        self.hcomp=hcomp
-        self.sref=sref
-        self.mref=mref
-        self.href=href
-        self.tot=tot
-
-        # ----- Reference band ----- #
-        self.e_minr=e_minr
-        self.e_maxr=e_maxr
-        self.diskr=diskr
-        self.scompr=scompr
-        self.mcompr=mcompr
-        self.hcompr=hcompr
-        self.srefr=srefr
-        self.mrefr=mrefr
-        self.hrefr=hrefr
-        self.totr=totr
-
-        # ----- Reference band 'for refection' ----- #
-        self.e_minrr=e_minrr
-        self.e_maxrr=e_maxrr
-        self.scomprr=scomprr
-        self.mcomprr=mcomprr
-        self.hcomprr=hcomprr
-
-        self.set_flux_done=True
 
 # ------------------------------------ #
 # ----- Separate flow into rings ----- #
@@ -691,6 +832,188 @@ class Flow2Ring:
 # ---------------------------- #
 # ----- Calculate weight ----- #
 # ---------------------------- #
+def preflow_weight_calc(\
+    cs_d, cs_s, cs_h, cs_sr, cs_hr,\
+    rs_d, rs_s, rs_h, wids_d, wids_s, wids_h,\
+    stress, r_min, index_d, index_f):
+
+    # --- Sensitivity x Spectrum --- #
+    flux_d =cs_d
+    flux_s =cs_s
+    flux_h =cs_h
+    flux_dr=0.
+    flux_sr=cs_sr
+    flux_hr=cs_hr
+
+    # --- Calculate weight --- #
+    # Stressed
+    if stress==1:
+        stress=True 
+    # Stress-free
+    elif stress==2:
+        stress=False
+
+    ### Variable disk ###
+    es_dis=epsilon_calc(r=rs_d, stress=stress, gamma=index_d, r_min=r_min)*\
+        2.*np.pi*rs_d*wids_d
+    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
+    # Direct
+    ws_d =flux_d*es_dis/es_dis_tot
+    # Reprocessed
+    ws_dr=flux_dr*es_dis/es_dis_tot
+
+    ### Soft Compton ###
+    es_dis=epsilon_calc(r=rs_s, stress=stress, gamma=index_f, r_min=r_min)*\
+        2.*np.pi*rs_s*wids_s
+    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
+    # Direct
+    ws_s =flux_s*es_dis/es_dis_tot
+    # Reprocessed
+    ws_sr=flux_sr*es_dis/es_dis_tot
+
+    ### Hard Compton ###
+    es_dis=epsilon_calc(r=rs_h, stress=stress, gamma=index_f, r_min=r_min)*\
+        2.*np.pi*rs_h*wids_h
+    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
+    # Direct
+    ws_h =flux_h*es_dis/es_dis_tot
+    # Reprocessed
+    ws_hr=flux_hr*es_dis/es_dis_tot
+
+    # Direct
+    ws=ws_h
+    ws=np.append(ws, ws_s)
+    ws=np.append(ws, ws_d)
+    # Reprocessed
+    wrs=ws_dr
+    wrs=np.append(wrs, ws_sr)
+    wrs=np.append(wrs, ws_hr)
+
+    return ws, wrs
+
+def preflows_weight_calc(\
+    e_min, e_max, pars_spec,\
+    eta0_d, eta1_d, eta0_s, eta1_s, eta0_h, eta1_h, eta0_sr, eta1_sr, eta0_hr, eta1_hr,\
+    rs_d, rs_s, rs_h, wids_d, wids_s, wids_h,\
+    stress, r_min, index_d, index_f):
+
+    specx=SpectralModelXspec()
+
+    # --- Calculate flux --- #
+    es=np.array([e_min, e_max])
+    de=e_max-e_min
+
+    ktbbd =pars_spec[0] 
+    normd =pars_spec[1] 
+    gammas=pars_spec[2] 
+    ecuts =pars_spec[3] 
+    norms =pars_spec[4] 
+    gammah=pars_spec[5] 
+    ecuth =pars_spec[6] 
+    normh =pars_spec[7] 
+    incl  =pars_spec[8]
+    a     =pars_spec[9]
+    afe   =pars_spec[10]
+    rins  =pars_spec[11]
+    routs =pars_spec[12]
+    indexs=pars_spec[13]
+    logxis=pars_spec[14]
+    normsr=pars_spec[15]
+    rinh  =pars_spec[16]
+    routh =pars_spec[17]
+    indexh=pars_spec[18]
+    logxih=pars_spec[19]
+    normhr=pars_spec[20]
+
+    specx=SpectralModelXspec()
+    flux_d =specx.diskbb_spec   (es=es, temp=ktbbd, norm=normd)[0]/de
+    flux_s =specx.cutoffpl_spec (es=es, gamma=gammas, ecut=ecuts, norm=norms)[0]/de
+    flux_h =specx.cutoffpl_spec (es=es, gamma=gammah, ecut=ecuth, norm=normh)[0]/de
+    flux_dr=0.
+    flux_sr=specx.relxill_spec(\
+        es=es,        incl=incl,    a=a,\
+        r_in=rins,    r_out=routs,  index=indexs,\
+        gamma=gammas, logxi=logxis,\
+        cafe=afe,     kte=ecuts,    norm=normsr)[0]/de
+    flux_hr=specx.relxill_spec(\
+        es=es,        incl=incl,    a=a,\
+        r_in=rinh,    r_out=routh,  index=indexh,\
+        gamma=gammah, logxi=logxih,\
+        cafe=afe,     kte=ecuth,    norm=normhr)[0]/de
+
+    # Normalize such that total corresponds to unity.
+    flux_tot=flux_d+flux_s+flux_h+flux_dr+flux_sr+flux_hr
+    flux_d /=flux_tot
+    flux_s /=flux_tot
+    flux_h /=flux_tot
+    flux_dr/=flux_tot
+    flux_sr/=flux_tot
+    flux_hr/=flux_tot
+
+    # --- Calculate sensitivity parameter --- #
+    # Averaged \eta (sensitivity parameter)
+    # No upper and lower bounds
+    eta_d =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_d, eta1=eta1_d)
+    eta_s =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_s, eta1=eta1_s)
+    eta_h =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_h, eta1=eta1_h)
+    eta_dr=1.
+    eta_sr=calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_sr, eta1=eta1_sr)
+    eta_hr=calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_hr, eta1=eta1_hr)
+
+    # --- Sensitivity x Spectrum --- #
+    flux_d *=eta_d
+    flux_s *=eta_s
+    flux_h *=eta_h
+    flux_dr*=eta_dr # 0.
+    flux_sr*=eta_sr
+    flux_hr*=eta_hr
+
+    # --- Calculate weight --- #
+    # Stressed
+    if stress==1:
+        stress=True 
+    # Stress-free
+    elif stress==2:
+        stress=False
+
+    ### Variable disk ###
+    es_dis=epsilon_calc(r=rs_d, stress=stress, gamma=index_d, r_min=r_min)*\
+        2.*np.pi*rs_d*wids_d
+    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
+    # Direct
+    ws_d =flux_d*es_dis/es_dis_tot
+    # Reprocessed
+    ws_dr=flux_dr*es_dis/es_dis_tot
+
+    ### Soft Compton ###
+    es_dis=epsilon_calc(r=rs_s, stress=stress, gamma=index_f, r_min=r_min)*\
+        2.*np.pi*rs_s*wids_s
+    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
+    # Direct
+    ws_s =flux_s*es_dis/es_dis_tot
+    # Reprocessed
+    ws_sr=flux_sr*es_dis/es_dis_tot
+
+    ### Hard Compton ###
+    es_dis=epsilon_calc(r=rs_h, stress=stress, gamma=index_f, r_min=r_min)*\
+        2.*np.pi*rs_h*wids_h
+    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
+    # Direct
+    ws_h =flux_h*es_dis/es_dis_tot
+    # Reprocessed
+    ws_hr=flux_hr*es_dis/es_dis_tot
+
+    # Direct
+    ws=ws_h
+    ws=np.append(ws, ws_s)
+    ws=np.append(ws, ws_d)
+    # Reprocessed
+    wrs=ws_dr
+    wrs=np.append(wrs, ws_sr)
+    wrs=np.append(wrs, ws_hr)
+
+    return ws, wrs
+
 def preflowscp_weight_calc(\
     e_min, e_max, pars_spec,\
     eta0_d, eta1_d, eta0_s, eta1_s, eta0_h, eta1_h, eta0_sr, eta1_sr, eta0_hr, eta1_hr,\
@@ -772,65 +1095,6 @@ def preflowscp_weight_calc(\
     flux_dr*=eta_dr # 0.
     flux_sr*=eta_sr
     flux_hr*=eta_hr
-
-    # --- Calculate weight --- #
-    # Stressed
-    if stress==1:
-        stress=True 
-    # Stress-free
-    elif stress==2:
-        stress=False
-
-    ### Variable disk ###
-    es_dis=epsilon_calc(r=rs_d, stress=stress, gamma=index_d, r_min=r_min)*\
-        2.*np.pi*rs_d*wids_d
-    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
-    # Direct
-    ws_d =flux_d*es_dis/es_dis_tot
-    # Reprocessed
-    ws_dr=flux_dr*es_dis/es_dis_tot
-
-    ### Soft Compton ###
-    es_dis=epsilon_calc(r=rs_s, stress=stress, gamma=index_f, r_min=r_min)*\
-        2.*np.pi*rs_s*wids_s
-    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
-    # Direct
-    ws_s =flux_s*es_dis/es_dis_tot
-    # Reprocessed
-    ws_sr=flux_sr*es_dis/es_dis_tot
-
-    ### Hard Compton ###
-    es_dis=epsilon_calc(r=rs_h, stress=stress, gamma=index_f, r_min=r_min)*\
-        2.*np.pi*rs_h*wids_h
-    es_dis_tot=np.sum(es_dis) # Total energy dissipated (normalization)
-    # Direct
-    ws_h =flux_h*es_dis/es_dis_tot
-    # Reprocessed
-    ws_hr=flux_hr*es_dis/es_dis_tot
-
-    # Direct
-    ws=ws_h
-    ws=np.append(ws, ws_s)
-    ws=np.append(ws, ws_d)
-    # Reprocessed
-    wrs=ws_dr
-    wrs=np.append(wrs, ws_sr)
-    wrs=np.append(wrs, ws_hr)
-
-    return ws, wrs
-
-def preflow_weight_calc(\
-    cs_d, cs_s, cs_h, cs_sr, cs_hr,\
-    rs_d, rs_s, rs_h, wids_d, wids_s, wids_h,\
-    stress, r_min, index_d, index_f):
-
-    # --- Sensitivity x Spectrum --- #
-    flux_d =cs_d
-    flux_s =cs_s
-    flux_h =cs_h
-    flux_dr=0.
-    flux_sr=cs_sr
-    flux_hr=cs_hr
 
     # --- Calculate weight --- #
     # Stressed

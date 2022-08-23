@@ -2,12 +2,12 @@ from preflow_h import *
 from scipy import integrate
 xspec.AllModels.lmod('relxill', '/Users/tenyo_kawamura/soft/XSPEC_models/relxill')
 
-def preflowscp(engs, params, fluxes):
+def preflows(engs, params, fluxes):
     # ------------------------------------- #
     # ---------- Initial setting ---------- #
     # ------------------------------------- #
     inpar=SetParameter()
-    inpar.preflowscp_set_inpar(pars=params, es=engs)
+    inpar.preflows_set_inpar(pars=params, es=engs)
     
     #######################
     ### Energy spectrum ###
@@ -16,13 +16,13 @@ def preflowscp(engs, params, fluxes):
         enespec=EnergySpectrum()
         pars=[\
             inpar.temp_bb_d, inpar.norm_d,\
-            inpar.gamma_s, inpar.temp_bb_s, inpar.temp_e_s, inpar.norm_s,\
-            inpar.gamma_h, inpar.temp_bb_h, inpar.temp_e_h, inpar.norm_h,\
+            inpar.gamma_s, inpar.ecut_s, inpar.norm_s,\
+            inpar.gamma_h, inpar.ecut_h, inpar.norm_h,\
             inpar.incl, inpar.a, inpar.cafe,\
-            inpar.r_in_sr, inpar.r_out_sr, inpar.index_sr, inpar.logxi_sr, inpar.logcn_sr, inpar.cf_sr,\
-            inpar.r_in_hr, inpar.r_out_hr, inpar.index_hr, inpar.logxi_hr, inpar.logcn_hr, inpar.cf_hr\
+            inpar.r_in_sr, inpar.r_out_sr, inpar.index_sr, inpar.logxi_sr, inpar.cf_sr,\
+            inpar.r_in_hr, inpar.r_out_hr, inpar.index_hr, inpar.logxi_hr, inpar.cf_hr\
             ]
-        specs=enespec.preflowscp_calc_spectra(es=inpar.es, pars=pars)
+        specs=enespec.preflows_calc_spectra(es=inpar.es, pars=pars)
 
         n_e=len(inpar.es)
         for i_e in range(n_e-1):
@@ -98,14 +98,14 @@ def preflowscp(engs, params, fluxes):
         # --- Weight --- #
         pars_spec=[\
             inpar.temp_bb_d, inpar.norm_d,\
-            inpar.gamma_s, inpar.temp_bb_s, inpar.temp_e_s, inpar.norm_s,\
-            inpar.gamma_h, inpar.temp_bb_h, inpar.temp_e_h, inpar.norm_h,\
+            inpar.gamma_s, inpar.ecut_s, inpar.norm_s,\
+            inpar.gamma_h, inpar.ecut_h, inpar.norm_h,\
             inpar.incl, inpar.a, inpar.cafe,\
-            inpar.r_in_sr, inpar.r_out_sr, inpar.index_sr, inpar.logxi_sr, inpar.logcn_sr, inpar.cf_sr,\
-            inpar.r_in_hr, inpar.r_out_hr, inpar.index_hr, inpar.logxi_hr, inpar.logcn_hr, inpar.cf_hr\
+            inpar.r_in_sr, inpar.r_out_sr, inpar.index_sr, inpar.logxi_sr, inpar.cf_sr,\
+            inpar.r_in_hr, inpar.r_out_hr, inpar.index_hr, inpar.logxi_hr, inpar.cf_hr\
             ]
         # Subject band
-        rings.ws, rings.wrs=preflowscp_weight_calc(\
+        rings.ws, rings.wrs=preflows_weight_calc(\
             e_min=inpar.e_min, e_max=inpar.e_max, pars_spec=pars_spec,\
             eta0_d=inpar.eta0_d, eta1_d=inpar.eta1_d,\
             eta0_s=inpar.eta0_s, eta1_s=inpar.eta1_s,\
@@ -116,7 +116,7 @@ def preflowscp(engs, params, fluxes):
             wids_d=rings.wids_d, wids_s=rings.wids_s, wids_h=rings.wids_h,\
             stress=inpar.stress, r_min=inpar.r_min, index_d=inpar.gamma_disk, index_f=inpar.gamma_flow)
         # Reference band
-        rings.ws_r, rings.wrs_r=preflowscp_weight_calc(\
+        rings.ws_r, rings.wrs_r=preflows_weight_calc(\
             e_min=inpar.e_minr, e_max=inpar.e_maxr, pars_spec=pars_spec,\
             eta0_d=inpar.eta0_d, eta1_d=inpar.eta1_d,\
             eta0_s=inpar.eta0_s, eta1_s=inpar.eta1_s,\
