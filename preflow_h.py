@@ -1270,58 +1270,11 @@ class FluPro:
     #            self.psds_prop=np.vstack((self.psds_prop, psd_prop))
     #            psd_prop_pre=psd_prop
 
-    # !!! Wrong code !!!
-    ## 2022/06/04 ###
-    ## ------------------------------------------------------ ###
-    ## Employ the green function of Rapisarda et al.2017a (3) ###
-    ## ------------------------------------------------------ ###
-    # Calculate PSD with propagation
-    def psd_w_prop(self, cs, fs_prop, dr_r, rg_c):
-        if self.psd_wo_prop_done==False:
-            print('Error: PSD without propagation is not calculated.')
-            sys.exit()
-
-        self.norm_psd=2.*self.dt/((self.mu**2)*self.n_data)
-        for i in range(len(self.fs_vis)):
-            b2s=(1./self.norm_psd)*self.psds_intr[i] # Modulus square of the Fourier transform 
-            # ---------------------- #
-            # --- Outermost ring --- #
-            # ---------------------- #
-            if i==0:
-                lm2s=b2s # Modulus square of the Fourier transform
-                psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
-                self.psds_prop=psd_prop
-                psd_prop_pre=psd_prop
-
-            # ------------------- #
-            # --- Inner rings --- #
-            # ------------------- #
-            else:
-                c2s=(1./self.norm_psd)*psd_prop_pre # Modulus square of the Fourier transform
-                fs_exte, b2s_exte=ft_mod2_unfold(fs=self.fs, b2s=b2s, mu=self.mu)
-                fs_exte, c2s_exte=ft_mod2_unfold(fs=self.fs, b2s=c2s, mu=self.mu)
-
-                lm2s_exte=conv_calc_eff(bs=b2s_exte, cs=c2s_exte)
-                fs, lm2s=ft_mod2_fold(fs=fs_exte, bs=lm2s_exte)
-                # Modulus square of the Fourier transform
-                # |X_{j}|^2=( (|A_{j}|^2) \odot (|B_{j}|^2) ) / N^2 in our definition of Fourier transform
-                lm2s/=self.n_data**2 
-
-                # Propagation time from the previous ring to current ring = (dr/r)*(1/fvisc(current ring))
-                t_prop=dr_r/fs_prop[i-1] #[Rg/c]
-                t_prop*=rg_c #[s]
-                # Green function |G(r_{n-1}, r_n, f)|^2
-                cgs_mod2=green_function_ft_mod2(f=self.fs, cs=cs, t_prop=t_prop)
-
-                psd_prop=self.norm_psd*lm2s*cgs_mod2 # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
-
-                self.psds_prop=np.vstack((self.psds_prop, psd_prop))
-                psd_prop_pre=psd_prop
-
-    #### 2022/08/23 ###
-    #### ------------------------------------------------------ ###
-    #### Employ the green function of Rapisarda et al.2017a (3) ###
-    #### ------------------------------------------------------ ###
+    ## !!! Wrong code !!!
+    ### 2022/06/04 ###
+    ### ------------------------------------------------------ ###
+    ### Employ the green function of Rapisarda et al.2017a (3) ###
+    ### ------------------------------------------------------ ###
     ## Calculate PSD with propagation
     #def psd_w_prop(self, cs, fs_prop, dr_r, rg_c):
     #    if self.psd_wo_prop_done==False:
@@ -1346,15 +1299,7 @@ class FluPro:
     #        else:
     #            c2s=(1./self.norm_psd)*psd_prop_pre # Modulus square of the Fourier transform
     #            fs_exte, b2s_exte=ft_mod2_unfold(fs=self.fs, b2s=b2s, mu=self.mu)
-    #            #fs_exte, c2s_exte=ft_mod2_unfold(fs=self.fs, b2s=c2s, mu=self.mu)
-
-    #            # Propagation time from the previous ring to current ring = (dr/r)*(1/fvisc(current ring))
-    #            t_prop=dr_r/fs_prop[i-1] #[Rg/c]
-    #            t_prop*=rg_c #[s]
-    #            # Green function |G(r_{n-1}, r_n, f)|^2
-    #            cgs_mod2=green_function_ft_mod2(f=self.fs, cs=cs, t_prop=t_prop)
-    #            # Format for FFT
-    #            fs_exte, c2s_exte=ft_mod2_unfold(fs=self.fs, b2s=c2s*cgs_mod2, mu=self.mu)
+    #            fs_exte, c2s_exte=ft_mod2_unfold(fs=self.fs, b2s=c2s, mu=self.mu)
 
     #            lm2s_exte=conv_calc_eff(bs=b2s_exte, cs=c2s_exte)
     #            fs, lm2s=ft_mod2_fold(fs=fs_exte, bs=lm2s_exte)
@@ -1362,17 +1307,65 @@ class FluPro:
     #            # |X_{j}|^2=( (|A_{j}|^2) \odot (|B_{j}|^2) ) / N^2 in our definition of Fourier transform
     #            lm2s/=self.n_data**2 
 
-    #            ## Propagation time from the previous ring to current ring = (dr/r)*(1/fvisc(current ring))
-    #            #t_prop=dr_r/fs_prop[i-1] #[Rg/c]
-    #            #t_prop*=rg_c #[s]
-    #            ## Green function |G(r_{n-1}, r_n, f)|^2
-    #            #cgs_mod2=green_function_ft_mod2(f=self.fs, cs=cs, t_prop=t_prop)
-    #            #psd_prop=self.norm_psd*lm2s*cgs_mod2 # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+    #            # Propagation time from the previous ring to current ring = (dr/r)*(1/fvisc(current ring))
+    #            t_prop=dr_r/fs_prop[i-1] #[Rg/c]
+    #            t_prop*=rg_c #[s]
+    #            # Green function |G(r_{n-1}, r_n, f)|^2
+    #            cgs_mod2=green_function_ft_mod2(f=self.fs, cs=cs, t_prop=t_prop)
 
-    #            psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+    #            psd_prop=self.norm_psd*lm2s*cgs_mod2 # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
 
     #            self.psds_prop=np.vstack((self.psds_prop, psd_prop))
     #            psd_prop_pre=psd_prop
+
+    ### 2022/08/23 ###
+    ### ------------------------------------------------------ ###
+    ### Employ the green function of Rapisarda et al.2017a (3) ###
+    ### ------------------------------------------------------ ###
+    # Calculate PSD with propagation
+    def psd_w_prop(self, cs, fs_prop, dr_r, rg_c):
+        if self.psd_wo_prop_done==False:
+            print('Error: PSD without propagation is not calculated.')
+            sys.exit()
+
+        self.norm_psd=2.*self.dt/((self.mu**2)*self.n_data)
+        for i in range(len(self.fs_vis)):
+            b2s=(1./self.norm_psd)*self.psds_intr[i] # Modulus square of the Fourier transform 
+            # ---------------------- #
+            # --- Outermost ring --- #
+            # ---------------------- #
+            if i==0:
+                lm2s=b2s # Modulus square of the Fourier transform
+                psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+                self.psds_prop=psd_prop
+                psd_prop_pre=psd_prop
+
+            # ------------------- #
+            # --- Inner rings --- #
+            # ------------------- #
+            else:
+                c2s=(1./self.norm_psd)*psd_prop_pre # Modulus square of the Fourier transform
+                fs_exte, b2s_exte=ft_mod2_unfold(fs=self.fs, b2s=b2s, mu=self.mu)
+                #fs_exte, c2s_exte=ft_mod2_unfold(fs=self.fs, b2s=c2s, mu=self.mu)
+
+                # Propagation time from the previous ring to current ring = (dr/r)*(1/fvisc(current ring))
+                t_prop=dr_r/fs_prop[i-1] #[Rg/c]
+                t_prop*=rg_c #[s]
+                # Green function |G(r_{n-1}, r_n, f)|^2
+                cgs_mod2=green_function_ft_mod2(f=self.fs, cs=cs, t_prop=t_prop)
+                # Format for FFT
+                fs_exte, c2s_exte=ft_mod2_unfold(fs=self.fs, b2s=c2s*cgs_mod2, mu=self.mu)
+
+                lm2s_exte=conv_calc_eff(bs=b2s_exte, cs=c2s_exte)
+                fs, lm2s=ft_mod2_fold(fs=fs_exte, bs=lm2s_exte)
+                # Modulus square of the Fourier transform
+                # |X_{j}|^2=( (|A_{j}|^2) \odot (|B_{j}|^2) ) / N^2 in our definition of Fourier transform
+                lm2s/=self.n_data**2 
+
+                psd_prop=self.norm_psd*lm2s # \int _{0} ^{\infty} df P(f)=(\sigma/\mu)^2
+
+                self.psds_prop=np.vstack((self.psds_prop, psd_prop))
+                psd_prop_pre=psd_prop
 
 def lorentz(f, mu, sigma, f_c, df):
     var=sigma**2
