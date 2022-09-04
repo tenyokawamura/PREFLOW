@@ -71,19 +71,51 @@ def preflow(engs, params, fluxes):
     # --------------------------------------- #
     # ---------- Calculate weight  ---------- #
     # --------------------------------------- #
-    # --- Weight --- #
-    # Subject band
-    rings.ws, rings.wrs=preflow_weight_calc(\
-        cs_d=inpar.cs_d, cs_s=inpar.cs_s, cs_h=inpar.cs_h, cs_sr=inpar.cs_sr, cs_hr=inpar.cs_hr,\
-        rs_d=rings.rs_d, rs_s=rings.rs_s, rs_h=rings.rs_h,\
-        wids_d=rings.wids_d, wids_s=rings.wids_s, wids_h=rings.wids_h,\
-        stress=inpar.stress, r_min=inpar.r_min, index_d=inpar.gamma_disk, index_f=inpar.gamma_flow)
-    # Reference band
-    rings.ws_r, rings.wrs_r=preflow_weight_calc(\
-        cs_d=inpar.cs_d_r, cs_s=inpar.cs_s_r, cs_h=inpar.cs_h_r, cs_sr=inpar.cs_sr_r, cs_hr=inpar.cs_hr_r,\
-        rs_d=rings.rs_d, rs_s=rings.rs_s, rs_h=rings.rs_h,\
-        wids_d=rings.wids_d, wids_s=rings.wids_s, wids_h=rings.wids_h,\
-        stress=inpar.stress, r_min=inpar.r_min, index_d=inpar.gamma_disk, index_f=inpar.gamma_flow)
+    # --- No reverberation --- #
+    if [inpar.cs_sr, inpar.cs_hr, inpar.csp_sr, inpar.csp_hr,\
+        inpar.cs_sr_r, inpar.cs_hr_r, inpar.csp_sr_r, inpar.csp_hr_r]==\
+       [0., 0., 0., 0., 0., 0., 0., 0.]:
+        # Subject band
+        rings.ws=preflow_weight_calc(\
+            cs_d=inpar.cs_d, cs_s=inpar.cs_s, cs_h=inpar.cs_h,\
+            csp_s=inpar.csp_s, csp_h=inpar.csp_h,\
+            rs_d=rings.rs_d,       rs_s=rings.rs_s,       rs_h=rings.rs_h,\
+            wids_d=rings.wids_d,   wids_s=rings.wids_s,   wids_h=rings.wids_h,\
+            stress=inpar.stress,   r_min=inpar.r_min,     index_d=inpar.gamma_disk, index_f=inpar.gamma_flow)
+        # Reference band
+        rings.ws_r=preflow_weight_calc(\
+            cs_d=inpar.cs_d_r, cs_s=inpar.cs_s_r, cs_h=inpar.cs_h_r,\
+            csp_s=inpar.csp_s_r, csp_h=inpar.csp_h_r,\
+            rs_d=rings.rs_d,       rs_s=rings.rs_s,       rs_h=rings.rs_h,\
+            wids_d=rings.wids_d,   wids_s=rings.wids_s,   wids_h=rings.wids_h,\
+            stress=inpar.stress,   r_min=inpar.r_min,     index_d=inpar.gamma_disk, index_f=inpar.gamma_flow)
+        rings.wrss=[0.]   # Unused
+        rings.wrss_r=[0.] # Unused
+
+    # --- Reverberation taken into account --- #
+    else:
+        # Subject band
+        rings.ws, rings.wrss=preflow_ref_weight_calc(\
+            cs_d=inpar.cs_d, cs_s=inpar.cs_s, cs_h=inpar.cs_h, cs_sr=inpar.cs_sr, cs_hr=inpar.cs_hr,\
+            csp_s=inpar.csp_s, csp_h=inpar.csp_h, csp_sr=inpar.csp_sr, csp_hr=inpar.csp_hr,\
+            rs_d=rings.rs_d,         rs_s=rings.rs_s,       rs_h=rings.rs_h,\
+            wids_d=rings.wids_d,     wids_s=rings.wids_s,   wids_h=rings.wids_h,\
+            stress=inpar.stress,     r_min=inpar.r_min,     index_d=inpar.gamma_disk, index_f=inpar.gamma_flow,\
+            t0_d=inpar.t0_d,         dt0_d=inpar.dt0_d,\
+            t0_s=inpar.t0_s,         dt0_s=inpar.dt0_s,\
+            t0_h=inpar.t0_h,         dt0_h=inpar.dt0_h,\
+            fs=tifr.fs)
+        # Reference band
+        rings.ws_r, rings.wrss_r=preflow_ref_weight_calc(\
+            cs_d=inpar.cs_d_r, cs_s=inpar.cs_s_r, cs_h=inpar.cs_h_r, cs_sr=inpar.cs_sr_r, cs_hr=inpar.cs_hr_r,\
+            csp_s=inpar.csp_s_r, csp_h=inpar.csp_h_r, csp_sr=inpar.csp_sr_r, csp_hr=inpar.csp_hr_r,\
+            rs_d=rings.rs_d,         rs_s=rings.rs_s,       rs_h=rings.rs_h,\
+            wids_d=rings.wids_d,     wids_s=rings.wids_s,   wids_h=rings.wids_h,\
+            stress=inpar.stress,     r_min=inpar.r_min,     index_d=inpar.gamma_disk, index_f=inpar.gamma_flow,\
+            t0_d=inpar.t0_d,         dt0_d=inpar.dt0_d,\
+            t0_s=inpar.t0_s,         dt0_s=inpar.dt0_s,\
+            t0_h=inpar.t0_h,         dt0_h=inpar.dt0_h,\
+            fs=tifr.fs)
 
     # --- Final operation --- #
     rings.out2in()
@@ -138,10 +170,6 @@ def preflow(engs, params, fluxes):
     md2fl.fs_prop=rings.fs_prop
     # Damping (Smoothing) factor
     md2fl.cs=inpar.cs
-    # Damping factor (will be deleted)
-    md2fl.cds=rings.cds
-    # xlag (will be deleted)
-    md2fl.xlag=inpar.xlag
     # dr/r
     md2fl.dr_r=rings.dr_r
     # Rg/c
@@ -158,8 +186,6 @@ def preflow(engs, params, fluxes):
     md2fl.fs=flupro.fs
     md2fl.lm2s=flupro.psds_prop/flupro.norm_psd #|M_dot(r, f)|^2
 
-    #print(md2fl.n_ring, md2fl.cs, md2fl.cds, md2fl.xlag, md2fl.t0s, md2fl.dt0s)
-
     del flupro
 
     # ----- Power spectrum ----- #
@@ -172,19 +198,29 @@ def preflow(engs, params, fluxes):
             print('Calculating power spectrum for')
             print('{0:.2f} - {1:.2f} keV'.format(inpar.e_min, inpar.e_max))
 
-        # Weight (direct)
-        md2fl.ws=rings.ws
-        # Weight (reprocessed)
-        md2fl.wrs=rings.wrs
-        # Lag (direct)
-        md2fl.lags=rings.lags
-        # Lag (reprocessed)
-        md2fl.lagrs=rings.lagrs
-        # Time-averaged flux
-        md2fl.mu_fl=1. # <x(E,t)>=1
+        # --- No reverberation --- #
+        if [inpar.cs_sr, inpar.cs_hr, inpar.csp_sr, inpar.csp_hr,\
+            inpar.cs_sr_r, inpar.cs_hr_r, inpar.csp_sr_r, inpar.csp_hr_r]==\
+           [0., 0., 0., 0., 0., 0., 0., 0.]:
+            # Weight (direct)
+            md2fl.ws=rings.ws
+            # Time-averaged flux
+            md2fl.mu_fl=1. # <x(E,t)>=1
 
-        md2fl.psd_norm_set()
-        md2fl.psd_flux_calc()
+            md2fl.psd_norm_set()
+            md2fl.psd_flux_calc()
+
+        # --- Reverberation taken into account --- #
+        else:
+            # Weight (direct)
+            md2fl.ws=rings.ws
+            # Weight (reprocessed)
+            md2fl.wrss=rings.wrss
+            # Time-averaged flux
+            md2fl.mu_fl=1. # <x(E,t)>=1
+
+            md2fl.psd_norm_set()
+            md2fl.psd_flux_ref_calc()
 
         #psds_fl=md2fl.psd_fl
         data=md2fl.psd_fl
@@ -203,32 +239,45 @@ def preflow(engs, params, fluxes):
             print('{0:.2f} - {1:.2f} keV vs {2:.2f} - {3:.2f} keV'\
                   .format(inpar.e_min, inpar.e_max, inpar.e_minr, inpar.e_maxr))
 
-        # --- Subject band --- #
-        # Weight (direct)
-        md2fl.ws=rings.ws
-        # Weight (reprocessed)
-        md2fl.wrs=rings.wrs
-        # Lag (direct)
-        md2fl.lags=rings.lags
-        # Lag (reprocessed)
-        md2fl.lagrs=rings.lagrs
-        # Time-averaged flux
-        md2fl.mu_fl=1. # <x(E,t)>=1
+        # --- No reverberation --- #
+        if [inpar.cs_sr, inpar.cs_hr, inpar.csp_sr, inpar.csp_hr,\
+            inpar.cs_sr_r, inpar.cs_hr_r, inpar.csp_sr_r, inpar.csp_hr_r]==\
+           [0., 0., 0., 0., 0., 0., 0., 0.]:
+            # --- Subject band --- #
+            # Weight (direct)
+            md2fl.ws=rings.ws
+            # Time-averaged flux
+            md2fl.mu_fl=1. # <x(E,t)>=1
 
-        # --- Reference band --- #
-        # Weight (direct)
-        md2fl.ws_r=rings.ws_r
-        # Weight (reprocessed)
-        md2fl.wrs_r=rings.wrs_r
-        # Lag (direct)
-        md2fl.lags_r=rings.lags_r
-        # Lag (reprocessed)
-        md2fl.lagrs_r=rings.lagrs_r
-        # Time-averaged flux
-        md2fl.mu_fl_r=1. # <x(E,t)>=1
+            # --- Reference band --- #
+            # Weight (direct)
+            md2fl.ws_r=rings.ws_r
+            # Time-averaged flux
+            md2fl.mu_fl_r=1. # <x(E,t)>=1
 
-        md2fl.csd_norm_set()
-        md2fl.csd_flux_calc()
+            md2fl.csd_norm_set()
+            md2fl.csd_flux_calc()
+
+        # --- Reverberation taken into account --- #
+        else:
+            # --- Subject band --- #
+            # Weight (direct)
+            md2fl.ws=rings.ws
+            # Weight (reprocessed)
+            md2fl.wrss=rings.wrss
+            # Time-averaged flux
+            md2fl.mu_fl=1. # <x(E,t)>=1
+
+            # --- Reference band --- #
+            # Weight (direct)
+            md2fl.ws_r=rings.ws_r
+            # Weight (reprocessed)
+            md2fl.wrss_r=rings.wrss_r
+            # Time-averaged flux
+            md2fl.mu_fl_r=1. # <x(E,t)>=1
+
+            md2fl.csd_norm_set()
+            md2fl.csd_flux_ref_calc()
 
         # Choice of quantity
         md2fl.quant=inpar.quant

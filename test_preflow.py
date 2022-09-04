@@ -33,20 +33,28 @@ def main():
     Sd    =0.1
     Ss    =0.2
     Sh    =0.2
-    Ssr   =0.3
-    Shr   =0.3
+    Ssr   =0.1
+    Shr   =0.1
+    Sps   =0.2
+    Sph   =0.2
+    Spsr  =0.1
+    Sphr  =0.1
     Eminr =2.6
     Emaxr =4.8
     Srd   =0.
     Srs   =0.4
     Srh   =0.4
-    Srsr  =0.1
-    Srhr  =0.1
+    Srsr  =0.
+    Srhr  =0.
+    Srps  =0.4
+    Srph  =0.4
+    Srpsr =0.
+    Srphr =0.
     t0s   =1.e-3
     dt0s  =1.e-2
     t0h   =1.e-3
     dt0h  =1.e-2
-    quant =5
+    quant =1
     invert=2
     par_print=1
 
@@ -80,6 +88,10 @@ def main():
         Sh    ,\
         Ssr   ,\
         Shr   ,\
+        Srs   ,\
+        Srh   ,\
+        Srsr  ,\
+        Srhr  ,\
         Eminr ,\
         Emaxr ,\
         Srd   ,\
@@ -87,6 +99,10 @@ def main():
         Srh   ,\
         Srsr  ,\
         Srhr  ,\
+        Srps  ,\
+        Srph  ,\
+        Srpsr ,\
+        Srphr ,\
         t0s   ,\
         dt0s  ,\
         t0h   ,\

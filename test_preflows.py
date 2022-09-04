@@ -21,12 +21,14 @@ def main():
     Routs    =400.
     Indexs   =3.
     logxis   =3.
-    Frefs    =0.01
+    #normsr   =0.01
+    normsr   =0.
     Rinh     =45.
     Routh    =400.
     Indexh   =3.
     logxih   =3.
-    Frefh    =0.01
+    #normhr   =0.01
+    normhr   =0.
     Mass     =8.
     rin      =6.
     drh      =10.
@@ -59,10 +61,10 @@ def main():
     eta1s    =0.3
     eta0h    =1.
     eta1h    =0.4
-    eta0sr   =1.
-    eta1sr   =-0.2
-    eta0hr   =1.
-    eta1hr   =-0.5
+    etap0s   =1.
+    etap1s   =-0.2
+    etap0h   =1.
+    etap1h   =-0.5
     t0s      =1.e-3
     dt0s     =1.e-2
     t0h      =1.e-3
@@ -87,12 +89,12 @@ def main():
         Routs    ,\
         Indexs   ,\
         logxis   ,\
-        Frefs    ,\
+        normsr   ,\
         Rinh     ,\
         Routh    ,\
         Indexh   ,\
         logxih   ,\
-        Frefh    ,\
+        normhr   ,\
         Mass     ,\
         rin      ,\
         drh      ,\
@@ -125,10 +127,10 @@ def main():
         eta1s    ,\
         eta0h    ,\
         eta1h    ,\
-        eta0sr   ,\
-        eta1sr   ,\
-        eta0hr   ,\
-        eta1hr   ,\
+        etap0s   ,\
+        etap1s   ,\
+        etap0h   ,\
+        etap1h   ,\
         t0s      ,\
         dt0s     ,\
         t0h      ,\
