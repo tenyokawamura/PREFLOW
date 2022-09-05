@@ -63,9 +63,13 @@ def preflow(engs, params, fluxes):
         cb_d=inpar.cb_d, m_d=inpar.m_d, cbp_d=inpar.cbp_d, mp_d=inpar.mp_d)
     rings.damping_calc()
     rings.spec_lag_calc()
-    rings.variability_amplitude_calc(\
-        cf_var_f=inpar.cf_var_f, dr_var_f=inpar.dr_var_f,\
-        cf_var_d=inpar.cf_var_d, dr_var_d=inpar.dr_var_d)
+    #rings.variability_amplitude_calc(\
+    #    cf_var_f=inpar.cf_var_f, dr_var_f=inpar.dr_var_f,\
+    #    cf_var_d=inpar.cf_var_d, dr_var_d=inpar.dr_var_d)
+    rings.variability_amplitude_set(\
+        cf_var_d=inpar.cf_var_d,\
+        cf_var_s=inpar.cf_var_s,\
+        cf_var_h=inpar.cf_var_h)
     rings.imp_resp_set()
 
     # --------------------------------------- #
@@ -126,7 +130,7 @@ def preflow(engs, params, fluxes):
         print_ring_info(name='Disk ring [Rg]',             xs=rings.rs_d,              digit=1)
         print_ring_info(name='Soft Compton ring [Rg]',     xs=rings.rs_s,              digit=1)
         print_ring_info(name='Hard Compton ring [Rg]',     xs=rings.rs_h,              digit=1)
-        print_ring_info(name='Variability frequency [Hz]', xs=rings.fs_vis*bunit.c_rg, digit=3)
+        print_ring_info(name='Generator frequency [Hz]',   xs=rings.fs_vis*bunit.c_rg, digit=3)
         print_ring_info(name='Propagation speed [km/s]',   xs=rings.vs_prop*bunit.c,   digit=3)
 
     #print(rings.ws)

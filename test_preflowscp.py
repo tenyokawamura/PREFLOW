@@ -40,8 +40,8 @@ def main():
     drd      =0.
     Nring    =40
     Fvd      =0.8
-    drvd     =1.e3
-    Fvf      =0.8
+    Fvs      =0.8
+    Fvh      =0.8
     drvf     =1.e3
     Bd       =0.05
     md       =0.3
@@ -112,9 +112,8 @@ def main():
         drd      ,\
         Nring    ,\
         Fvd      ,\
-        drvd     ,\
-        Fvf      ,\
-        drvf     ,\
+        Fvs      ,\
+        Fvh      ,\
         Bd       ,\
         md       ,\
         Bpd      ,\

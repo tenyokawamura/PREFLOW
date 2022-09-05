@@ -19,56 +19,55 @@ class SetParameter:
         self.dr_disk     =pars[4]  # Width of variable disk [Rg]
         self.n_ring      =pars[5]  # Number of rings splitted [Rg]
         self.cf_var_d    =pars[6]  # Fractional variability at variable disk [-]
-        self.dr_var_d    =pars[7]  # FWHM of fractional variability at variable disk [Rg]
-        self.cf_var_f    =pars[8]  # Fractional variability at hot flow [-]
-        self.dr_var_f    =pars[9]  # FWHM of fractional variability at hot flow [Rg]
-        self.cb_d        =pars[10] # B_{gen}_{disk} [-]
-        self.m_d         =pars[11] # m_{gen}_{disk} [-]
-        self.cbp_d       =pars[12] # B_{gen}_{disk} [-]
-        self.mp_d        =pars[13] # m_{gen}_{disk} [-]
-        self.cb_f        =pars[14] # B_{prop}_{flow} [-]
-        self.m_f         =pars[15] # m_{prop}_{flow} [-]
-        self.cbp_f       =pars[16] # B_{prop}_{flow} [-]
-        self.mp_f        =pars[17] # m_{prop}_{flow} [-]
-        self.cs          =pars[18] # Damping factor [-]
-        self.gamma_disk  =pars[19] # Radial index of emissivity [-]
-        self.gamma_flow  =pars[20] # Radial index of emissivity [-]
-        self.stress      =pars[21] # 1: stressed, 2: stress-free in emissivity
-        self.e_min       =pars[22] # Lower bound of energy band [keV] (unused)
-        self.e_max       =pars[23] # Upper bound of energy band [keV] (unused)
-        self.cs_d        =pars[24] # Disk spectrum [-]
-        self.cs_s        =pars[25] # Soft Compton spectrum [-]
-        self.cs_h        =pars[26] # Hard Compton spectrum [-]
-        self.cs_sr       =pars[27] # Soft reflection spectrum [-]
-        self.cs_hr       =pars[28] # Hard Compton spectrum [-]
-        self.csp_s       =pars[29] # Soft Compton sensitive to seed photon variability [-]
-        self.csp_h       =pars[30] # Hard Compton sensitive to seed photon variability [-]
-        self.csp_sr      =pars[31] # Soft reflection sensitive to seed photon variability [-]
-        self.csp_hr      =pars[32] # Hard reflection sensitive to seed photon variability [-]
-        self.e_minr      =pars[33] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[34] # Upper bound of reference band [keV] (unused)
-        self.cs_d_r      =pars[35] # Disk spectrum [-]
-        self.cs_s_r      =pars[36] # Soft Compton spectrum [-]
-        self.cs_h_r      =pars[37] # Hard Compton spectrum [-]
-        self.cs_sr_r     =pars[38] # Soft reflection spectrum [-]
-        self.cs_hr_r     =pars[39] # Hard reflection spectrum [-]
-        self.csp_s_r     =pars[40] # Soft Compton spectrum [-]
-        self.csp_h_r     =pars[41] # Hard Compton spectrum [-]
-        self.csp_sr_r    =pars[42] # Soft reflection spectrum [-]
-        self.csp_hr_r    =pars[43] # Hard reflection spectrum [-]
-        self.tr_s        =pars[44] # Rising time of impulse response for soft reflection [sec]
-        self.dt0_s       =pars[45] # Time width of impulse response for soft reflection [sec]
-        self.tr_h        =pars[46] # Rising time of impulse response for hard reflection [sec]
-        self.dt0_h       =pars[47] # Time width of impulse response for hard reflection  [sec]
-        self.quant       =pars[48]
+        self.cf_var_s    =pars[7]  # Fractional variability at soft Compton [-]
+        self.cf_var_h    =pars[8]  # Fractional variability at hard Compton [-]
+        self.cb_d        =pars[9]  # B_{gen}_{disk} [-]
+        self.m_d         =pars[10] # m_{gen}_{disk} [-]
+        self.cbp_d       =pars[11] # B_{gen}_{disk} [-]
+        self.mp_d        =pars[12] # m_{gen}_{disk} [-]
+        self.cb_f        =pars[13] # B_{prop}_{flow} [-]
+        self.m_f         =pars[14] # m_{prop}_{flow} [-]
+        self.cbp_f       =pars[15] # B_{prop}_{flow} [-]
+        self.mp_f        =pars[16] # m_{prop}_{flow} [-]
+        self.cs          =pars[17] # Damping factor [-]
+        self.gamma_disk  =pars[18] # Radial index of emissivity [-]
+        self.gamma_flow  =pars[19] # Radial index of emissivity [-]
+        self.stress      =pars[20] # 1: stressed, 2: stress-free in emissivity
+        self.e_min       =pars[21] # Lower bound of energy band [keV] (unused)
+        self.e_max       =pars[22] # Upper bound of energy band [keV] (unused)
+        self.cs_d        =pars[23] # Disk spectrum [-]
+        self.cs_s        =pars[24] # Soft Compton spectrum [-]
+        self.cs_h        =pars[25] # Hard Compton spectrum [-]
+        self.cs_sr       =pars[26] # Soft reflection spectrum [-]
+        self.cs_hr       =pars[27] # Hard Compton spectrum [-]
+        self.csp_s       =pars[28] # Soft Compton sensitive to seed photon variability [-]
+        self.csp_h       =pars[29] # Hard Compton sensitive to seed photon variability [-]
+        self.csp_sr      =pars[30] # Soft reflection sensitive to seed photon variability [-]
+        self.csp_hr      =pars[31] # Hard reflection sensitive to seed photon variability [-]
+        self.e_minr      =pars[32] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[33] # Upper bound of reference band [keV] (unused)
+        self.cs_d_r      =pars[34] # Disk spectrum [-]
+        self.cs_s_r      =pars[35] # Soft Compton spectrum [-]
+        self.cs_h_r      =pars[36] # Hard Compton spectrum [-]
+        self.cs_sr_r     =pars[37] # Soft reflection spectrum [-]
+        self.cs_hr_r     =pars[38] # Hard reflection spectrum [-]
+        self.csp_s_r     =pars[39] # Soft Compton spectrum [-]
+        self.csp_h_r     =pars[40] # Hard Compton spectrum [-]
+        self.csp_sr_r    =pars[41] # Soft reflection spectrum [-]
+        self.csp_hr_r    =pars[42] # Hard reflection spectrum [-]
+        self.tr_s        =pars[43] # Rising time of impulse response for soft reflection [sec]
+        self.dt0_s       =pars[44] # Time width of impulse response for soft reflection [sec]
+        self.tr_h        =pars[45] # Rising time of impulse response for hard reflection [sec]
+        self.dt0_h       =pars[46] # Time width of impulse response for hard reflection  [sec]
+        self.quant       =pars[47]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert      =pars[49] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display     =pars[50] # 1: display, 2: not display
+        self.invert      =pars[48] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display     =pars[49] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -137,41 +136,40 @@ class SetParameter:
         self.dr_scomp     =pars[24]  # Transition radius between soft Compton and variable disk [Rg]
         self.dr_disk      =pars[25]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
         self.n_ring       =pars[26]  # Outer radius of variable disk [Rg]
-        self.cf_var_d     =pars[27]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.dr_var_d     =pars[28]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.cf_var_f     =pars[29]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.dr_var_f     =pars[30]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.cb_d         =pars[31]  # B_{disk} [-]
-        self.m_d          =pars[32]  # m_{disk} [-]
-        self.cbp_d        =pars[33]  # Bprop_{disk} [-]
-        self.mp_d         =pars[34]  # mprop_{disk} [-]
-        self.cb_f         =pars[35]  # B_{flow} [-]
-        self.m_f          =pars[36]  # m_{flow} [-]
-        self.cbp_f        =pars[37]  # Bprop_{flow} [-]
-        self.mp_f         =pars[38]  # mprop_{flow} [-]
-        self.cs           =pars[39]  # Smoothing factor [-]
-        self.gamma_disk   =pars[40]  # Radial index of emissivity [-]
-        self.gamma_flow   =pars[41]  # Radial index of emissivity [-]
-        self.stress       =pars[42]  # 1: stressed, 2: stress-free in emissivity
-        self.e_min        =pars[43]  # Lower bound of energy band [keV] (unused)
-        self.e_max        =pars[44]  # Upper bound of energy band [keV] (unused)
-        self.e_minr       =pars[45]  # Lower bound of reference band [keV] (unused)
-        self.e_maxr       =pars[46]  # Upper bound of reference band [keV] (unused)
-        self.eta0_d       =pars[47]
-        self.eta1_d       =pars[48]
-        self.eta0_s       =pars[49]
-        self.eta1_s       =pars[50]
-        self.eta0_h       =pars[51]
-        self.eta1_h       =pars[52]
-        self.etap0_s      =pars[53] # Sensitivity parameter for seed photon variability
-        self.etap1_s      =pars[54] # Sensitivity parameter for seed photon variability
-        self.etap0_h      =pars[55] # Sensitivity parameter for seed photon variability
-        self.etap1_h      =pars[56] # Sensitivity parameter for seed photon variability
-        self.tr_s         =pars[57] # Start time of reflection impulse response [sec]
-        self.dt0_s        =pars[58] # Time width of reflection impulse response [sec]
-        self.tr_h         =pars[59] # Start time of reflection impulse response [sec]
-        self.dt0_h        =pars[60] # Time width of reflection impulse response [sec]
-        self.quant        =pars[61]
+        self.cf_var_d     =pars[27]  # Fractional variability at variable disk [-]
+        self.cf_var_s     =pars[28]  # Fractional variability at soft Compton [-]
+        self.cf_var_h     =pars[29]  # Fractional variability at hard Compton [-]
+        self.cb_d         =pars[30]  # B_{disk} [-]
+        self.m_d          =pars[31]  # m_{disk} [-]
+        self.cbp_d        =pars[32]  # Bprop_{disk} [-]
+        self.mp_d         =pars[33]  # mprop_{disk} [-]
+        self.cb_f         =pars[34]  # B_{flow} [-]
+        self.m_f          =pars[35]  # m_{flow} [-]
+        self.cbp_f        =pars[36]  # Bprop_{flow} [-]
+        self.mp_f         =pars[37]  # mprop_{flow} [-]
+        self.cs           =pars[38]  # Smoothing factor [-]
+        self.gamma_disk   =pars[39]  # Radial index of emissivity [-]
+        self.gamma_flow   =pars[40]  # Radial index of emissivity [-]
+        self.stress       =pars[41]  # 1: stressed, 2: stress-free in emissivity
+        self.e_min        =pars[42]  # Lower bound of energy band [keV] (unused)
+        self.e_max        =pars[43]  # Upper bound of energy band [keV] (unused)
+        self.e_minr       =pars[44]  # Lower bound of reference band [keV] (unused)
+        self.e_maxr       =pars[45]  # Upper bound of reference band [keV] (unused)
+        self.eta0_d       =pars[46]
+        self.eta1_d       =pars[47]
+        self.eta0_s       =pars[48]
+        self.eta1_s       =pars[49]
+        self.eta0_h       =pars[50]
+        self.eta1_h       =pars[51]
+        self.etap0_s      =pars[52] # Sensitivity parameter for seed photon variability
+        self.etap1_s      =pars[53] # Sensitivity parameter for seed photon variability
+        self.etap0_h      =pars[54] # Sensitivity parameter for seed photon variability
+        self.etap1_h      =pars[55] # Sensitivity parameter for seed photon variability
+        self.tr_s         =pars[56] # Start time of reflection impulse response [sec]
+        self.dt0_s        =pars[57] # Time width of reflection impulse response [sec]
+        self.tr_h         =pars[58] # Start time of reflection impulse response [sec]
+        self.dt0_h        =pars[59] # Time width of reflection impulse response [sec]
+        self.quant        =pars[60]
             # 0: energy spectrum
             # 1: power spectrum 
             # 2: real part of cross spectrum
@@ -179,8 +177,8 @@ class SetParameter:
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert       =pars[62] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display      =pars[63] # 1: display, 2: not display
+        self.invert       =pars[61] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display      =pars[62] # 1: display, 2: not display
 
         # PREFLOW model is a spectral-timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -262,41 +260,40 @@ class SetParameter:
         self.dr_scomp     =pars[28]  # Transition radius between soft Compton and variable disk [Rg]
         self.dr_disk      =pars[29]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
         self.n_ring       =pars[30]  # Outer radius of variable disk [Rg]
-        self.cf_var_d     =pars[31]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.dr_var_d     =pars[32]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.cf_var_f     =pars[33]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.dr_var_f     =pars[34]  # Fractional variability of mass accretion rate in radial decade [-]
-        self.cb_d         =pars[35]  # B_{disk} [-]
-        self.m_d          =pars[36]  # m_{disk} [-]
-        self.cbp_d        =pars[37]  # Bprop_{disk} [-]
-        self.mp_d         =pars[38]  # mprop_{disk} [-]
-        self.cb_f         =pars[39]  # B_{flow} [-]
-        self.m_f          =pars[40]  # m_{flow} [-]
-        self.cbp_f        =pars[41]  # Bprop_{flow} [-]
-        self.mp_f         =pars[42]  # mprop_{flow} [-]
-        self.cs           =pars[43]  # Smoothing factor [-]
-        self.gamma_disk   =pars[44]  # Radial index of emissivity [-]
-        self.gamma_flow   =pars[45]  # Radial index of emissivity [-]
-        self.stress       =pars[46]  # 1: stressed, 2: stress-free in emissivity
-        self.e_min        =pars[47]  # Lower bound of energy band [keV] (unused)
-        self.e_max        =pars[48]  # Upper bound of energy band [keV] (unused)
-        self.e_minr       =pars[49]  # Lower bound of reference band [keV] (unused)
-        self.e_maxr       =pars[50]  # Upper bound of reference band [keV] (unused)
-        self.eta0_d       =pars[51]
-        self.eta1_d       =pars[52]
-        self.eta0_s       =pars[53]
-        self.eta1_s       =pars[54]
-        self.eta0_h       =pars[55]
-        self.eta1_h       =pars[56]
-        self.etap0_s      =pars[57] # Sensitivity parameter for seed photon variability
-        self.etap1_s      =pars[58] # Sensitivity parameter for seed photon variability
-        self.etap0_h      =pars[59] # Sensitivity parameter for seed photon variability
-        self.etap1_h      =pars[60] # Sensitivity parameter for seed photon variability
-        self.tr_s         =pars[61] # Start time of reflection impulse response [sec]
-        self.dt0_s        =pars[62] # Time width of reflection impulse response [sec]
-        self.tr_h         =pars[63] # Start time of reflection impulse response [sec]
-        self.dt0_h        =pars[64] # Time width of reflection impulse response [sec]
-        self.quant        =pars[65]
+        self.cf_var_d     =pars[31]  # Fractional variability at variable disk [-]
+        self.cf_var_s     =pars[32]  # Fractional variability at soft Compton [-]
+        self.cf_var_h     =pars[33]  # Fractional variability at hard Compton [-]
+        self.cb_d         =pars[34]  # B_{disk} [-]
+        self.m_d          =pars[35]  # m_{disk} [-]
+        self.cbp_d        =pars[36]  # Bprop_{disk} [-]
+        self.mp_d         =pars[37]  # mprop_{disk} [-]
+        self.cb_f         =pars[38]  # B_{flow} [-]
+        self.m_f          =pars[39]  # m_{flow} [-]
+        self.cbp_f        =pars[40]  # Bprop_{flow} [-]
+        self.mp_f         =pars[41]  # mprop_{flow} [-]
+        self.cs           =pars[42]  # Smoothing factor [-]
+        self.gamma_disk   =pars[43]  # Radial index of emissivity [-]
+        self.gamma_flow   =pars[44]  # Radial index of emissivity [-]
+        self.stress       =pars[45]  # 1: stressed, 2: stress-free in emissivity
+        self.e_min        =pars[46]  # Lower bound of energy band [keV] (unused)
+        self.e_max        =pars[47]  # Upper bound of energy band [keV] (unused)
+        self.e_minr       =pars[48]  # Lower bound of reference band [keV] (unused)
+        self.e_maxr       =pars[49]  # Upper bound of reference band [keV] (unused)
+        self.eta0_d       =pars[50]
+        self.eta1_d       =pars[51]
+        self.eta0_s       =pars[52]
+        self.eta1_s       =pars[53]
+        self.eta0_h       =pars[54]
+        self.eta1_h       =pars[55]
+        self.etap0_s      =pars[56] # Sensitivity parameter for seed photon variability
+        self.etap1_s      =pars[57] # Sensitivity parameter for seed photon variability
+        self.etap0_h      =pars[58] # Sensitivity parameter for seed photon variability
+        self.etap1_h      =pars[59] # Sensitivity parameter for seed photon variability
+        self.tr_s         =pars[60] # Start time of reflection impulse response [sec]
+        self.dt0_s        =pars[61] # Time width of reflection impulse response [sec]
+        self.tr_h         =pars[62] # Start time of reflection impulse response [sec]
+        self.dt0_h        =pars[63] # Time width of reflection impulse response [sec]
+        self.quant        =pars[64]
             # 0: energy spectrum
             # 1: power spectrum 
             # 2: real part of cross spectrum
@@ -304,8 +301,8 @@ class SetParameter:
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert       =pars[66] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display      =pars[67] # 1: display, 2: not display
+        self.invert       =pars[65] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display      =pars[66] # 1: display, 2: not display
 
         # PREFLOW model is a spectral-timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -753,6 +750,16 @@ class Flow2Ring:
         cfs_var_f=gauss(x=self.rs_f, norm=cf_var_f, mu=self.r_ds, sigma=dr_var_f)
         cfs_var_d=gauss(x=self.rs_d, norm=cf_var_d, mu=self.r_ds, sigma=dr_var_d)
         self.lfs_var=np.append(cfs_var_f, cfs_var_d)
+
+    # Intrinsic variability
+    def variability_amplitude_set(self, cf_var_d, cf_var_s, cf_var_h):
+        cfs_var_h=cf_var_h*np.ones(len(self.rs_h))
+        cfs_var_s=cf_var_s*np.ones(len(self.rs_s))
+        cfs_var_d=cf_var_d*np.ones(len(self.rs_d))
+        cfs_var=cfs_var_h
+        cfs_var=np.append(cfs_var, cfs_var_s)
+        cfs_var=np.append(cfs_var, cfs_var_d)
+        self.lfs_var=cfs_var
 
     # Parameters of the top-hat impulse response for reverberation
     def imp_resp_set(self):

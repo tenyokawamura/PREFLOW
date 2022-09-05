@@ -87,9 +87,13 @@ def preflows(engs, params, fluxes):
             cb_d=inpar.cb_d, m_d=inpar.m_d, cbp_d=inpar.cbp_d, mp_d=inpar.mp_d)
         rings.damping_calc()
         rings.spec_lag_calc()
-        rings.variability_amplitude_calc(\
-            cf_var_f=inpar.cf_var_f, dr_var_f=inpar.dr_var_f,\
-            cf_var_d=inpar.cf_var_d, dr_var_d=inpar.dr_var_d)
+        #rings.variability_amplitude_calc(\
+        #    cf_var_f=inpar.cf_var_f, dr_var_f=inpar.dr_var_f,\
+        #    cf_var_d=inpar.cf_var_d, dr_var_d=inpar.dr_var_d)
+        rings.variability_amplitude_set(\
+            cf_var_d=inpar.cf_var_d,\
+            cf_var_s=inpar.cf_var_s,\
+            cf_var_h=inpar.cf_var_h)
         rings.imp_resp_set()
 
         # --------------------------------------- #
