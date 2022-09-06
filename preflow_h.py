@@ -519,7 +519,7 @@ class EnergySpectrum:
         fluxes_s =specx.nthcomp_spec  (\
             es=es, gamma=gammas, ktbb=ktbbs, kte=ktes, norm=norms)
         fluxes_h =specx.nthcomp_spec  (\
-            es=es, gamma=gammah, ktbb=ktbbh, kte=ktes, norm=normh)
+            es=es, gamma=gammah, ktbb=ktbbh, kte=kteh, norm=normh)
         fluxes_sr=specx.relxillcp_spec(\
             es=es,        incl=incl,    a=a,\
             r_in=rins,    r_out=routs,  index=indexs,\
@@ -1295,7 +1295,7 @@ def preflowscp_weight_calc(\
     flux_s =specx.nthcomp_spec  (\
         es=es, gamma=gammas, ktbb=ktbbs, kte=ktes, norm=norms)[0]/de
     flux_h =specx.nthcomp_spec  (\
-        es=es, gamma=gammah, ktbb=ktbbh, kte=ktes, norm=normh)[0]/de
+        es=es, gamma=gammah, ktbb=ktbbh, kte=kteh, norm=normh)[0]/de
 
     # Normalize such that total corresponds to unity.
     flux_tot=flux_d+flux_s+flux_h
@@ -1409,7 +1409,7 @@ def preflowscp_ref_weight_calc(\
     flux_s =specx.nthcomp_spec  (\
         es=es, gamma=gammas, ktbb=ktbbs, kte=ktes, norm=norms)[0]/de
     flux_h =specx.nthcomp_spec  (\
-        es=es, gamma=gammah, ktbb=ktbbh, kte=ktes, norm=normh)[0]/de
+        es=es, gamma=gammah, ktbb=ktbbh, kte=kteh, norm=normh)[0]/de
     flux_dr=0. # No reflection associated with the variable disk
     flux_sr=specx.relxillcp_spec(\
         es=es,        incl=incl,    a=a,\
