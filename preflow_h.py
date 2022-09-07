@@ -1247,8 +1247,14 @@ def preflows_ref_weight_calc(\
     ws=np.append(ws, ws_d)
     # Reprocessed
     wrss=wss_hr
-    wrss=np.vstack((wrss, wss_sr))
-    wrss=np.vstack((wrss, wss_dr))
+    if len(wss_sr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_sr))
+    if len(wss_dr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_dr))
 
     #print(ws_h)
     #print(ws_s)
@@ -1533,8 +1539,14 @@ def preflowscp_ref_weight_calc(\
     ws=np.append(ws, ws_d)
     # Reprocessed
     wrss=wss_hr
-    wrss=np.vstack((wrss, wss_sr))
-    wrss=np.vstack((wrss, wss_dr))
+    if len(wss_sr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_sr))
+    if len(wss_dr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_dr))
 
     #print(ws_h)
     #print(ws_s)
@@ -1600,14 +1612,17 @@ def weight_dir_ref_calc_final(\
     ws  =flux  *es_dis/es_dis_tot
     # Reprocessed
     ws_r=flux_r*es_dis/es_dis_tot
-    first=True
-    for w_r in ws_r:
-        ws_r_f=w_r*ch_rep_calc(f=fs, t0=t0, dt0=dt0)
-        if first==True:
-            first=False
-            wss_r=ws_r_f
-        else:
-            wss_r=np.vstack((wss_r, ws_r_f))
+    if len(ws_r)==0:
+        wss_r=np.array([])
+    else:
+        first=True
+        for w_r in ws_r:
+            ws_r_f=w_r*ch_rep_calc(f=fs, t0=t0, dt0=dt0)
+            if first==True:
+                first=False
+                wss_r=ws_r_f
+            else:
+                wss_r=np.vstack((wss_r, ws_r_f))
     return ws, wss_r
 
 # ------------------------------------ #

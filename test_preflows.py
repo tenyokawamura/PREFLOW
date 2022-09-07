@@ -21,8 +21,8 @@ def main():
     Routs    =400.
     Indexs   =3.
     logxis   =3.
-    #normsr   =0.01
-    normsr   =0.
+    normsr   =0.01
+    #normsr   =0.
     Rinh     =45.
     Routh    =400.
     Indexh   =3.
@@ -33,7 +33,7 @@ def main():
     rin      =6.
     drh      =10.
     drs      =16.
-    drd      =13.
+    drd      =0.
     Nring    =40
     Fvd      =0.8
     Fvs      =0.7

@@ -24,8 +24,8 @@ def main():
     Indexs   =3.
     logxis   =3.
     logNs    =15.
-    #Frefs    =0.01
-    Frefs    =0.
+    Frefs    =0.01
+    #Frefs    =0.
     Rinh     =45.
     Routh    =400.
     Indexh   =3.
@@ -37,7 +37,7 @@ def main():
     rin      =6.
     drh      =26.
     drs      =0.
-    drd      =0.
+    drd      =13.
     Nring    =40
     Fvd      =0.8
     Fvs      =0.8
