@@ -973,8 +973,14 @@ def preflow_ref_weight_calc(\
     ws=np.append(ws, ws_d)
     # Reprocessed
     wrss=wss_hr
-    wrss=np.vstack((wrss, wss_sr))
-    wrss=np.vstack((wrss, wss_dr))
+    if len(wss_sr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_sr))
+    if len(wss_dr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_dr))
 
     #print(ws_h)
     #print(ws_s)

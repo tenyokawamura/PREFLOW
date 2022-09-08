@@ -10,7 +10,7 @@ def main():
     rin   =6.
     drh   =10.
     drs   =16.
-    drd   =13.
+    drd   =0.
     Nring =40.
     Fvd   =0.8
     Fvs   =0.7
