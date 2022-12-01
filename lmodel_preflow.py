@@ -200,7 +200,7 @@ lmodel_preflowscp_info=\
 ##### Type 'AllModels.addPyMod(preflowscpp, lmodel_preflowscp_info, 'add')' #####
 ##### for XSPEC to read the model, preflow.                                 #####
 #################################################################################
-lmodel_preflowscp_info=\
+lmodel_preflowscpp_info=\
 ('Gammad   \'\'   2.    1.001  1.001  10.    10.    1.e-2  ',\
  'kTbbd    keV    0.2   1.e-2  1.e-2  1.e1   1.e1   1.e-2  ',\
  'kTed     keV    100.  1.e0   1.e0   1.e3   1.e3   1.e-1  ',\
