@@ -338,6 +338,132 @@ class SetParameter:
 
         self.set_inpar_done=True
 
+    # --- Model: preflowscp --- #
+    def preflowscpp_set_inpar(self, pars, es):
+        ###########################
+        ### Spectral parameters ###
+        ###########################
+        # Disk Compton (nthcomp is employed)
+        self.gamma_d      =pars[0]  # Spectral index of soft Compton [-]
+        self.temp_bb_d    =pars[1]  # Seed photon temperature of soft Compton [keV]
+        self.temp_e_d     =pars[2]  # Electron temperature of soft Compton [keV]
+        self.norm_d       =pars[3]  # Normalization of soft Compton [-]
+        # Soft Compton (nthcomp is employed)
+        self.gamma_s      =pars[4]  # Spectral index of soft Compton [-]
+        self.temp_bb_s    =pars[5]  # Seed photon temperature of soft Compton [keV]
+        self.temp_e_s     =pars[6]  # Electron temperature of soft Compton [keV]
+        self.norm_s       =pars[7]  # Normalization of soft Compton [-]
+        # Hard Compton (nthcomp is employed)
+        self.gamma_h      =pars[8]  # Spectral index of hard Compton [-]
+        self.temp_bb_h    =pars[9]  # Seed photon temperature of hard Compton [keV]
+        self.temp_e_h     =pars[10]  # Electron temperature of hard Compton [keV]
+        self.norm_h       =pars[11]  # Normalization of hard Compton [-]
+        # Reflection (common) (relxillCp is employed)
+        self.incl         =pars[12]
+        self.a            =pars[13]
+        self.cafe         =pars[14]
+        # Soft reflection
+        self.r_in_sr      =pars[15]
+        self.r_out_sr     =pars[16]
+        self.index_sr     =pars[17]
+        self.logxi_sr     =pars[18]
+        self.logcn_sr     =pars[19]
+        self.cf_sr        =pars[20] # This is normalization, not refl_frac!
+        # Hard reflection
+        self.r_in_hr      =pars[21]
+        self.r_out_hr     =pars[22]
+        self.index_hr     =pars[23]
+        self.logxi_hr     =pars[24]
+        self.logcn_hr     =pars[25]
+        self.cf_hr        =pars[26] # This is normalization, not refl_frac! 
+
+        ##############################
+        ### Variability parameters ###
+        ##############################
+        self.mass         =pars[27]  # BH mass [solar mass]
+        self.r_in         =pars[28]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
+        self.dr_hcomp     =pars[29]  # Inner radius of hard Compton (inner radius of hot flow) [Rg]
+        self.dr_scomp     =pars[30]  # Transition radius between soft Compton and variable disk [Rg]
+        self.dr_disk      =pars[31]  # Transition radius between soft Compton and variable disk (outer radius of hot flow) [Rg]
+        self.n_ring       =pars[32]  # Outer radius of variable disk [Rg]
+        self.cf_var_d     =pars[33]  # Fractional variability at variable disk [-]
+        self.cf_var_s     =pars[34]  # Fractional variability at soft Compton [-]
+        self.cf_var_h     =pars[35]  # Fractional variability at hard Compton [-]
+        self.cb_d         =pars[36]  # B_{disk} [-]
+        self.m_d          =pars[37]  # m_{disk} [-]
+        self.cbp_d        =pars[38]  # Bprop_{disk} [-]
+        self.mp_d         =pars[39]  # mprop_{disk} [-]
+        self.cb_f         =pars[40]  # B_{flow} [-]
+        self.m_f          =pars[41]  # m_{flow} [-]
+        self.cbp_f        =pars[42]  # Bprop_{flow} [-]
+        self.mp_f         =pars[43]  # mprop_{flow} [-]
+        self.cs           =pars[44]  # Smoothing factor [-]
+        self.gamma_disk   =pars[45]  # Radial index of emissivity [-]
+        self.gamma_flow   =pars[46]  # Radial index of emissivity [-]
+        self.stress       =pars[47]  # 1: stressed, 2: stress-free in emissivity
+        self.e_min        =pars[48]  # Lower bound of energy band [keV] (unused)
+        self.e_max        =pars[49]  # Upper bound of energy band [keV] (unused)
+        self.e_minr       =pars[50]  # Lower bound of reference band [keV] (unused)
+        self.e_maxr       =pars[51]  # Upper bound of reference band [keV] (unused)
+        self.eta0_d       =pars[52]
+        self.eta1_d       =pars[53]
+        self.eta0_s       =pars[54]
+        self.eta1_s       =pars[55]
+        self.eta0_h       =pars[56]
+        self.eta1_h       =pars[57]
+        self.etap0_s      =pars[58] # Sensitivity parameter for seed photon variability
+        self.etap1_s      =pars[59] # Sensitivity parameter for seed photon variability
+        self.etap0_h      =pars[60] # Sensitivity parameter for seed photon variability
+        self.etap1_h      =pars[61] # Sensitivity parameter for seed photon variability
+        self.tr_s         =pars[62] # Start time of reflection impulse response [sec]
+        self.dt0_s        =pars[63] # Time width of reflection impulse response [sec]
+        self.tr_h         =pars[64] # Start time of reflection impulse response [sec]
+        self.dt0_h        =pars[65] # Time width of reflection impulse response [sec]
+        self.quant        =pars[66]
+            # 0: energy spectrum
+            # 1: power spectrum 
+            # 2: real part of cross spectrum
+            # 3: imaginary part of cross spectrum
+            # 4: absolute value of cross spectrum
+            # 5: phase lag (Positive lag means reference band lagging behind energy band.)
+            # 6: time lag  (Positive lag means reference band lagging behind energy band.)
+        self.invert       =pars[67] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display      =pars[68] # 1: display, 2: not display
+
+        # PREFLOW model is a spectral-timing model!
+        # Energy in XSPEC corresponds to Fourier frequency in preflow.
+        self.es=np.array(es)
+        self.fs_data=es
+
+        # Hidden parameters 
+        self.r_min        =self.r_in  # Minumum radius of emissivity [-]
+        self.tr_d         =0.    # Time width of reflection impulse response (variable disk) [sec]
+        self.dt0_d        =1.e-2 # Time width of reflection impulse response (variable disk) [sec]
+        self.eta0_sr      =self.eta0_s
+        self.eta1_sr      =self.eta1_s
+        self.eta0_hr      =self.eta0_h
+        self.eta1_hr      =self.eta1_h
+        self.etap0_sr     =self.etap0_s
+        self.etap1_sr     =self.etap1_s
+        self.etap0_hr     =self.etap0_h
+        self.etap1_hr     =self.etap1_h
+
+        ### Geometry ###
+        self.r_sh        =self.r_in+self.dr_hcomp  # Inner radius of soft Compton [Rg]
+        self.r_ds        =self.r_sh+self.dr_scomp  # Inner radius of disk [Rg]
+        self.r_out       =self.r_ds+self.dr_disk   # Outer radius of disk [Rg]
+
+        # Impulse response of reflection
+        self.t0_d=self.tr_d+(self.dt0_d/2.)
+        self.t0_s=self.tr_s+(self.dt0_s/2.)
+        self.t0_h=self.tr_h+(self.dt0_h/2.)
+
+        # The case the disk is not variable
+        if self.cf_var_d==0.:
+            self.r_out=self.r_ds
+
+        self.set_inpar_done=True
+
 # ------------------------------------- #
 # ----- Analytical spectral model ----- #
 # ------------------------------------- #
@@ -513,6 +639,57 @@ class EnergySpectrum:
 
         specx=SpectralModelXspec()
         fluxes_d =specx.diskbb_spec   (es=es, temp=ktbbd, norm=normd)
+        fluxes_s =specx.nthcomp_spec  (\
+            es=es, gamma=gammas, ktbb=ktbbs, kte=ktes, norm=norms)
+        fluxes_h =specx.nthcomp_spec  (\
+            es=es, gamma=gammah, ktbb=ktbbh, kte=kteh, norm=normh)
+        fluxes_sr=specx.relxillcp_spec(\
+            es=es,        incl=incl,    a=a,\
+            r_in=rins,    r_out=routs,  index=indexs,\
+            gamma=gammas, logxi=logxis, logcn=logns,\
+            cafe=afe,     kte=ktes,     norm=normsr)
+        fluxes_hr=specx.relxillcp_spec(\
+            es=es,        incl=incl,    a=a,\
+            r_in=rinh,    r_out=routh,  index=indexh,\
+            gamma=gammah, logxi=logxih, logcn=lognh,\
+            cafe=afe,     kte=kteh,     norm=normhr)
+
+        fluxes=fluxes_d+fluxes_s+fluxes_h+fluxes_sr+fluxes_hr
+
+        return fluxes
+
+    def preflowscpp_calc_spectra(self, es, pars):
+        gammad=pars[0] 
+        ktbbd =pars[1] 
+        kted  =pars[2] 
+        normd =pars[3] 
+        gammas=pars[4] 
+        ktbbs =pars[5] 
+        ktes  =pars[6] 
+        norms =pars[7] 
+        gammah=pars[8] 
+        ktbbh =pars[9] 
+        kteh  =pars[10] 
+        normh =pars[11] 
+        incl  =pars[12]
+        a     =pars[13]
+        afe   =pars[14]
+        rins  =pars[15]
+        routs =pars[16]
+        indexs=pars[17]
+        logxis=pars[18]
+        logns =pars[19]
+        normsr=pars[20]
+        rinh  =pars[21]
+        routh =pars[22]
+        indexh=pars[23]
+        logxih=pars[24]
+        lognh =pars[25]
+        normhr=pars[26]
+
+        specx=SpectralModelXspec()
+        fluxes_d =specx.nthcomp_spec  (\
+            es=es, gamma=gammad, ktbb=ktbbd, kte=kted, norm=normd)
         fluxes_s =specx.nthcomp_spec  (\
             es=es, gamma=gammas, ktbb=ktbbs, kte=ktes, norm=norms)
         fluxes_h =specx.nthcomp_spec  (\
@@ -1560,6 +1737,303 @@ def preflowscp_ref_weight_calc(\
 
     return ws, wrss
 
+###################
+### PREFLOWSCPP ###
+###################
+def preflowscpp_weight_calc(\
+    e_min, e_max, pars_spec,\
+    eta0_d,  eta1_d,  eta0_s,  eta1_s, eta0_h, eta1_h,\
+    etap0_s, etap1_s, etap0_h, etap1_h,\
+    rs_d, rs_s, rs_h, wids_d,  wids_s, wids_h,\
+    stress, r_min, index_d, index_f):
+
+    specx=SpectralModelXspec()
+
+    # --- Calculate flux --- #
+    es=np.array([e_min, e_max])
+    de=e_max-e_min
+
+    gammad=pars_spec[0] 
+    ktbbd =pars_spec[1] 
+    kted  =pars_spec[2] 
+    normd =pars_spec[3] 
+    gammas=pars_spec[4] 
+    ktbbs =pars_spec[5] 
+    ktes  =pars_spec[6] 
+    norms =pars_spec[7] 
+    gammah=pars_spec[8] 
+    ktbbh =pars_spec[9] 
+    kteh  =pars_spec[10] 
+    normh =pars_spec[11] 
+    incl  =pars_spec[12]
+    a     =pars_spec[13]
+    afe   =pars_spec[14]
+    rins  =pars_spec[15]
+    routs =pars_spec[16]
+    indexs=pars_spec[17]
+    logxis=pars_spec[18]
+    logns =pars_spec[19]
+    normsr=pars_spec[20]
+    rinh  =pars_spec[21]
+    routh =pars_spec[22]
+    indexh=pars_spec[23]
+    logxih=pars_spec[24]
+    lognh =pars_spec[25]
+    normhr=pars_spec[26]
+
+    flux_d =specx.nthcomp_spec  (\
+        es=es, gamma=gammad, ktbb=ktbbd, kte=kted, norm=normd)[0]/de
+    flux_s =specx.nthcomp_spec  (\
+        es=es, gamma=gammas, ktbb=ktbbs, kte=ktes, norm=norms)[0]/de
+    flux_h =specx.nthcomp_spec  (\
+        es=es, gamma=gammah, ktbb=ktbbh, kte=kteh, norm=normh)[0]/de
+
+    # Normalize such that total corresponds to unity.
+    flux_tot=flux_d+flux_s+flux_h
+    flux_d /=flux_tot
+    flux_s /=flux_tot
+    flux_h /=flux_tot
+
+    # --- Calculate sensitivity parameter --- #
+    # Averaged \eta (sensitivity parameter)
+    # No upper and lower bounds
+    eta_d =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_d, eta1=eta1_d)
+    eta_s =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_s, eta1=eta1_s)
+    eta_h =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_h, eta1=eta1_h)
+
+    # --- Sensitivity x Spectrum --- #
+    cs_d =flux_d *eta_d
+    cs_s =flux_s *eta_s
+    cs_h =flux_h *eta_h
+
+    # --- Calculate weight --- #
+    # Stressed
+    if stress==1:
+        stress=True 
+    # Stress-free
+    elif stress==2:
+        stress=False
+
+    # Variable disk
+    ws_d=weight_dir_calc_final(\
+        rs=rs_d, wids=wids_d, stress=stress, gamma=index_d, r_min=r_min,\
+        flux=cs_d)
+    # Soft Compton
+    ws_s=weight_dir_calc_final(\
+        rs=rs_s, wids=wids_s, stress=stress, gamma=index_f, r_min=r_min,\
+        flux=cs_s)
+    # Hard Compton
+    ws_h=weight_dir_calc_final(\
+        rs=rs_h, wids=wids_h, stress=stress, gamma=index_f, r_min=r_min,\
+        flux=cs_h)
+
+    # --- The case the seed photon variability does NOT affect direct emission ------- #
+    if [etap0_s, etap1_s, etap0_h, etap1_h]==[0., 0., 0., 0.] or \
+       len(rs_d)==0:
+        pass
+    # --- The case the seed photon variability DOES affect direct emission --- #
+    else:
+        etap_d =0. # Variable disk does not react to the seed photon variability
+        etap_s =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=etap0_s, eta1=etap1_s)
+        etap_h =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=etap0_h, eta1=etap1_h)
+    
+        csp_d =flux_d *etap_d # 0.
+        csp_s =flux_s *etap_s
+        csp_h =flux_h *etap_h
+
+        # --- Incorporate seed photon variability into the weight --- #
+        ws_d[0]+=(csp_d+csp_s+csp_h) 
+
+    #print(ws_h)
+    #print(ws_s)
+    #print(ws_d)
+
+    # Direct
+    ws=ws_h
+    ws=np.append(ws, ws_s)
+    ws=np.append(ws, ws_d)
+
+    return ws
+
+def preflowscpp_ref_weight_calc(\
+    e_min,   e_max,   pars_spec,\
+    eta0_d,  eta1_d,  eta0_s,    eta1_s,  eta0_h,   eta1_h,   eta0_sr,  eta1_sr, eta0_hr, eta1_hr,\
+    etap0_s, etap1_s, etap0_h,   etap1_h, etap0_sr, etap1_sr, etap0_hr, etap1_hr,\
+    rs_d,    rs_s,    rs_h,      wids_d,  wids_s,   wids_h,\
+    stress,  r_min,   index_d,   index_f,\
+    t0_d,    dt0_d,   t0_s,      dt0_s,   t0_h,     dt0_h,\
+    fs):
+
+    specx=SpectralModelXspec()
+
+    # --- Calculate flux --- #
+    es=np.array([e_min, e_max])
+    de=e_max-e_min
+
+    gammad=pars_spec[0] 
+    ktbbd =pars_spec[1] 
+    kted  =pars_spec[2] 
+    normd =pars_spec[3] 
+    gammas=pars_spec[4] 
+    ktbbs =pars_spec[5] 
+    ktes  =pars_spec[6] 
+    norms =pars_spec[7] 
+    gammah=pars_spec[8] 
+    ktbbh =pars_spec[9] 
+    kteh  =pars_spec[10] 
+    normh =pars_spec[11] 
+    incl  =pars_spec[12]
+    a     =pars_spec[13]
+    afe   =pars_spec[14]
+    rins  =pars_spec[15]
+    routs =pars_spec[16]
+    indexs=pars_spec[17]
+    logxis=pars_spec[18]
+    logns =pars_spec[19]
+    normsr=pars_spec[20]
+    rinh  =pars_spec[21]
+    routh =pars_spec[22]
+    indexh=pars_spec[23]
+    logxih=pars_spec[24]
+    lognh =pars_spec[25]
+    normhr=pars_spec[26]
+
+    flux_d =specx.nthcomp_spec  (\
+        es=es, gamma=gammad, ktbb=ktbbd, kte=kted, norm=normd)[0]/de
+    flux_s =specx.nthcomp_spec  (\
+        es=es, gamma=gammas, ktbb=ktbbs, kte=ktes, norm=norms)[0]/de
+    flux_h =specx.nthcomp_spec  (\
+        es=es, gamma=gammah, ktbb=ktbbh, kte=kteh, norm=normh)[0]/de
+    flux_dr=0. # No reflection associated with the variable disk
+    flux_sr=specx.relxillcp_spec(\
+        es=es,        incl=incl,    a=a,\
+        r_in=rins,    r_out=routs,  index=indexs,\
+        gamma=gammas, logxi=logxis, logcn=logns,\
+        cafe=afe,     kte=ktes,     norm=normsr)[0]/de
+    flux_hr=specx.relxillcp_spec(\
+        es=es,        incl=incl,    a=a,\
+        r_in=rinh,    r_out=routh,  index=indexh,\
+        gamma=gammah, logxi=logxih, logcn=lognh,\
+        cafe=afe,     kte=kteh,     norm=normhr)[0]/de
+
+    # Normalize such that total corresponds to unity.
+    flux_tot=flux_d+flux_s+flux_h+flux_dr+flux_sr+flux_hr
+    flux_d /=flux_tot
+    flux_s /=flux_tot
+    flux_h /=flux_tot
+    flux_dr/=flux_tot
+    flux_sr/=flux_tot
+    flux_hr/=flux_tot
+
+    # --- Calculate sensitivity parameter --- #
+    ### Mdot fluctuations ###
+    # Averaged \eta (sensitivity parameter)
+    # No upper and lower bounds
+    eta_d =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_d, eta1=eta1_d)
+    eta_s =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_s, eta1=eta1_s)
+    eta_h =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_h, eta1=eta1_h)
+    eta_dr=1.
+    eta_sr=calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_sr, eta1=eta1_sr)
+    eta_hr=calc_eta_ave(e_min=e_min, e_max=e_max, eta0=eta0_hr, eta1=eta1_hr)
+
+    # --- Sensitivity x Spectrum --- #
+    ### Mdot fluctuations ###
+    cs_d =flux_d *eta_d
+    cs_s =flux_s *eta_s
+    cs_h =flux_h *eta_h
+    cs_dr=flux_dr*eta_dr # 0.
+    cs_sr=flux_sr*eta_sr
+    cs_hr=flux_hr*eta_hr
+
+    # --- Calculate weight --- #
+    # Stressed
+    if stress==1:
+        stress=True 
+    # Stress-free
+    elif stress==2:
+        stress=False
+
+    # Variable disk
+    ws_d, wss_dr=weight_dir_ref_calc_final(\
+        rs=rs_d, wids=wids_d, stress=stress, gamma=index_d, r_min=r_min,\
+        flux=cs_d, flux_r=cs_dr,\
+        t0=t0_d, dt0=dt0_d,\
+        fs=fs)
+    # Soft Compton
+    ws_s, wss_sr=weight_dir_ref_calc_final(\
+        rs=rs_s, wids=wids_s, stress=stress, gamma=index_f, r_min=r_min,\
+        flux=cs_s, flux_r=cs_sr,\
+        t0=t0_s, dt0=dt0_s,\
+        fs=fs)
+    # Hard Compton
+    ws_h, wss_hr=weight_dir_ref_calc_final(\
+        rs=rs_h, wids=wids_h, stress=stress, gamma=index_f, r_min=r_min,\
+        flux=cs_h, flux_r=cs_hr,\
+        t0=t0_h, dt0=dt0_h,\
+        fs=fs)
+
+    # --- The case the seed photon variability does NOT affect direct emission ------- #
+    if [etap0_s, etap1_s, etap0_h, etap1_h]==[0., 0., 0., 0.] or \
+       len(rs_d)==0:
+        pass
+    # --- The case the seed photon variability DOES affect direct emission --- #
+    else:
+        etap_d =0. # Variable disk does not react to the seed photon variability
+        etap_s =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=etap0_s, eta1=etap1_s)
+        etap_h =calc_eta_ave(e_min=e_min, e_max=e_max, eta0=etap0_h, eta1=etap1_h)
+    
+        csp_d =flux_d *etap_d # 0.
+        csp_s =flux_s *etap_s
+        csp_h =flux_h *etap_h
+
+        # --- Incorporate seed photon variability into the weight --- #
+        ws_d[0]+=(csp_d+csp_s+csp_h) 
+
+    # --- The case the seed photon variability does NOT affect reverberation ------- #
+    #     1. Reverberation does not exist.                                            #
+    #     2. Reverberation is completely insensitive to the seed photon variability.  #
+    #     3. Variable disk does not exist.                                            #
+    # ------------------------------------------------------------------------------- #
+    if [normsr, normhr]==[0., 0.] or \
+       [etap0_sr, etap1_sr, etap0_hr, etap1_hr]==[0., 0., 0., 0.] or \
+       len(rs_d)==0:
+           pass
+    # --- The case the seed photon variability DOES affect reverberation --- #
+    else:
+        ### Seed photon fluctuations ###
+        etap_dr=1.
+        etap_sr=calc_eta_ave(e_min=e_min, e_max=e_max, eta0=etap0_sr, eta1=etap1_sr)
+        etap_hr=calc_eta_ave(e_min=e_min, e_max=e_max, eta0=etap0_hr, eta1=etap1_hr)
+
+        csp_dr=flux_dr*etap_dr # 0.
+        csp_sr=flux_sr*etap_sr
+        csp_hr=flux_hr*etap_hr
+
+        # --- Incorporate seed photon variability into the weight --- #
+        # Frequency-dependent weight for the reflection related to the seed photon variability
+        ws_tilde_rs=csp_sr*ch_rep_calc(f=fs, t0=t0_s, dt0=dt0_s)+csp_hr*ch_rep_calc(f=fs, t0=t0_h, dt0=dt0_h)
+        wss_dr[0]+=ws_tilde_rs
+
+    # Direct
+    ws=ws_h
+    ws=np.append(ws, ws_s)
+    ws=np.append(ws, ws_d)
+    # Reprocessed
+    wrss=wss_hr
+    if len(wss_sr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_sr))
+    if len(wss_dr)==0:
+        pass
+    else:
+        wrss=np.vstack((wrss, wss_dr))
+
+    #print(ws_h)
+    #print(ws_s)
+    #print(ws_d)
+
+    return ws, wrss
 # Kepler frequency
 def f_kep_calc(r):
     f_kep=(r**(-1.5))/(2.*np.pi) #[c/rg]
