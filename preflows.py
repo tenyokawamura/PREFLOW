@@ -1,6 +1,7 @@
 from preflow_h import *
 from scipy import integrate
-xspec.AllModels.lmod('relxill', '/Users/tenyo_kawamura/soft/XSPEC_models/relxill')
+import os
+xspec.AllModels.lmod('relxill', os.environ['RELXILL_TABLE_PATH'])
 
 def preflows(engs, params, fluxes):
     # ------------------------------------- #
