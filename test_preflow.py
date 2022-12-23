@@ -5,76 +5,95 @@ def main():
     # ---------- Setting ---------- #
     # ----------------------------- #
     engs=np.arange(1.e-2, 1.e1, 1.e-2)
-    #engs=np.arange(1.e-2, 1.e1, 1.e-3)
-    # 0.  mass
-    # 1.  r_in
-    # 2.  r_sh
-    # 3.  r_ds
-    # 4.  r_out
-    # 5.  n_ring
-    # 6.  tref
-    # 7.  dtref
-    # 8.  lf_var
-    # 9.  lb_disk
-    # 10. m_disk
-    # 11. lb_flow
-    # 12. m_flow
-    # 13. stress
-    # 14. gamma
-    # 15. E_min
-    # 16. E_max
-    # 17. frac_disk
-    # 18. frac_scomp
-    # 19. frac_hcomp
-    # 20. frac_sref
-    # 21. frac_href
-    # 22. E_minr
-    # 23. E_maxr
-    # 24. frac_diskr
-    # 25. frac_scompr
-    # 26. frac_hcompr
-    # 27. frac_srefr
-    # 28. frac_hrefr
-    # 39. E_minrr
-    # 30. E_maxrr
-    # 31. frac_scomprr
-    # 32. quant
-    # 33. display
-    params=[8.,\
-            6.,\
-            20.,\
-            30.,\
-            35.,\
-            45.,\
-            40,\
-            1.8e-3,\
-            5.e-3,\
-            0.8,\
-            0.03,\
-            0.5,\
-            6.,\
-            1.2,\
-            2,\
-            3.,\
-            0.51,\
-            1.50,\
-            0.314,\
-            0.174,\
-            0.124,\
-            0.388,\
-            0.,\
-            2.01,\
-            10.,\
-            0.013,\
-            0.352,\
-            0.318,\
-            0.310,\
-            0.007,\
-            0.51,\
-            10.,\
-            0.562,\
-            1,\
-            1]
+
+    Mass  =8.
+    rin   =6.
+    drh   =10.
+    drs   =16.
+    drd   =0.
+    Nring =40.
+    Fvd   =0.8
+    Fvs   =0.7
+    Fvh   =0.6
+    Bd    =0.03
+    md    =0.5
+    Bpd   =0.03
+    mpd   =0.5
+    Bf    =4.
+    mf    =1.
+    Bpf   =4.
+    mpf   =1.
+    D     =0.
+    indexd=3.
+    indexf=3.
+    stress=2.
+    Emin  =0.5
+    Emax  =1.
+    Sd    =0.1
+    Ss    =0.2
+    Sh    =0.2
+    Ssr   =0.1
+    Shr   =0.1
+    Eminr =2.6
+    Emaxr =4.8
+    Srd   =0.
+    Srs   =0.4
+    Srh   =0.4
+    Srsr  =0.
+    Srhr  =0.
+    t0s   =1.e-3
+    dt0s  =1.e-2
+    t0h   =1.e-3
+    dt0h  =1.e-2
+    quant =1
+    invert=2
+    par_print=1
+
+    params=[\
+        Mass  ,\
+        rin   ,\
+        drh   ,\
+        drs   ,\
+        drd   ,\
+        Nring ,\
+        Fvd   ,\
+        Fvs   ,\
+        Fvh   ,\
+        Bd    ,\
+        md    ,\
+        Bpd   ,\
+        mpd   ,\
+        Bf    ,\
+        mf    ,\
+        Bpf   ,\
+        mpf   ,\
+        D     ,\
+        indexd,\
+        indexf,\
+        stress,\
+        Emin  ,\
+        Emax  ,\
+        Sd    ,\
+        Ss    ,\
+        Sh    ,\
+        Ssr   ,\
+        Shr   ,\
+        Eminr ,\
+        Emaxr ,\
+        Srd   ,\
+        Srs   ,\
+        Srh   ,\
+        Srsr  ,\
+        Srhr  ,\
+        t0s   ,\
+        dt0s  ,\
+        t0h   ,\
+        dt0h  ,\
+        quant ,\
+        invert,\
+        par_print,\
+        ]
+
     fluxes=np.ones(len(engs)-1)
 
     # -------------------------- #
@@ -84,3 +103,4 @@ def main():
 
 if __name__=='__main__':
     main()
+
