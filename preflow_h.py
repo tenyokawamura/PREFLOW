@@ -40,34 +40,26 @@ class SetParameter:
         self.cs_h        =pars[25] # Hard Compton spectrum [-]
         self.cs_sr       =pars[26] # Soft reflection spectrum [-]
         self.cs_hr       =pars[27] # Hard Compton spectrum [-]
-        self.csp_s       =pars[28] # Soft Compton sensitive to seed photon variability [-]
-        self.csp_h       =pars[29] # Hard Compton sensitive to seed photon variability [-]
-        self.csp_sr      =pars[30] # Soft reflection sensitive to seed photon variability [-]
-        self.csp_hr      =pars[31] # Hard reflection sensitive to seed photon variability [-]
-        self.e_minr      =pars[32] # Lower bound of reference band [keV] (unused)
-        self.e_maxr      =pars[33] # Upper bound of reference band [keV] (unused)
-        self.cs_d_r      =pars[34] # Disk spectrum [-]
-        self.cs_s_r      =pars[35] # Soft Compton spectrum [-]
-        self.cs_h_r      =pars[36] # Hard Compton spectrum [-]
-        self.cs_sr_r     =pars[37] # Soft reflection spectrum [-]
-        self.cs_hr_r     =pars[38] # Hard reflection spectrum [-]
-        self.csp_s_r     =pars[39] # Soft Compton spectrum [-]
-        self.csp_h_r     =pars[40] # Hard Compton spectrum [-]
-        self.csp_sr_r    =pars[41] # Soft reflection spectrum [-]
-        self.csp_hr_r    =pars[42] # Hard reflection spectrum [-]
-        self.tr_s        =pars[43] # Rising time of impulse response for soft reflection [sec]
-        self.dt0_s       =pars[44] # Time width of impulse response for soft reflection [sec]
-        self.tr_h        =pars[45] # Rising time of impulse response for hard reflection [sec]
-        self.dt0_h       =pars[46] # Time width of impulse response for hard reflection  [sec]
-        self.quant       =pars[47]
+        self.e_minr      =pars[28] # Lower bound of reference band [keV] (unused)
+        self.e_maxr      =pars[29] # Upper bound of reference band [keV] (unused)
+        self.cs_d_r      =pars[30] # Disk spectrum [-]
+        self.cs_s_r      =pars[31] # Soft Compton spectrum [-]
+        self.cs_h_r      =pars[32] # Hard Compton spectrum [-]
+        self.cs_sr_r     =pars[33] # Soft reflection spectrum [-]
+        self.cs_hr_r     =pars[34] # Hard reflection spectrum [-]
+        self.tr_s        =pars[35] # Rising time of impulse response for soft reflection [sec]
+        self.dt0_s       =pars[36] # Time width of impulse response for soft reflection [sec]
+        self.tr_h        =pars[37] # Rising time of impulse response for hard reflection [sec]
+        self.dt0_h       =pars[38] # Time width of impulse response for hard reflection  [sec]
+        self.quant       =pars[39]
             # 1: power spectrum 
             # 2: real part of cross spectrum
             # 3: imaginary part of cross spectrum
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert      =pars[48] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display     =pars[49] # 1: display, 2: not display
+        self.invert      =pars[40] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display     =pars[41] # 1: display, 2: not display
 
         # PREFLOW model is a timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -87,6 +79,18 @@ class SetParameter:
         self.t0_d=self.tr_d+(self.dt0_d/2.)
         self.t0_s=self.tr_s+(self.dt0_s/2.)
         self.t0_h=self.tr_h+(self.dt0_h/2.)
+
+        # Seed photon variability
+        # Subject band
+        self.csp_s       =0. # Soft Compton sensitive to seed photon variability [-]
+        self.csp_h       =0. # Hard Compton sensitive to seed photon variability [-]
+        self.csp_sr      =0. # Soft reflection sensitive to seed photon variability [-]
+        self.csp_hr      =0. # Hard reflection sensitive to seed photon variability [-]
+        # Reference band
+        self.csp_s_r     =0. # Soft Compton sensitive to seed photon variability [-]
+        self.csp_h_r     =0. # Hard Compton sensitive to seed photon variability [-]
+        self.csp_sr_r    =0. # Soft reflection sensitive to seed photon variability [-]
+        self.csp_hr_r    =0. # Hard reflection sensitive to seed photon variability [-]
 
         # For the case that the disk is not variable
         if self.cf_var_d==0.:
@@ -161,15 +165,11 @@ class SetParameter:
         self.eta1_s       =pars[49]
         self.eta0_h       =pars[50]
         self.eta1_h       =pars[51]
-        self.etap0_s      =pars[52] # Sensitivity parameter for seed photon variability
-        self.etap1_s      =pars[53] # Sensitivity parameter for seed photon variability
-        self.etap0_h      =pars[54] # Sensitivity parameter for seed photon variability
-        self.etap1_h      =pars[55] # Sensitivity parameter for seed photon variability
-        self.tr_s         =pars[56] # Start time of reflection impulse response [sec]
-        self.dt0_s        =pars[57] # Time width of reflection impulse response [sec]
-        self.tr_h         =pars[58] # Start time of reflection impulse response [sec]
-        self.dt0_h        =pars[59] # Time width of reflection impulse response [sec]
-        self.quant        =pars[60]
+        self.tr_s         =pars[52] # Start time of reflection impulse response [sec]
+        self.dt0_s        =pars[53] # Time width of reflection impulse response [sec]
+        self.tr_h         =pars[54] # Start time of reflection impulse response [sec]
+        self.dt0_h        =pars[55] # Time width of reflection impulse response [sec]
+        self.quant        =pars[56]
             # 0: energy spectrum
             # 1: power spectrum 
             # 2: real part of cross spectrum
@@ -177,13 +177,19 @@ class SetParameter:
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert       =pars[61] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display      =pars[62] # 1: display, 2: not display
+        self.invert       =pars[57] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display      =pars[58] # 1: display, 2: not display
 
         # PREFLOW model is a spectral-timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
         self.es=np.array(es)
         self.fs_data=es
+
+        # Seed photon variability
+        self.etap0_s      =0. # Sensitivity parameter for seed photon variability
+        self.etap1_s      =0. # Sensitivity parameter for seed photon variability
+        self.etap0_h      =0. # Sensitivity parameter for seed photon variability
+        self.etap1_h      =0. # Sensitivity parameter for seed photon variability
 
         # Hidden parameters 
         self.r_min        =self.r_in  # Minumum radius of emissivity [-]
@@ -285,15 +291,11 @@ class SetParameter:
         self.eta1_s       =pars[53]
         self.eta0_h       =pars[54]
         self.eta1_h       =pars[55]
-        self.etap0_s      =pars[56] # Sensitivity parameter for seed photon variability
-        self.etap1_s      =pars[57] # Sensitivity parameter for seed photon variability
-        self.etap0_h      =pars[58] # Sensitivity parameter for seed photon variability
-        self.etap1_h      =pars[59] # Sensitivity parameter for seed photon variability
-        self.tr_s         =pars[60] # Start time of reflection impulse response [sec]
-        self.dt0_s        =pars[61] # Time width of reflection impulse response [sec]
-        self.tr_h         =pars[62] # Start time of reflection impulse response [sec]
-        self.dt0_h        =pars[63] # Time width of reflection impulse response [sec]
-        self.quant        =pars[64]
+        self.tr_s         =pars[56] # Start time of reflection impulse response [sec]
+        self.dt0_s        =pars[57] # Time width of reflection impulse response [sec]
+        self.tr_h         =pars[58] # Start time of reflection impulse response [sec]
+        self.dt0_h        =pars[59] # Time width of reflection impulse response [sec]
+        self.quant        =pars[60]
             # 0: energy spectrum
             # 1: power spectrum 
             # 2: real part of cross spectrum
@@ -301,13 +303,19 @@ class SetParameter:
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert       =pars[65] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display      =pars[66] # 1: display, 2: not display
+        self.invert       =pars[61] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display      =pars[62] # 1: display, 2: not display
 
         # PREFLOW model is a spectral-timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
         self.es=np.array(es)
         self.fs_data=es
+
+        # Seed photon variability
+        self.etap0_s      =0. # Sensitivity parameter for seed photon variability
+        self.etap1_s      =0. # Sensitivity parameter for seed photon variability
+        self.etap0_h      =0. # Sensitivity parameter for seed photon variability
+        self.etap1_h      =0. # Sensitivity parameter for seed photon variability
 
         # Hidden parameters 
         self.r_min        =self.r_in  # Minumum radius of emissivity [-]

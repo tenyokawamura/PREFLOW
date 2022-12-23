@@ -55,8 +55,6 @@ def main():
     indexd   =3.
     indexf   =3.
     stress   =2.
-    #Emin     =2.6
-    #Emax     =4.8
     Emin     =35.
     Emax     =48.
     Eminr    =2.6
@@ -67,10 +65,6 @@ def main():
     eta1s    =0.3
     eta0h    =1.
     eta1h    =-0.2
-    etap0s   =0.
-    etap1s   =0.
-    etap0h   =1.
-    etap1h   =0.
     t0s      =1.e-3
     dt0s     =1.e-2
     t0h      =1.e-3
@@ -136,10 +130,6 @@ def main():
         eta1s    ,\
         eta0h    ,\
         eta1h    ,\
-        etap0s   ,\
-        etap1s   ,\
-        etap0h   ,\
-        etap1h   ,\
         t0s      ,\
         dt0s     ,\
         t0h      ,\

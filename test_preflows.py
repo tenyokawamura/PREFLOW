@@ -60,10 +60,6 @@ def main():
     eta1s    =0.3
     eta0h    =1.
     eta1h    =0.4
-    etap0s   =1.
-    etap1s   =-0.2
-    etap0h   =1.
-    etap1h   =-0.5
     t0s      =1.e-3
     dt0s     =1.e-2
     t0h      =1.e-3
@@ -125,10 +121,6 @@ def main():
         eta1s    ,\
         eta0h    ,\
         eta1h    ,\
-        etap0s   ,\
-        etap1s   ,\
-        etap0h   ,\
-        etap1h   ,\
         t0s      ,\
         dt0s     ,\
         t0h      ,\
