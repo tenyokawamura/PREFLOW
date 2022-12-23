@@ -3,23 +3,23 @@
 <!-- #### Tenyo Kawamura (Kavli IPMU, University of Tokyo) -->
 
 ## Introduction
-**PREFLOW** is an X-ray timing model for black hole binaries (BHBs), which calculates both power spectrum and cross spectrum.
+**PREFLOW** is an X-ray timing model for black hole binaries, which calculates both power spectra and cross spectra.
 The model is based on the propagation of mass accretion rate fluctuations but accounts for reverberation and spectral pivoting.
-By connecting time-averaged emission with rapid variability explicitly, **PREFLOW** can be used to a spectral-timing analysis.
+By explicitly connecting time-averaged emission with rapid variability, **PREFLOW** can be used to a spectral-timing analysis.
 
 Despite being a timing model, **PREFLOW** can work on the spectral fitting package **XSPEC**.
 Since the model is currently written in Python, users can use the **PREFLOW** model on **PyXSPEC**, not on standard **XSPEC**.
 This manual describes the installation of **PREFLOW** to **PyXSPEC**, its use in **PyXSPEC**, and model parameters.
-To perform fitting, timing data also need to be read by **PyXSPEC**.
-Thus, the manual also instructs how to format timing data to be loaded on **PyXSPEC**.
+In fitting, timing data also need to be read by **PyXSPEC**.
+Thus, the manual instructs how to format timing data to be loaded on **PyXSPEC**.
 
 ## About PREFLOW
-The propagation of mass accretion rate fluctuations is expected to be a underlying process driving X-ray rapid variability.
+The propagation of mass accretion rate fluctuations is expected to be an underlying process driving rapid X-ray variability.
 Fundamentally, this process describes the variability of the mass accretion rate, but what we can observe are X-ray photons.
 In the conversion from the mass accretion rate into X-ray radiation, spectral pivoting and reverberation become relevant.
 Given that these processes are not independent of the propagating fluctuations process, correlations between these processes affect the fast variability.
-This has motivated us to account for these three processes altogether in **PREFLOW**.
-Here, we give an instructive description intended for a practical use of the model. 
+These connections have motivated us to account for these three processes altogether in **PREFLOW**.
+Here, we give an instructive description intended for the practical use of the model. 
 The physical description is found at [Kawamura et al. 2022b](https://arxiv.org/abs/2209.14492) (See also [Kawamura et al. 2022a](https://arxiv.org/abs/2107.12517) for the previous version of the model).
 
 The **PREFLOW** model makes the following assumptions:
@@ -28,7 +28,7 @@ The **PREFLOW** model makes the following assumptions:
 	across the inner region of the truncated disk, **rout**-**rds**, 
 	and the hot inner flow, **rds**-**rin**.
 - The hot inner flow can be inhomogeneous and described by two Comptonization components (at maximum).
-	They are named the soft Comptonization and hard Comptonization 
+	They are named soft Comptonization and hard Comptonization 
 	for the outer (**rds**-**rsh**) and inner (**rsh**-**rin**) components.
 	
 In summary, the variable accretion flow consists of three spectral components at maximum.
@@ -41,8 +41,8 @@ In summary, the variable accretion flow consists of three spectral components at
 
 The number of spectral regions can be reduced by setting model parameters appropriately.
 
-The **PREFLOW** model also assumes the soft Comptonization and hard Comptonization illuminate the accretion disc, resulting in the reverberation.
-The reflection spectra are referred to as the soft reflection and hard reflection, respectively.
+The **PREFLOW** model also assumes the soft Comptonization and hard Comptonization illuminate the accretion disc, resulting in reverberation.
+The reflection spectra are referred to as soft reflection and hard reflection, respectively.
 The impulse response is simply assumed to be a top-hat function with two parameters, **t0** and **dt0**.
 
 The contribution of each spectral region to flux can be given in several ways, which makes **PREFLOW** have some flavors.
@@ -70,7 +70,7 @@ The **relxill** package needs to be installed for the use of **preflows** and **
 Set the **RELXILL_TABLE_PATH** environment variable in users', following the installation guide of **relxill**.
 
 1. Download all the files in [the **PREFLOW** repository](https://github.com/tenyokawamura/PREFLOW) 
-	 by clicking the `Code` button and following instructions.
+	 by clicking the `Code` button and following the instructions.
 	 The following files should be contained:
 	- preflow.py / preflows.py / preflowscp.py
 	- preflow_h.py
@@ -147,7 +147,7 @@ For example, the following commands plot a time lag spectrum.
 		>>> xspec.Model('preflow', setPars={40:6})
 		>>> xspec.Plot('mo')
 
-Since the time lag spectrum can be negative, it may be more useful to plot the time lag spectrum on a linear scale.
+Since the time lag spectrum can be negative, it may be more useful to plot it on a linear scale.
 
 		>>> xspec.Plot.iplot('mo')
 		>>> log y off
@@ -225,7 +225,7 @@ Parameters peculiar to **preflows** and **preflowsCp** are those regulating spec
 
 ### Additional comments
 - For both the subject band and reference band, the sum of the fractions of each spectral component typically corresponds to unity, i.e.,  **Sd**+**Ss**+**Sh**+**Ssr**+**Shr**=1.
-	If other stable spectral components exist, the sum is smaller the unity.
+	If other stable spectral components exist, the sum is smaller than the unity.
 	If spectral pivoting is taken into account, the sum can take an arbitrary value.
 - Impulse response of the reflection is simply described with a top-hat function.
 	**t0** is the time at the rising edge, **dt0** is the duration of the hat.
@@ -253,10 +253,10 @@ Parameters peculiar to **preflows** and **preflowsCp** are those regulating spec
 	the parameters on the reference band are not used.
 
 ## Timing data
-To fit timing data with the **PREFLOW** model on **PyXSPEC**, the timing data need to be read by **PyXSPEC**.
+For fits to timing data with the **PREFLOW** model on **PyXSPEC**, the timing data need to be read by **PyXSPEC**.
 **XSPEC** regards any data as normal spectra, as far as it is concerned. 
 To load fast variability data such as power spectra and cross spectra in **XSPEC**, users need response files (RMF, ARF) as well as a formatted data file (PHA). 
-In PHA format, the Fourier frequency is replaced with the 'channel' which is defined between the minimum and maximum Fourier frequencies of interest. 
+In PHA format, the Fourier frequency is replaced with the 'channel', which is defined between the minimum and maximum Fourier frequencies of interest. 
 The diagonal dummy response (RMF) is created to relate the channel and Fourier frequency in a trivial way. 
 A constant effective area is simply given in the ARF file. 
 The tool flx2xsp can help to prepare these PHA, RMF, and ARF files.
