@@ -1,67 +1,81 @@
 # PREFLOW manual
-<!-- #### September 4, 2021 -->
+<!-- #### December 21, 2022 -->
 <!-- #### Tenyo Kawamura (Kavli IPMU, University of Tokyo) -->
 
 ## Introduction
 **PREFLOW** is an X-ray timing model for black hole binaries (BHBs), which calculates both power spectrum and cross spectrum.
-It takes into account the two key processes expected to happen in the accretion flow, i.e., 
-propagation of mass accretion rate fluctuations and X-ray reflection.
+The model is based on the propagation of mass accretion rate fluctuations but accounts for reverberation and spectral pivoting.
+By connecting time-averaged emission with rapid variability explicitly, **PREFLOW** can be used to a spectral-timing analysis.
 
 Despite being a timing model, **PREFLOW** can work on the spectral fitting package XSPEC.
 Since the model is currently written in Python, users can use the **PREFLOW** model on PyXSPEC, not on standard XSPEC.
 This manual describes the installation of **PREFLOW** to PyXSPEC, its use in PyXSPEC, and model parameters.
 To perform fitting, timing data also need to be read by PyXSPEC.
-Thus, the manual contains an explanation of how to make PyXSPEC read timing data.
+Thus, the manual also instructs how to format timing data to be loaded on PyXSPEC.
 
 ## About PREFLOW
-The propagation of mass accretion rate fluctuations and the X-ray reflection to the accretion flow 
-are expected to be responsible for the fast X-ray variability observed in BHBs.
-Taking account of these processes, the **PREFLOW** model is designed 
-not only to derive the accretion flow geometry and viscous time-scales 
-but also to measure energy spectra for various components.
-Note that the **PREFLOW** does not model QPOs.
-Here, the information which should help users to try the model is briefly summarized.
-See [Kawamura et al. 2021](https://arxiv.org/abs/2107.12517) (submitted to MNRAS) 
-for the details of modeling the variability.
+The propagation of mass accretion rate fluctuations is expected to be a underlying process driving X-ray rapid variability.
+Fundamentally, this process describes the variability of the mass accretion rate, but what we can observe are X-ray photons.
+In the conversion from the mass accretion rate into X-ray radiation, spectral pivoting and reverberation become relevant.
+Given that these processes are not independent of the propagating fluctuations process, correlations between these processes affect the fast variability.
+This has motivated us to account for these three processes altogether in **PREFLOW**.
+Here, we give an instructive description intended for a practical use of the model. 
+The physical description is found at [Kawamura et al. 2022b](https://arxiv.org/abs/2209.14492) (See also [Kawamura et al. 2022a](https://arxiv.org/abs/2107.12517) for the previous version of the model).
 
 The **PREFLOW** model makes the following assumptions:
 - The truncated disk / hot inner flow geometry.
-- Mass accretion rate fluctuations propagates inwards 
-	between the inner region of the truncated disk, **rout**--**rds**, 
-	and the entire hot flow, **rds**--**rin**.
-- The hot inner flow is inhomogeneous and described by two Comptonization components.
+- Mass accretion rate fluctuations can propagate inwards 
+	across the inner region of the truncated disk, **rout**-**rds**, 
+	and the hot inner flow, **rds**-**rin**.
+- The hot inner flow can be inhomogeneous and described by two Comptonization components (at maximum).
 	They are named the soft Comptonization and hard Comptonization 
 	for the outer (**rds**-**rsh**) and inner (**rsh**-**rin**) components.
 	
-In summary, the variable accretion flow consists of three spectral components.
+In summary, the variable accretion flow consists of three spectral components at maximum.
 
 | Region              | Spectral component        |
 | ----                | ----                      |
-| **rout**--**rds**   | (Variable) disk           |
-| **rds**--**rsh**    | Soft Comptonization       |
-| **rsh**--**rin**    | Hard Comptonization       |
+| **rout**-**rds**    | (Variable) disk           |
+| **rds**-**rsh**     | Soft Comptonization       |
+| **rsh**-**rin**     | Hard Comptonization       |
 
-The **PREFLOW** model also assumes 
-the soft Comptonization and hard Comptonization illuminate the accretion flow, 
-resulting in the reflection.
+The number of spectral regions can be reduced by setting model parameters appropriately.
+
+The **PREFLOW** model also assumes the soft Comptonization and hard Comptonization illuminate the accretion disc, resulting in the reverberation.
 The reflection spectra are referred to as the soft reflection and hard reflection, respectively.
-The impulse response is simply assumed to be a top-hat function with two parameters, 
-**tref** and **dtref**.
+The impulse response is simply assumed to be a top-hat function with two parameters, **t0** and **dt0**.
+
+The contribution of each spectral region to flux can be given in several ways, which makes **PREFLOW** have some flavors.
+The simplest way is to specify it directly.
+In this case, the model named **preflow** is used for timing fits.
+We can also compute it by explicitly assuming spectral models.
+**preflows** adopts **cutoffpl** and **relxill** for Comptonization and reflection, respectively, while **preflowsCp** uses **nthcomp** and **relxillCp**.
+Both of them model the disk emission with **diskbb** in common.
+**PREFLOWS** and **PREFLOWSCP** calculate energy spectra as well as power spectra and cross spectram, thus can be used for spectral-timing fits.
+We summarize the features of these flavors below:
+
+| Model               | Disk spectrum    | Comptonization spectrum | Reflection spectrum |
+| ----                | ----             | ----                    | ----                |
+| **preflow**         | -                | -                       | -                  |
+| **preflows**        | **diskbb**       | **cutoffpl**            | **relxill**         |
+| **preflowsCp**      | **diskbb**       | **nthcomp**             | **relxillCp**       |
 
 ## Installation to PyXSPEC
 This model installation instruction assumes PyXSPEC is already installed in users' computer
 (see [Build and Install PyXspec](https://heasarc.gsfc.nasa.gov/xanadu/xspec/python/html/buildinstall.html) 
 for the installation of PyXSPEC).
+The **relxill** package needs to be installed for the use of **preflows** and **preflowsCp**, though it does not for the use of **preflow**
+(see [Download and Installation](http://www.sternwarte.uni-erlangen.de/~dauser/research/relxill/) for the installation of **relxill**).
 
 1. Download all the files in [the **PREFLOW** repository](https://github.com/tenyokawamura/PREFLOW) 
 	 by clicking the `Code` button and following instructions.
 	 The following files should be contained:
-	- preflow.py
+	- preflow.py / preflows.py / preflowscp.py
 	- preflow_h.py
 	- fourier_h.py
 	- lmodel_preflow.py
-	- test_preflow.py
-	- quick_plot.py
+	- test_preflow.py / test_preflows.py / test_preflowscp.py
+	- quick_plot_preflow.py / quick_plot_preflows.py / quick_plot_preflowscp.py 
 	- README.py
 
 2. Put all these files in a clean directory on users' computer.
@@ -75,18 +89,34 @@ for the installation of PyXSPEC).
 		>>> python
 		>>> import xspec
 
-5. Import the source codes of the **PREFLOW** model:
+5. Import the source codes of the **preflow** model:
 
 		>>> from preflow import *
 		>>> from lmodel_preflow import *
 
-6. Add the **PREFLOW** model to PyXSPEC models:
+6. Add the **preflow** model to PyXSPEC models:
 
 		>>> xspec.AllModels.addPyMod(preflow, lmodel_preflow_info, 'add')
 
-Then users can use the model **PREFLOW** in the same way as other additive models.
-But keep in mind that **PREFLOW** is a *timing* model, not a spectral model, 
-so using **PREFLOW** together with spectral models to define a single model should be meaningless.
+Then users can use the model **preflow** in the same way as other additive models.
+
+**preflows** and **preflowsCp** can be activated in the same manner:
+
+		>>> python
+		>>> import xspec
+		>>> from preflows import *
+		>>> from lmodel_preflow import *
+		>>> xspec.AllModels.addPyMod(preflows, lmodel_preflows_info, 'add')
+
+for **preflows**, 
+
+		>>> python
+		>>> import xspec
+		>>> from preflowscp import *
+		>>> from lmodel_preflow import *
+		>>> xspec.AllModels.addPyMod(preflowscp, lmodel_preflowscp_info, 'add')
+
+for **preflowscp**.
 
 ## How to use the model on PyXSPEC
 In the use of **PREFLOW** on PyXSPEC, 
@@ -112,14 +142,16 @@ The power spectrum multiplied by the frequency in units of (rms/mean)^2 is plott
 The timing quantity calculated is switched with the parameter **quant** (see 'Parameters' for further details ).
 For example, the following commands plot a time lag spectrum.
 
-		>>> xspec.Model('preflow', setPars={33:6})
+		>>> xspec.Model('preflow', setPars={48:6})
 		>>> xspec.Plot('mo')
 
 Since the time lag spectrum can be negative, it may be more useful to plot the time lag spectrum on a linear scale.
 
 		>>> xspec.Plot.iplot('mo')
 		>>> log y off
-		>>> r y -0.1
+		>>> r y -0.1 0.1
+
+Again, **preflows** and **preflowsCp** are used in the same manner.
 
 ## Parameters
 | Number | Parameter     | Units      | Definition                                                                              | Comments |
