@@ -41,11 +41,13 @@ def main():
     Fvs      =0.8
     Fvh      =0.8
     fgdo     =5.e-2
-    fgdi     =1.e-1
-    fpfgd    =1.
+    md       =0.5
+    fpdo     =5.e-2
+    mpd      =0.5
     fgfo     =1.
-    fgfi     =1.e2
-    fpfgf    =1.
+    mf       =1.
+    fpfo     =1.
+    mpf      =1.
     D        =1.e-1
     indexd   =3.
     indexf   =3.
@@ -104,11 +106,13 @@ def main():
         Fvs      ,\
         Fvh      ,\
         fgdo     ,\
-        fgdi     ,\
-        fpfgd    ,\
+        md       ,\
+        fpdo     ,\
+        mpd      ,\
         fgfo     ,\
-        fgfi     ,\
-        fpfgf    ,\
+        mf       ,\
+        fpfo     ,\
+        mpf      ,\
         D        ,\
         indexd   ,\
         indexf   ,\
