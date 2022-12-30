@@ -269,33 +269,31 @@ class SetParameter:
         self.cf_var_d     =pars[31]  # Fractional variability at variable disk [-]
         self.cf_var_s     =pars[32]  # Fractional variability at soft Compton [-]
         self.cf_var_h     =pars[33]  # Fractional variability at hard Compton [-]
-        self.cb_d         =pars[34]  # B_{disk} [-]
-        self.m_d          =pars[35]  # m_{disk} [-]
-        self.cbp_d        =pars[36]  # Bprop_{disk} [-]
-        self.mp_d         =pars[37]  # mprop_{disk} [-]
-        self.cb_f         =pars[38]  # B_{flow} [-]
-        self.m_f          =pars[39]  # m_{flow} [-]
-        self.cbp_f        =pars[40]  # Bprop_{flow} [-]
-        self.mp_f         =pars[41]  # mprop_{flow} [-]
-        self.cs           =pars[42]  # Smoothing factor [-]
-        self.gamma_disk   =pars[43]  # Radial index of emissivity [-]
-        self.gamma_flow   =pars[44]  # Radial index of emissivity [-]
-        self.stress       =pars[45]  # 1: stressed, 2: stress-free in emissivity
-        self.e_min        =pars[46]  # Lower bound of energy band [keV] (unused)
-        self.e_max        =pars[47]  # Upper bound of energy band [keV] (unused)
-        self.e_minr       =pars[48]  # Lower bound of reference band [keV] (unused)
-        self.e_maxr       =pars[49]  # Upper bound of reference band [keV] (unused)
-        self.eta0_d       =pars[50]
-        self.eta1_d       =pars[51]
-        self.eta0_s       =pars[52]
-        self.eta1_s       =pars[53]
-        self.eta0_h       =pars[54]
-        self.eta1_h       =pars[55]
-        self.tr_s         =pars[56] # Start time of reflection impulse response [sec]
-        self.dt0_s        =pars[57] # Time width of reflection impulse response [sec]
-        self.tr_h         =pars[58] # Start time of reflection impulse response [sec]
-        self.dt0_h        =pars[59] # Time width of reflection impulse response [sec]
-        self.quant        =pars[60]
+        self.fgen_d_out   =pars[34]  # f_{disk, gen}(rout) [Hz]
+        self.fgen_d_in    =pars[35]  # f_{disk, gen}(rds)  [Hz]
+        self.fprop_fgen_d =pars[36]  # f_{disk, prop}(rds) [Hz]
+        self.fgen_f_out   =pars[37]  # f_{flow, gen}(rout) [Hz]
+        self.fgen_f_in    =pars[38]  # f_{flow, gen}(rds)  [Hz]
+        self.fprop_fgen_f =pars[39]  # f_{disk, prop}(rds) [Hz]
+        self.cs           =pars[40]  # Smoothing factor [-]
+        self.gamma_disk   =pars[41]  # Radial index of emissivity [-]
+        self.gamma_flow   =pars[42]  # Radial index of emissivity [-]
+        self.stress       =pars[43]  # 1: stressed, 2: stress-free in emissivity
+        self.e_min        =pars[44]  # Lower bound of energy band [keV] (unused)
+        self.e_max        =pars[45]  # Upper bound of energy band [keV] (unused)
+        self.e_minr       =pars[46]  # Lower bound of reference band [keV] (unused)
+        self.e_maxr       =pars[47]  # Upper bound of reference band [keV] (unused)
+        self.eta0_d       =pars[48]
+        self.eta10_d      =pars[49]
+        self.eta0_s       =pars[50]
+        self.eta10_s      =pars[51]
+        self.eta0_h       =pars[52]
+        self.eta10_h      =pars[53]
+        self.tr_s         =pars[54] # Start time of reflection impulse response [sec]
+        self.dt0_s        =pars[55] # Time width of reflection impulse response [sec]
+        self.tr_h         =pars[56] # Start time of reflection impulse response [sec]
+        self.dt0_h        =pars[57] # Time width of reflection impulse response [sec]
+        self.quant        =pars[58]
             # 0: energy spectrum
             # 1: power spectrum 
             # 2: real part of cross spectrum
@@ -303,8 +301,8 @@ class SetParameter:
             # 4: absolute value of cross spectrum
             # 5: phase lag (Positive lag means reference band lagging behind energy band.)
             # 6: time lag  (Positive lag means reference band lagging behind energy band.)
-        self.invert       =pars[61] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
-        self.display      =pars[62] # 1: display, 2: not display
+        self.invert       =pars[59] # 1: Normal,  2: Im[C(f)], phase lag, and time lag are multiplied by -1.
+        self.display      =pars[60] # 1: display, 2: not display
 
         # PREFLOW model is a spectral-timing model!
         # Energy in XSPEC corresponds to Fourier frequency in preflow.
@@ -316,6 +314,11 @@ class SetParameter:
         self.etap1_s      =0. # Sensitivity parameter for seed photon variability
         self.etap0_h      =0. # Sensitivity parameter for seed photon variability
         self.etap1_h      =0. # Sensitivity parameter for seed photon variability
+
+        # Sensitivity
+        self.eta1_d=self.eta0_d*self.eta10_d
+        self.eta1_s=self.eta0_s*self.eta10_s
+        self.eta1_h=self.eta0_h*self.eta10_h
 
         # Hidden parameters 
         self.r_min        =self.r_in  # Minumum radius of emissivity [-]
@@ -329,7 +332,7 @@ class SetParameter:
         self.etap1_sr     =self.etap1_s
         self.etap0_hr     =self.etap0_h
         self.etap1_hr     =self.etap1_h
-
+        
         ### Geometry ###
         self.r_sh        =self.r_in+self.dr_hcomp  # Inner radius of soft Compton [Rg]
         self.r_ds        =self.r_sh+self.dr_scomp  # Inner radius of disk [Rg]
@@ -339,6 +342,21 @@ class SetParameter:
         self.t0_d=self.tr_d+(self.dt0_d/2.)
         self.t0_s=self.tr_s+(self.dt0_s/2.)
         self.t0_h=self.tr_h+(self.dt0_h/2.)
+
+        # Viscous parameter
+        self.cb_d,  self.m_d =cb_m_calc(mbh=self.mass, rin=self.r_ds, rout=self.r_out, fvisc_in=self.fgen_d_in,  fvisc_out=self.fgen_d_out )
+        self.cbp_d=self.fprop_fgen_d*self.cb_d
+        self.mp_d =self.m_d
+        self.cb_f,  self.m_f =cb_m_calc(mbh=self.mass, rin=self.r_in, rout=self.r_ds,  fvisc_in=self.fgen_f_in,  fvisc_out=self.fgen_f_out )
+        self.cbp_f=self.fprop_fgen_f*self.cb_f
+        self.mp_f =self.m_f
+
+        #print(self.r_ds, self.r_out, self.fgen_d_in, self.fgen_d_out)
+        #print(self.r_in, self.r_ds,  self.fgen_f_in, self.fgen_f_out)
+        #print(self.cb_d, self.m_d)
+        #print(self.cbp_d, self.mp_d)
+        #print(self.cb_f, self.m_f)
+        #print(self.cbp_f, self.mp_f)
 
         # The case the disk is not variable
         if self.cf_var_d==0.:
@@ -1578,6 +1596,20 @@ def f_vis_calc(r, lb, m):
     f_kep=f_kep_calc(r=r)
     f_vis=lb*(r**(-m))*f_kep #[c/rg]
     return f_vis
+
+def cb_m_calc(mbh, rin, rout, fvisc_in,  fvisc_out):
+    fvisc_rat=fvisc_in/fvisc_out
+    r_rat    =rin/rout
+    fkep_rat =f_kep_calc(r=rin)/f_kep_calc(r=rout)
+    m=-np.log10(fvisc_rat/fkep_rat)/np.log10(r_rat)
+
+    c=3.e5     # [km/s]            
+    rg=1.5*mbh # [km]  
+    c_rg=c/rg  # [Hz]
+    fkep_in=f_kep_calc(r=rin)*c_rg # [Hz]
+    cb=fvisc_in*(rin**(m))/fkep_in
+
+    return cb, m
 
 # Emissivity
 def epsilon_calc(r, stress, gamma, r_min):

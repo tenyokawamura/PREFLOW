@@ -24,15 +24,13 @@ def main():
     Indexs   =3.
     logxis   =3.
     logNs    =15.
-    Frefs    =0.01
-    #Frefs    =0.
+    normsr   =0.01
     Rinh     =45.
     Routh    =400.
     Indexh   =3.
     logxih   =3.
     logNh    =15.
-    #Frefh    =0.01
-    Frefh    =0.
+    normhr   =0.
     Mass     =8.
     rin      =6.
     drh      =26.
@@ -42,15 +40,12 @@ def main():
     Fvd      =0.8
     Fvs      =0.8
     Fvh      =0.8
-    drvf     =1.e3
-    Bd       =0.05
-    md       =0.3
-    Bpd      =0.05
-    mpd      =0.3
-    Bf       =4.
-    mf       =1.
-    Bpf      =4.
-    mpf      =1.
+    fgdo     =5.e-2
+    fgdi     =1.e-1
+    fpfgd    =1.
+    fgfo     =1.
+    fgfi     =1.e2
+    fpfgf    =1.
     D        =1.e-1
     indexd   =3.
     indexf   =3.
@@ -60,11 +55,11 @@ def main():
     Eminr    =2.6
     Emaxr    =4.8
     eta0d    =1.
-    eta1d    =0.2
+    eta10d   =0.2
     eta0s    =1.
-    eta1s    =0.3
+    eta10s   =0.3
     eta0h    =1.
-    eta1h    =-0.2
+    eta10h   =-0.2
     t0s      =1.e-3
     dt0s     =1.e-2
     t0h      =1.e-3
@@ -92,13 +87,13 @@ def main():
         Indexs   ,\
         logxis   ,\
         logNs    ,\
-        Frefs    ,\
+        normsr   ,\
         Rinh     ,\
         Routh    ,\
         Indexh   ,\
         logxih   ,\
         logNh    ,\
-        Frefh    ,\
+        normhr   ,\
         Mass     ,\
         rin      ,\
         drh      ,\
@@ -108,14 +103,12 @@ def main():
         Fvd      ,\
         Fvs      ,\
         Fvh      ,\
-        Bd       ,\
-        md       ,\
-        Bpd      ,\
-        mpd      ,\
-        Bf       ,\
-        mf       ,\
-        Bpf      ,\
-        mpf      ,\
+        fgdo     ,\
+        fgdi     ,\
+        fpfgd    ,\
+        fgfo     ,\
+        fgfi     ,\
+        fpfgf    ,\
         D        ,\
         indexd   ,\
         indexf   ,\
@@ -125,11 +118,11 @@ def main():
         Eminr    ,\
         Emaxr    ,\
         eta0d    ,\
-        eta1d    ,\
+        eta10d   ,\
         eta0s    ,\
-        eta1s    ,\
+        eta10s   ,\
         eta0h    ,\
-        eta1h    ,\
+        eta10h   ,\
         t0s      ,\
         dt0s     ,\
         t0h      ,\
