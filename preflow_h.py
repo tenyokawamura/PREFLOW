@@ -346,10 +346,10 @@ class SetParameter:
         self.t0_h=self.tr_h+(self.dt0_h/2.)
 
         # Viscous parameter
-        self.cb_d =cb_calc(mbh=self.mass,  m=self.m_d,  r=self.r_out, fvisc=self.fgen_d_out)
+        self.cb_d =cb_calc(mbh=self.mass,  m=self.m_d,  r=self.r_out, fvisc=self.fgen_d_out )
         self.cbp_d=cb_calc(mbh=self.mass,  m=self.mp_d, r=self.r_out, fvisc=self.fprop_d_out)
-        self.cb_f =cb_calc(mbh=self.mass,  m=self.m_f,  r=self.r_out, fvisc=self.fgen_f_out)
-        self.cbp_f=cb_calc(mbh=self.mass,  m=self.mp_f, r=self.r_out, fvisc=self.fprop_f_out)
+        self.cb_f =cb_calc(mbh=self.mass,  m=self.m_f,  r=self.r_ds,  fvisc=self.fgen_f_out )
+        self.cbp_f=cb_calc(mbh=self.mass,  m=self.mp_f, r=self.r_ds,  fvisc=self.fprop_f_out)
 
         #print(self.cb_d, self.m_d)
         #print(self.cbp_d, self.mp_d)
