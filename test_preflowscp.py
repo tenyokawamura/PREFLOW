@@ -42,12 +42,10 @@ def main():
     Fvh      =0.8
     fgdo     =5.e-2
     md       =0.5
-    fpdo     =5.e-2
-    mpd      =0.5
+    xlagd    =1.
     fgfo     =1.
     mf       =1.
-    fpfo     =1.
-    mpf      =1.
+    xlagf    =1.
     D        =1.e-1
     indexd   =3.
     indexf   =3.
@@ -107,12 +105,10 @@ def main():
         Fvh      ,\
         fgdo     ,\
         md       ,\
-        fpdo     ,\
-        mpd      ,\
+        xlagd    ,\
         fgfo     ,\
         mf       ,\
-        fpfo     ,\
-        mpf      ,\
+        xlagf    ,\
         D        ,\
         indexd   ,\
         indexf   ,\
